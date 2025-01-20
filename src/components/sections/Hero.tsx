@@ -1,7 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import type { HeroProps } from "../../types";
 
-const Hero = ({ videoUrl = "/assets/videos/bg_hero4.mp4", forwardDuration = 5 }: HeroProps) => {
+const Hero = ({ videoUrl = "/assets/videos/bg_hero2.mp4", forwardDuration = 5 }: HeroProps) => {
+  const videoProps = {
+    preload: "auto",
+    playsInline: true,
+    muted: true,
+    width: "1280", //optimal width
+    height: "720",  // optimal height
+  };
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isReversing, setIsReversing] = useState<boolean>(false);
@@ -13,40 +20,38 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero4.mp4", forwardDuration = 5 }:
     const video = videoRef.current;
     if (!video) return;
 
-    const handleReverse = (timestamp: number) => {
-      if (!video) return;
-
+    const handleReverse = (now: number) => {
+      if (!videoRef.current) return;
+    
+      const video = videoRef.current;
+      
       if (!lastTimeRef.current) {
-        lastTimeRef.current = timestamp;
+        lastTimeRef.current = now;
       }
-
-      // Calculate time difference between frames
-      const deltaTime = timestamp - lastTimeRef.current;
-      lastTimeRef.current = timestamp;
-
-      // Smooth reverse playback with consistent speed
+    
+      const deltaTime = now - lastTimeRef.current;
+      lastTimeRef.current = now;
+    
       const decrementAmount = (deltaTime / 1000) * reverseSpeedRef.current;
       video.currentTime = Math.max(0, video.currentTime - decrementAmount);
-
-      console.log('Reverse time:', video.currentTime);
-
-      if (video.currentTime <= 0) {
-        console.log('Reached start, switching to forward');
-        lastTimeRef.current = 0;
+    
+      // console.log("Reverse time:", video.currentTime);
+    
+      if (video.currentTime > 0) {
+        video.requestVideoFrameCallback(handleReverse); // Request next frame
+      } else {
+        // console.log("Reached start, switching to forward playback.");
         setIsReversing(false);
         video.play();
-        return;
       }
-
-      frameRef.current = requestAnimationFrame(handleReverse);
     };
-
+    
     const handleTimeUpdate = () => {
       if (!video || isReversing) return;
-      console.log('Forward time:', video.currentTime);
+      // console.log('Forward time:', video.currentTime);
 
       if (video.currentTime >= forwardDuration) {
-        console.log('Starting reverse playback');
+        // console.log('Starting reverse playback');
         video.pause();
         lastTimeRef.current = 0;
         setIsReversing(true);
@@ -80,9 +85,7 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero4.mp4", forwardDuration = 5 }:
       <div className="absolute inset-0 w-full h-full z-0">
         <video
           ref={videoRef}
-          muted
-          playsInline
-          preload="auto"
+          {...videoProps}
           onLoadedData={() => setIsVideoLoaded(true)}
           className={`object-cover w-full h-full ${
             isVideoLoaded ? "opacity-100" : "opacity-0"
