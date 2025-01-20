@@ -1,0 +1,136 @@
+import { useState, useEffect, useRef } from "react";
+import type { HeroProps } from "../../types";
+
+const Hero = ({ videoUrl = "/assets/videos/bg_hero4.mp4", forwardDuration = 5 }: HeroProps) => {
+  const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isReversing, setIsReversing] = useState<boolean>(false);
+  const frameRef = useRef<number>();
+  const lastTimeRef = useRef<number>(0);
+  const reverseSpeedRef = useRef<number>(1); // Controls reverse playback speed
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleReverse = (timestamp: number) => {
+      if (!video) return;
+
+      if (!lastTimeRef.current) {
+        lastTimeRef.current = timestamp;
+      }
+
+      // Calculate time difference between frames
+      const deltaTime = timestamp - lastTimeRef.current;
+      lastTimeRef.current = timestamp;
+
+      // Smooth reverse playback with consistent speed
+      const decrementAmount = (deltaTime / 1000) * reverseSpeedRef.current;
+      video.currentTime = Math.max(0, video.currentTime - decrementAmount);
+
+      console.log('Reverse time:', video.currentTime);
+
+      if (video.currentTime <= 0) {
+        console.log('Reached start, switching to forward');
+        lastTimeRef.current = 0;
+        setIsReversing(false);
+        video.play();
+        return;
+      }
+
+      frameRef.current = requestAnimationFrame(handleReverse);
+    };
+
+    const handleTimeUpdate = () => {
+      if (!video || isReversing) return;
+      console.log('Forward time:', video.currentTime);
+
+      if (video.currentTime >= forwardDuration) {
+        console.log('Starting reverse playback');
+        video.pause();
+        lastTimeRef.current = 0;
+        setIsReversing(true);
+        frameRef.current = requestAnimationFrame(handleReverse);
+      }
+    };
+
+    // Event listeners
+    video.addEventListener('timeupdate', handleTimeUpdate);
+    
+    // Reset video when isReversing changes
+    if (isReversing) {
+      handleReverse(0);
+    } else {
+      video.play();
+    }
+
+    // Cleanup
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate);
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+      lastTimeRef.current = 0;
+    };
+  }, [isReversing, forwardDuration]);
+
+  return (
+    <div className="relative h-[100vh] w-full overflow-hidden">
+      {/* Video Background */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          preload="auto"
+          onLoadedData={() => setIsVideoLoaded(true)}
+          className={`object-cover w-full h-full ${
+            isVideoLoaded ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 h-full">
+        <div className="flex h-full items-center justify-between">
+          {/* Left Section - Content */}
+          <div className="max-w-xl">
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight animate-fade-in">
+              Master
+              <span className="text-primary-cyan"> Data Skills </span>
+              Transform Your Future
+            </h1>
+            <p className="text-xl md:text-2xl text-bubbles opacity-90">
+              Unlock the power of data with industry-leading skills like
+              <span className="text-primary-cyan font-semibold">
+                {" "}
+                Excel • Python • Power BI • SQL • Tableau
+              </span>
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <a href="">
+                <button className="bg-caribbean hover:bg-teal text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
+                  About Us
+                </button>
+              </a>
+              <a href="">
+                <button className="border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300">
+                  Live Quizzes
+                </button>
+              </a>
+            </div>
+          </div>
+
+          {/* Right Section - Animation */}
+          <div className="hidden md:flex items-center justify-center">
+            {/* You can add an animated graphic or stats here later */}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Hero;
