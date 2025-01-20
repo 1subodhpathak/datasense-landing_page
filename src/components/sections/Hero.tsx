@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { HeroProps } from "../../types";
 
-const Hero = ({ videoUrl = "/assets/videos/bg_hero2.mp4", forwardDuration = 5 }: HeroProps) => {
+const Hero = ({ videoUrl = "/assets/videos/bg_hero3.mp4", forwardDuration = 5 }: HeroProps) => {
   const videoProps = {
     preload: "auto",
     playsInline: true,
