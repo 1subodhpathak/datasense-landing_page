@@ -115,12 +115,12 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero3.mp4", forwardDuration = 5 }:
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <a href="">
                 <button className="bg-caribbean hover:bg-teal text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
-                  About Us
+                  Getting Started
                 </button>
               </a>
               <a href="">
                 <button className="border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300">
-                  Live Quizzes
+                  Login
                 </button>
               </a>
             </div>
