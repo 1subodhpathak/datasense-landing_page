@@ -65,7 +65,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
         <div className="relative group">
           <button
             onClick={() => handleDropdownClick(item.title)}
-            className="px-3 py-2 text-sm font-medium text-light-cyan hover:text-primary-cyan rounded-md transition-colors duration-200 flex items-center gap-1 group"
+            className="px-3 py-2 text-bold font-medium text-light-cyan hover:text-primary-cyan rounded-md transition-colors duration-200 flex items-center gap-1 group"
           >
             {item.title}
             <BsChevronDown className="transition-transform duration-300 group-hover:rotate-180" />
@@ -137,7 +137,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
     return (
       <a
         href={item.path}
-        className="px-3 py-2 text-sm font-medium text-white hover:text-primary-cyan rounded-md transition-colors duration-200 relative group whitespace-nowrap"
+        className="px-3 py-2 text-bold font-medium text-white hover:text-primary-cyan rounded-md transition-colors duration-200 relative group whitespace-nowrap"
       >
         {item.title}
         <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary-cyan transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"></span>
