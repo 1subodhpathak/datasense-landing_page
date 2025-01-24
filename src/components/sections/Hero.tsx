@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import type { HeroProps } from "../../types";
 
-const Hero = ({ videoUrl = "/assets/videos/bg_hero3.mp4", forwardDuration = 5 }: HeroProps) => {
+const Hero = ({ videoUrl = "/assets/videos/bg_hero5.mp4", forwardDuration = 6 }: HeroProps) => {
   const videoProps = {
     preload: "auto",
     playsInline: true,
@@ -100,7 +100,7 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero3.mp4", forwardDuration = 5 }:
         <div className="flex h-full items-center justify-between">
           {/* Left Section - Content */}
           <div className="max-w-xl">
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight animate-fade-in">
+            <h1 className="text-blue-green text-5xl md:text-7xl font-bold leading-tight animate-fade-in">
               Master
               <span className="text-primary-cyan"> Data Skills </span>
               Transform Your Future
@@ -115,12 +115,12 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero3.mp4", forwardDuration = 5 }:
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <a href="">
                 <button className="bg-caribbean hover:bg-teal text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
-                  Getting Started
+                  Login
                 </button>
               </a>
               <a href="">
                 <button className="border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300">
-                  Login
+                  Get Started
                 </button>
               </a>
             </div>

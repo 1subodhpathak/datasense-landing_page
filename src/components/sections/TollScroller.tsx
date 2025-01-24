@@ -11,6 +11,12 @@ const tools = [
     description: 'Advanced data analysis & reporting'
   },
   { 
+    name: 'Python', 
+    icon: FaPython, 
+    color: 'text-cyan-400',
+    description: 'Data processing & automation'
+  },
+  { 
     name: 'Power BI', 
     icon: SiPowers, 
     color: 'text-cyan-500',
@@ -27,18 +33,12 @@ const tools = [
     icon: SiTableau, 
     color: 'text-cyan-500',
     description: 'Business intelligence solutions'
-  },
-  { 
-    name: 'Python', 
-    icon: FaPython, 
-    color: 'text-cyan-400',
-    description: 'Data processing & automation'
   }
 ];
 
 function TollScroller() {
   return (
-    <section className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950">
+    <section className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950 overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-cyan-100 mb-4">
           Our Tech Stack
@@ -47,20 +47,22 @@ function TollScroller() {
           Transforming complex data into actionable insights with industry-leading tools
         </p>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-          {tools.map((tool) => (
-            <div
-              key={tool.name}
-              className="group flex flex-col items-center justify-center p-6 bg-slate-800/30 rounded-xl 
-                hover:bg-slate-700/40 transition-all duration-300 cursor-pointer 
-                border border-cyan-900/20 hover:border-cyan-500/30 hover:-translate-y-1
-                backdrop-blur-sm"
-            >
-              <tool.icon className={`text-5xl md:text-6xl ${tool.color} mb-4 group-hover:scale-110 transition-transform`} />
-              <h3 className="text-xl font-semibold text-cyan-100 mb-2">{tool.name}</h3>
-              <p className="text-sm text-cyan-300 text-center opacity-80">{tool.description}</p>
-            </div>
-          ))}
+        <div className="relative w-full">
+          <div className="flex animate-infinite-scroll">
+            {[...tools, ...tools, ...tools].map((tool, index) => (
+              <div
+                key={index}
+                className="shrink-0 group flex flex-col items-center justify-center p-6 bg-slate-800/30 rounded-xl 
+                  hover:bg-slate-700/40 transition-all duration-300 cursor-pointer 
+                  border border-cyan-900/20 hover:border-cyan-500/30 hover:-translate-y-1
+                  backdrop-blur-sm min-w-[200px] mx-4"
+              >
+                <tool.icon className={`text-5xl md:text-6xl ${tool.color} mb-4 group-hover:scale-110 transition-transform`} />
+                <h3 className="text-xl font-semibold text-cyan-100 mb-2">{tool.name}</h3>
+                <p className="text-sm text-cyan-300 text-center opacity-80">{tool.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
