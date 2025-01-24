@@ -155,7 +155,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="flex items-center">
+            <a href="/" className="flex items-left">
               <img
                 src="/assets/images/DataSense.png"
                 alt="DataSense Logo"
