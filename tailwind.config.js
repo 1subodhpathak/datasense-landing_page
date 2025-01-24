@@ -23,6 +23,15 @@ export default {
         'bubbles': '#E7FEFF',
         'cadet': '#5F9EA0',
       },
+      animation: {
+        'infinite-scroll': 'infinite-scroll 20s linear infinite',
+      },
+      keyframes: {
+        'infinite-scroll': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-100%)' },
+        }
+      }
     },
   },
   plugins: [],
