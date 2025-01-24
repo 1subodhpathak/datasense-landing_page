@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import type { HeroProps } from "../../types";
 
-const Hero = ({ videoUrl = "/assets/videos/bg_hero5.mp4", forwardDuration = 6 }: HeroProps) => {
+const Hero = ({ videoUrl = "/assets/videos/bg_hero7.mp4", forwardDuration = 7 }: HeroProps) => {
   const videoProps = {
     preload: "auto",
     playsInline: true,
     muted: true,
-    width: "1280", //optimal width
-    height: "720",  // optimal height
+    width: "1280", 
+    height: "720",
   };
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
   const videoRef = useRef<HTMLVideoElement>(null);
