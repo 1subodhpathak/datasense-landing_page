@@ -1,41 +1,41 @@
-import { BiGame, BiCode, BiQuestionMark } from 'react-icons/bi';
-import { AiOutlineThunderbolt } from 'react-icons/ai';
-import { BsFileEarmarkCheck, BsFileEarmarkText } from 'react-icons/bs';
+import { BiGame, BiCode, BiQuestionMark } from "react-icons/bi";
+import { AiOutlineThunderbolt } from "react-icons/ai";
+import { BsFileEarmarkCheck, BsFileEarmarkText } from "react-icons/bs";
 
 const services = [
   {
-    title: 'SQL Code Arena',
-    description: 'Practice SQL with real-world scenarios and challenges',
+    title: "SQL Code Arena",
+    description: "Practice SQL with real-world scenarios and challenges",
     icon: BiCode,
   },
   {
-    title: 'Live Quizzes',
-    description: 'Interactive quizzes to test your knowledge in real-time',
+    title: "Live Quizzes",
+    description: "Interactive quizzes to test your knowledge in real-time",
     icon: BiQuestionMark, // Updated icon
   },
   {
-    title: 'Custom Quiz Section',
-    description: '1000+ Questions covering all aspects of data analysis',
+    title: "Custom Quiz Section",
+    description: "1000+ Questions covering all aspects of data analysis",
     icon: AiOutlineThunderbolt,
   },
   {
-    title: 'Data Analyst Job Ready Game',
-    description: 'Gamified learning path to become job-ready',
+    title: "Data Analyst Job Ready Game",
+    description: "Gamified learning path to become job-ready",
     icon: BiGame,
   },
   {
-    title: 'SQL Game of Clash',
-    description: 'Compete with peers in SQL challenges',
+    title: "SQL Game of Clash",
+    description: "Compete with peers in SQL challenges",
     icon: AiOutlineThunderbolt,
   },
   {
-    title: 'ATS AI Resume Checker',
-    description: 'AI-powered resume analysis and optimization',
+    title: "ATS AI Resume Checker",
+    description: "AI-powered resume analysis and optimization",
     icon: BsFileEarmarkCheck,
   },
   {
-    title: 'JD and Resume Matching',
-    description: 'Match your resume with job descriptions for better targeting',
+    title: "JD and Resume Matching",
+    description: "Match your resume with job descriptions for better targeting",
     icon: BsFileEarmarkText,
   },
 ];
@@ -45,10 +45,11 @@ function Services() {
     <section className="py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-cyan-100 mb-4">
-          Our Services
+          Your Roadmap to Data Mastery
         </h2>
         <p className="text-center text-cyan-300 mb-16 max-w-2xl mx-auto">
-          Comprehensive tools and resources to accelerate your data analytics career
+          Comprehensive tools and resources to accelerate your data analytics
+          career
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

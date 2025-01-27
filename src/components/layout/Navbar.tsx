@@ -6,6 +6,8 @@ import {
   FaLinkedin, 
   FaInstagram, 
   FaTwitter,
+  FaWhatsapp,
+  FaFacebook,
   FaLaptop,
   FaVideo,
   FaCode,
@@ -59,7 +61,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
     setActiveDropdown(activeDropdown === title ? null : title);
   };
 
-  const NavLink = ({ item }: { item: any }) => {
+  const NavLink = ({ item }: { item: typeof navItems[number] }) => {
     if (item.items) {
       return (
         <div className="relative group">
@@ -106,7 +108,9 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                     { icon: FaLinkedin, title: "LinkedIn", path: "https://linkedin.com", desc: "Professional network" },
                     { icon: FaYoutube, title: "YouTube", path: "https://youtube.com", desc: "Video content" },
                     { icon: FaInstagram, title: "Instagram", path: "https://instagram.com", desc: "Visual updates" },
-                    { icon: FaTwitter, title: "Twitter", path: "https://twitter.com", desc: "Latest news" }
+                    { icon: FaTwitter, title: "Twitter", path: "https://twitter.com", desc: "Latest news" },
+                    { icon: FaWhatsapp, title: "WhatsApp", path: "https://whatsapp.com", desc: "Direct messaging" },
+                    { icon: FaFacebook, title: "Facebook", path: "https://facebook.com", desc: "Social updates" }
                   ].map((subItem) => (
                     <a
                       key={subItem.title}

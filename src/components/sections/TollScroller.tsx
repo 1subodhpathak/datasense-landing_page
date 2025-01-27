@@ -41,10 +41,10 @@ function TollScroller() {
     <section className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950 overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center text-cyan-100 mb-4">
-          Our Tech Stack
+          From Excel to AI: Your All-in-One Learning Hub
         </h2>
         <p className="text-center text-cyan-300 mb-16 max-w-2xl mx-auto">
-          Transforming complex data into actionable insights with industry-leading tools
+          Practical Skills, Real-World Scenarios, and Expert Guidance for Your Success
         </p>
         
         <div className="relative w-full">
