@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import type { HeroProps } from "../../types";
 
-const Hero = ({ videoUrl = "/assets/videos/bg_hero.mp4", forwardDuration = 6 }: HeroProps) => {
+const Hero = ({
+  videoUrl = "/assets/videos/bg_hero.mp4",
+  forwardDuration = 6,
+}: HeroProps) => {
   const videoProps = {
     preload: "auto",
     playsInline: true,
     muted: true,
-    width: "1280", 
+    width: "1280",
     height: "720",
   };
   const [isVideoLoaded, setIsVideoLoaded] = useState<boolean>(false);
@@ -22,21 +25,21 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero.mp4", forwardDuration = 6 }: 
 
     const handleReverse = (now: number) => {
       if (!videoRef.current) return;
-    
+
       const video = videoRef.current;
-      
+
       if (!lastTimeRef.current) {
         lastTimeRef.current = now;
       }
-    
+
       const deltaTime = now - lastTimeRef.current;
       lastTimeRef.current = now;
-    
+
       const decrementAmount = (deltaTime / 1000) * reverseSpeedRef.current;
       video.currentTime = Math.max(0, video.currentTime - decrementAmount);
-    
+
       // console.log("Reverse time:", video.currentTime);
-    
+
       if (video.currentTime > 0) {
         video.requestVideoFrameCallback(handleReverse); // Request next frame
       } else {
@@ -45,7 +48,7 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero.mp4", forwardDuration = 6 }: 
         video.play();
       }
     };
-    
+
     const handleTimeUpdate = () => {
       if (!video || isReversing) return;
       // console.log('Forward time:', video.currentTime);
@@ -60,8 +63,8 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero.mp4", forwardDuration = 6 }: 
     };
 
     // Event listeners
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    
+    video.addEventListener("timeupdate", handleTimeUpdate);
+
     // Reset video when isReversing changes
     if (isReversing) {
       handleReverse(0);
@@ -71,7 +74,7 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero.mp4", forwardDuration = 6 }: 
 
     // Cleanup
     return () => {
-      video.removeEventListener('timeupdate', handleTimeUpdate);
+      video.removeEventListener("timeupdate", handleTimeUpdate);
       if (frameRef.current) {
         cancelAnimationFrame(frameRef.current);
       }
@@ -101,26 +104,25 @@ const Hero = ({ videoUrl = "/assets/videos/bg_hero.mp4", forwardDuration = 6 }: 
           {/* Left Section - Content */}
           <div className="max-w-xl">
             <h1 className="text-blue-green text-5xl md:text-7xl font-bold leading-tight animate-fade-in">
-              Master
-              <span className="text-primary-cyan"> Data Skills </span>
-              Transform Your Future
+              Learn by Doing
+              <span className="text-primary-cyan"> Excel in Your Career </span>
             </h1>
             <p className="text-xl md:text-2xl text-bubbles opacity-90">
-              Unlock the power of data with industry-leading skills like
               <span className="text-primary-cyan font-semibold">
                 {" "}
-                Excel • Python • Power BI • SQL • Tableau
+                Live Quizzes • Learning Games • Mock Interviews • Career Support
+                to Empower Your Data Journey
               </span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <a href="">
                 <button className="bg-caribbean hover:bg-teal text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
-                  Login
+                Start Learning Today
                 </button>
               </a>
               <a href="">
                 <button className="border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300">
-                  Get Started
+                Join the Data Revolution
                 </button>
               </a>
             </div>

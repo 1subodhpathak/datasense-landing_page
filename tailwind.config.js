@@ -24,7 +24,7 @@ export default {
         'cadet': '#5F9EA0',
       },
       animation: {
-        'infinite-scroll': 'infinite-scroll 20s linear infinite',
+        'infinite-scroll': 'infinite-scroll 10s linear infinite',
       },
       keyframes: {
         'infinite-scroll': {
