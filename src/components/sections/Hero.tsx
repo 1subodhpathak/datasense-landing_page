@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import type { HeroProps } from "../../types";
+import { TypeAnimation } from "react-type-animation";
 
 const Hero = ({
   videoUrl = "/assets/videos/bg_hero.mp4",
@@ -103,9 +104,30 @@ const Hero = ({
         <div className="flex h-full items-center justify-between">
           {/* Left Section - Content */}
           <div className="max-w-xl">
-            <h1 className="text-blue-green text-5xl md:text-7xl font-bold leading-tight animate-fade-in">
-              Learn by Doing
-              <span className="text-primary-cyan"> Excel in Your Career </span>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-left">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+                Learn by{" "}
+                <TypeAnimation
+                  sequence={[
+                    "Doing",
+                    1000,
+                    "Practicing",
+                    1000,
+                    "Solving",
+                    1000,
+                    "Learning",
+                    1000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  repeat={Infinity}
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600"
+                />
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+                  Excel in Your Career
+                </span>
+              </span>
             </h1>
             <p className="text-xl md:text-2xl text-bubbles opacity-90">
               <span className="text-primary-cyan font-semibold">
@@ -117,12 +139,12 @@ const Hero = ({
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <a href="">
                 <button className="bg-caribbean hover:bg-teal text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 transform hover:scale-105">
-                Start Learning Today
+                  Start Learning Today
                 </button>
               </a>
               <a href="">
                 <button className="border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300">
-                Join the Data Revolution
+                  Join the Data Revolution
                 </button>
               </a>
             </div>
