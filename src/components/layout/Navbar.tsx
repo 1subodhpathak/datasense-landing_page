@@ -21,7 +21,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
 
   const navItems = [
     { id: 1, title: "Home", path: "/" },
-    { id: 2, title: "About Us", path: "/about-us" },
+    // { id: 2, title: "About Us", path: "/about-us" },
     { id: 3, title: "Pricing", path: "/pricing" },
     { 
       id: 4, 
@@ -43,7 +43,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
         { title: "Twitter", path: "https://twitter.com" }
       ]
     },
-    { id: 6, title: "Testimonials", path: "/testimonials" },
+    // { id: 6, title: "Testimonials", path: "/testimonials" },
     { id: 7, title: "Contact Us", path: "/contact" },
   ];
 
@@ -155,40 +155,47 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
         scrolled ? "bg-dark-cyan/90 backdrop-blur-sm" : "bg-transparent"
       }`}
     >
-      <div className="max-w-[1400px] mx-auto px-4">
+      <div className="container mx-auto">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <a href="/" className="flex items-left">
-              <img
-                src="/assets/images/DataSense.png"
-                alt="DataSense Logo"
-                className="h-8 sm:h-12 w-auto object-contain"
-              />
-            </a>
-          </div>
+          {/* Updated Logo Section */}
+          <a href="/" className="flex items-center max-w-[200px]">
+            <img
+              src="/assets/images/DataSense.png"
+              alt="DataSense Logo"
+              className="h-8 sm:h-12 w-full object-contain"
+            />
+          </a>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center justify-between flex-1 pl-10">
-            <div className="flex items-center space-x-1">
-              {navItems.map((item) => (
-                <NavLink key={item.id} item={item} />
-              ))}
+          <div className="hidden lg:flex items-center justify-between flex-1">
+            {/* Centered Nav Items */}
+            <div className="flex-1 flex items-center justify-center">
+              <div className="flex items-center space-x-4">
+                {navItems.map((item) => (
+                  <NavLink key={item.id} item={item} />
+                ))}
+              </div>
             </div>
 
-            {/* Auth Button */}
-            <div className="flex items-center ml-6 space-x-4">
+            {/* Auth Buttons - Right Aligned */}
+            <div className="flex items-center space-x-4">
               <a
                 href="/login"
                 className="whitespace-nowrap border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-2 px-5 rounded-lg transition-all duration-300"
               >
                 Login
               </a>
+              <a
+                href="/register"
+                className="whitespace-nowrap bg-primary-cyan hover:bg-primary-cyan/80 text-white font-bold py-2 px-5 rounded-lg transition-all duration-300"
+              >
+                Register
+              </a>
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center space-x-4">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-primary-cyan focus:outline-none"
@@ -268,6 +275,12 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                   className="block w-full text-center py-2 text-base font-medium text-white border-2 border-primary-cyan hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200"
                 >
                   Login
+                </a>
+                <a
+                  href="/login"
+                  className="block w-full text-center py-2 mt-2 text-base font-medium text-white border-2 border-primary-cyan hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200"
+                >
+                  Register
                 </a>
               </div>
             </div>
