@@ -1,11 +1,45 @@
 import { BsYoutube, BsLinkedin, BsInstagram, BsTwitter } from 'react-icons/bs';
+import { useEffect, useState, useRef } from 'react';
+import { useInView } from 'framer-motion';
+
+// Add the useCountAnimation hook from Rating.tsx
+const useCountAnimation = (end: number, duration: number = 1000, start: number = 0) => {
+  const [count, setCount] = useState(start);
+  const countRef = useRef<number>(start);
+  const timeRef = useRef<number>();
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const animate = () => {
+      const now = Date.now();
+      const progress = Math.min((now - startTime) / duration, 1);
+      
+      countRef.current = start + Math.floor((end - start) * progress);
+      setCount(countRef.current);
+
+      if (progress < 1) {
+        timeRef.current = requestAnimationFrame(animate);
+      }
+    };
+
+    timeRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (timeRef.current) {
+        cancelAnimationFrame(timeRef.current);
+      }
+    };
+  }, [end, duration, start]);
+
+  return count;
+};
 
 const socialMediaData = {
   stats: [
-    { count: '50K+', label: 'YouTube Subscribers' },
-    { count: '100K+', label: 'LinkedIn Followers' },
-    { count: '25K+', label: 'Instagram Followers' },
-    { count: '30K+', label: 'Twitter Followers' }
+    { count: '50K+', label: 'YouTube Subscribers', numericValue: 50 },
+    { count: '100K+', label: 'LinkedIn Followers', numericValue: 100 },
+    { count: '25K+', label: 'Instagram Followers', numericValue: 25 },
+    { count: '30K+', label: 'Twitter Followers', numericValue: 30 }
   ],
   featuredContent: [
     {
@@ -40,6 +74,28 @@ const socialMediaData = {
 };
 
 function Social() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  const AnimatedStat = ({ stat }: { stat: typeof socialMediaData.stats[0] }) => {
+    const count = useCountAnimation(
+      stat.numericValue,
+      1000,
+      0
+    );
+
+    return (
+      <div className="p-6 bg-slate-800/30 rounded-xl text-center border border-cyan-900/20 hover:border-cyan-500/30 transition-all duration-300 hover:-translate-y-1">
+        <div className="text-3xl font-bold text-cyan-100 mb-2">
+          {isInView ? `${count}K+` : '0K+'}
+        </div>
+        <div className="text-cyan-300 text-sm">
+          {stat.label}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950">
       <div className="container mx-auto px-4">
@@ -50,22 +106,10 @@ function Social() {
           Join our growing community of data enthusiasts across platforms
         </p>
 
-        {/* Social Media Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+        {/* Social Media Stats with Animation */}
+        <div ref={ref} className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
           {socialMediaData.stats.map((stat, index) => (
-            <div
-              key={index}
-              className="p-6 bg-slate-800/30 rounded-xl text-center
-                border border-cyan-900/20 hover:border-cyan-500/30
-                transition-all duration-300 hover:-translate-y-1"
-            >
-              <div className="text-3xl font-bold text-cyan-100 mb-2">
-                {stat.count}
-              </div>
-              <div className="text-cyan-300 text-sm">
-                {stat.label}
-              </div>
-            </div>
+            <AnimatedStat key={index} stat={stat} />
           ))}
         </div>
 
