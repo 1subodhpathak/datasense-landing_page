@@ -1,4 +1,5 @@
-import { BsLinkedin, BsYoutube, BsInstagram, BsTwitter } from 'react-icons/bs';
+import { BsLinkedin, BsYoutube, BsInstagram, BsTwitter } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,19 +13,32 @@ function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4 text-cyan-400">DataSense</h3>
             <p className="text-cyan-300/80 mb-4">
-              Empowering data enthusiasts with quality education and career guidance.
+              Empowering data enthusiasts with quality education and career
+              guidance.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-cyan-400 hover:text-cyan-300 transition-colors">
+              <a
+                href="#"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
                 <BsLinkedin size={20} />
               </a>
-              <a href="#" className="text-cyan-400 hover:text-cyan-300 transition-colors">
+              <a
+                href="#"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
                 <BsYoutube size={20} />
               </a>
-              <a href="#" className="text-cyan-400 hover:text-cyan-300 transition-colors">
+              <a
+                href="#"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
                 <BsInstagram size={20} />
               </a>
-              <a href="#" className="text-cyan-400 hover:text-cyan-300 transition-colors">
+              <a
+                href="#"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors"
+              >
                 <BsTwitter size={20} />
               </a>
             </div>
@@ -32,12 +46,33 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-bold mb-4 text-cyan-400">Quick Links</h3>
+            <h3 className="text-xl font-bold mb-4 text-cyan-400">
+              Quick Links
+            </h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">About Us</a></li>
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">Services</a></li>
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">Courses</a></li>
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">Contact</a></li>
+              <li>
+                <Link
+                  to="/about"
+                  className="text-cyan-300/80 hover:text-cyan-300"
+                >
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                  Services
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                  Courses
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -45,10 +80,26 @@ function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4 text-cyan-400">Services</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">SQL Training</a></li>
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">Mock Interviews</a></li>
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">Resume Review</a></li>
-              <li><a href="#" className="text-cyan-300/80 hover:text-cyan-300">Career Guidance</a></li>
+              <li>
+                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                  SQL Training
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                  Mock Interviews
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                  Resume Review
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                  Career Guidance
+                </a>
+              </li>
             </ul>
           </div>
 
