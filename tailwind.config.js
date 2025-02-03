@@ -24,12 +24,17 @@ export default {
         'cadet': '#5F9EA0',
       },
       animation: {
-        'infinite-scroll': 'infinite-scroll 10s linear infinite',
+        'scroll-rtl': 'scroll-rtl 12s linear infinite',
+        'scroll-ltr': 'scroll-ltr 12s linear infinite',
       },
       keyframes: {
-        'infinite-scroll': {
+        'scroll-rtl': {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-100%)' }
+          '100%': { transform: 'translateX(calc(-100% - 4rem))' }
+        },
+        'scroll-ltr': {
+          '0%': { transform: 'translateX(calc(-100% - 4rem))' },
+          '100%': { transform: 'translateX(0)' }
         }
       }
     },
