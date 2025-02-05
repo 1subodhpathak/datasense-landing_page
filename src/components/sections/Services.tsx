@@ -51,7 +51,7 @@ const services: ServiceItem[] = [
     title: "JD and Resume Matching",
     description: "Match your resume with job descriptions for better targeting",
     icon: BsFileEarmarkText,
-    image: "/assets/images/jd.png",
+    image: "/assets/images/job-desc.png",
   },
 ];
 
@@ -129,7 +129,7 @@ const Services: React.FC = () => {
                       Learn More
                     </button>
                   </div>
-                  <div className="h-48 relative">
+                  <div className="min-h-[200px] md:min-h-[300px] relative">
                     <img
                       src={service.image}
                       alt={service.title}
