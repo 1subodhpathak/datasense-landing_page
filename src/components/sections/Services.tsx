@@ -15,43 +15,43 @@ const services: ServiceItem[] = [
     title: "SQL Code Arena",
     description: "Practice SQL with real-world scenarios and challenges",
     icon: BiCode,
-    image: "/assets/images/sql-code-arena.png", 
+    image: "/assets/gifs/sql.gif", 
   },
   {
     title: "Live Quizzes",
     description: "Interactive quizzes to test your knowledge in real-time",
     icon: BiQuestionMark,
-    image: "/assets/images/live-quizes.png", 
+    image: "/assets/gifs/live-quiz.gif", 
   },
   {
     title: "Custom Quiz Section",
     description: "1000+ Questions covering all aspects of data analysis",
     icon: AiOutlineThunderbolt,
-    image: "/assets/images/custom-quizes.png", 
+    image: "/assets/gifs/custom-quiz.gif", 
   },
   {
     title: "Data Analyst Job Ready Game",
     description: "Gamified learning path to become job-ready",
     icon: BiGame,
-    image: "/assets/images/job-ready.png", 
+    image: "/assets/gifs/data-analyst.gif", 
   },
   {
     title: "SQL Game of Clash",
     description: "Compete with peers in SQL challenges",
     icon: AiOutlineThunderbolt,
-    image: "/assets/images/sql-game.png", 
+    image: "/assets/gifs/game.gif", 
   },
   {
     title: "ATS AI Resume Checker",
     description: "AI-powered resume analysis and optimization",
     icon: BsFileEarmarkCheck,
-    image: "/assets/images/ats.png",
+    image: "/assets/gifs/ats.gif",
   },
   {
     title: "JD and Resume Matching",
     description: "Match your resume with job descriptions for better targeting",
     icon: BsFileEarmarkText,
-    image: "/assets/images/job-desc.png",
+    image: "/assets/gifs/jdd.gif",
   },
 ];
 
@@ -91,12 +91,14 @@ const Services: React.FC = () => {
                   Learn More
                 </button>
               </div>
-              <div className="md:w-1/2 relative h-64 md:h-auto">
-                <img
-                  src={services[0].image}
-                  alt={services[0].title}
-                  className="w-full h-full object-cover"
-                />
+              <div className="md:w-1/2 relative h-40 md:h-72 flex items-center justify-center p-4">
+                <div className="w-full h-full max-w-[400px] max-h-[260px] relative mx-auto">
+                  <img
+                    src={services[0].image}
+                    alt={services[0].title}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -129,12 +131,14 @@ const Services: React.FC = () => {
                       Learn More
                     </button>
                   </div>
-                  <div className="min-h-[200px] md:min-h-[300px] relative">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="h-40 md:h-56 relative flex items-center justify-center p-4">
+                    <div className="w-full h-full max-w-[280px] max-h-[200px] relative mx-auto">
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                   </div>
                 </div>
               );

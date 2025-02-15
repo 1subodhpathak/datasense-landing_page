@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { BiUser, BiEnvelope, BiPhone, BiMessageDetail } from 'react-icons/bi';
+import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 function Contact() {
+  const [loading, setLoading] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationData, setNotificationData] = useState({
+    type: '',
+    message: ''
+  });
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -9,10 +18,52 @@ function Contact() {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  emailjs.init("9AD_u6eDVlXMzkW8E");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    setLoading(true);
+    setShowNotification(false);
+
+    try {
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        from_phone: formData.phone,
+        message: formData.message,
+      };
+
+      const response = await emailjs.send(
+        "service_7kdv4qj",
+        "template_uhpmnlr",
+        templateParams
+      );
+
+      if (response.status === 200) {
+        setNotificationData({
+          type: 'success',
+          message: 'Thank you for your message! We will get back to you soon.'
+        });
+        // Reset form
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: ''
+        });
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setNotificationData({
+        type: 'error',
+        message: 'Failed to send message. Please try again.'
+      });
+    } finally {
+      setLoading(false);
+      setShowNotification(true);
+      // Auto-hide notification after 5 seconds
+      setTimeout(() => setShowNotification(false), 5000);
+    }
   };
 
   return (
@@ -26,6 +77,21 @@ function Contact() {
         </p>
 
         <div className="max-w-3xl mx-auto">
+          {showNotification && (
+            <div className={`mb-6 p-4 rounded-lg flex items-center space-x-2 ${
+              notificationData.type === 'success' 
+                ? 'bg-cyan-900/50 border border-cyan-500/50 text-cyan-100'
+                : 'bg-red-900/50 border border-red-500/50 text-red-100'
+            }`}>
+              {notificationData.type === 'success' ? (
+                <CheckCircle2 className="h-5 w-5 text-cyan-400" />
+              ) : (
+                <AlertCircle className="h-5 w-5 text-red-400" />
+              )}
+              <p>{notificationData.message}</p>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name Input */}
@@ -95,11 +161,21 @@ function Contact() {
             <div className="text-center">
               <button
                 type="submit"
+                disabled={loading}
                 className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold
                   py-3 px-8 rounded-lg transition-all duration-300
-                  transform hover:-translate-y-1 hover:shadow-lg"
+                  transform hover:-translate-y-1 hover:shadow-lg
+                  disabled:opacity-50 disabled:cursor-not-allowed
+                  flex items-center justify-center space-x-2 mx-auto"
               >
-                Send Message
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin h-5 w-5" />
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <span>Send Message</span>
+                )}
               </button>
             </div>
           </form>

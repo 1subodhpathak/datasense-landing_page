@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import type { NavbarProps } from "../../types";
-import { BsChevronDown } from 'react-icons/bs';
-import { 
-  FaYoutube, 
-  FaLinkedin, 
-  FaInstagram, 
+import { BsChevronDown } from "react-icons/bs";
+import {
+  FaYoutube,
+  FaLinkedin,
+  FaInstagram,
   FaTwitter,
   FaWhatsapp,
   FaFacebook,
   FaLaptop,
   FaVideo,
   FaCode,
-  FaTrophy 
-} from 'react-icons/fa';
+  FaTrophy,
+} from "react-icons/fa";
 
 const Navbar = ({ isScrolled = false }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -23,15 +23,15 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
     { id: 1, title: "Home", path: "/" },
     // { id: 2, title: "About Us", path: "/about-us" },
     { id: 3, title: "Pricing", path: "/pricing" },
-    { 
-      id: 4, 
+    {
+      id: 4,
       title: "Upcoming Events",
       items: [
         { title: "Live Workshops", path: "/events/workshops" },
         { title: "Webinars", path: "/events/webinars" },
         { title: "Bootcamps", path: "/events/bootcamps" },
-        { title: "Hackathons", path: "/events/hackathons" }
-      ]
+        { title: "Hackathons", path: "/events/hackathons" },
+      ],
     },
     {
       id: 5,
@@ -40,8 +40,8 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
         { title: "LinkedIn", path: "https://linkedin.com" },
         { title: "YouTube", path: "https://youtube.com" },
         { title: "Instagram", path: "https://instagram.com" },
-        { title: "Twitter", path: "https://twitter.com" }
-      ]
+        { title: "Twitter", path: "https://twitter.com" },
+      ],
     },
     // { id: 6, title: "Testimonials", path: "/testimonials" },
     { id: 7, title: "Contact Us", path: "/contact" },
@@ -61,7 +61,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
     setActiveDropdown(activeDropdown === title ? null : title);
   };
 
-  const NavLink = ({ item }: { item: typeof navItems[number] }) => {
+  const NavLink = ({ item }: { item: (typeof navItems)[number] }) => {
     if (item.items) {
       return (
         <div className="relative group">
@@ -73,17 +73,37 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
             <BsChevronDown className="transition-transform duration-300 group-hover:rotate-180" />
             <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary-cyan transform scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left"></span>
           </button>
-          
+
           {/* Enhanced Desktop Dropdown */}
           <div className="absolute left-0 mt-2 w-64 bg-dark-cyan/95 backdrop-blur-sm rounded-xl shadow-2xl transform opacity-0 scale-95 invisible group-hover:opacity-100 group-hover:scale-100 group-hover:visible transition-all duration-300 border border-primary-cyan/20">
             <div className="p-2">
               {item.title === "Upcoming Events" ? (
                 <>
                   {[
-                    { icon: FaLaptop, title: "Live Workshops", path: "/events/workshops", desc: "Interactive hands-on sessions" },
-                    { icon: FaVideo, title: "Webinars", path: "/events/webinars", desc: "Online learning events" },
-                    { icon: FaCode, title: "Bootcamps", path: "/events/bootcamps", desc: "Intensive training programs" },
-                    { icon: FaTrophy, title: "Hackathons", path: "/events/hackathons", desc: "Competitive coding events" }
+                    {
+                      icon: FaLaptop,
+                      title: "Live Workshops",
+                      path: "/events/workshops",
+                      desc: "Interactive hands-on sessions",
+                    },
+                    {
+                      icon: FaVideo,
+                      title: "Webinars",
+                      path: "/events/webinars",
+                      desc: "Online learning events",
+                    },
+                    {
+                      icon: FaCode,
+                      title: "Bootcamps",
+                      path: "/events/bootcamps",
+                      desc: "Intensive training programs",
+                    },
+                    {
+                      icon: FaTrophy,
+                      title: "Hackathons",
+                      path: "/events/hackathons",
+                      desc: "Competitive coding events",
+                    },
                   ].map((subItem) => (
                     <a
                       key={subItem.title}
@@ -105,12 +125,42 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
               ) : (
                 <>
                   {[
-                    { icon: FaLinkedin, title: "LinkedIn", path: "https://linkedin.com", desc: "Professional network" },
-                    { icon: FaYoutube, title: "YouTube", path: "https://youtube.com", desc: "Video content" },
-                    { icon: FaInstagram, title: "Instagram", path: "https://instagram.com", desc: "Visual updates" },
-                    { icon: FaTwitter, title: "Twitter", path: "https://twitter.com", desc: "Latest news" },
-                    { icon: FaWhatsapp, title: "WhatsApp", path: "https://whatsapp.com", desc: "Direct messaging" },
-                    { icon: FaFacebook, title: "Facebook", path: "https://facebook.com", desc: "Social updates" }
+                    {
+                      icon: FaLinkedin,
+                      title: "LinkedIn",
+                      path: "https://www.linkedin.com/company/data-sense-lms/",
+                      desc: "Professional network",
+                    },
+                    {
+                      icon: FaYoutube,
+                      title: "YouTube",
+                      path: "https://www.youtube.com/@Senseofdata",
+                      desc: "Video content",
+                    },
+                    {
+                      icon: FaInstagram,
+                      title: "Instagram",
+                      path: "https://www.instagram.com/senseofdata/",
+                      desc: "Visual updates",
+                    },
+                    {
+                      icon: FaTwitter,
+                      title: "Twitter",
+                      path: "https://twitter.com",
+                      desc: "Latest news",
+                    },
+                    {
+                      icon: FaWhatsapp,
+                      title: "WhatsApp",
+                      path: "https://chat.whatsapp.com/DYgDxOA8nBvJp4tPz5J6ox",
+                      desc: "Direct messaging",
+                    },
+                    {
+                      icon: FaFacebook,
+                      title: "Facebook",
+                      path: "https://www.facebook.com/people/Data-Sense/61550202884240/?mibextid=LQQJ4d",
+                      desc: "Social updates",
+                    },
                   ].map((subItem) => (
                     <a
                       key={subItem.title}
@@ -187,7 +237,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
               </a>
               <a
                 href="/register"
-                className="whitespace-nowrap bg-primary-cyan hover:bg-primary-cyan/80 text-white font-bold py-2 px-5 rounded-lg transition-all duration-300"
+                className="bg-caribbean hover:bg-teal text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105"
               >
                 Register
               </a>
@@ -240,9 +290,11 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                         className="w-full flex items-center justify-between px-3 py-2 text-base font-medium text-white hover:text-primary-cyan"
                       >
                         {item.title}
-                        <BsChevronDown className={`transition-transform duration-200 ${
-                          activeDropdown === item.title ? 'rotate-180' : ''
-                        }`} />
+                        <BsChevronDown
+                          className={`transition-transform duration-200 ${
+                            activeDropdown === item.title ? "rotate-180" : ""
+                          }`}
+                        />
                       </button>
                       {activeDropdown === item.title && (
                         <div className="pl-4 space-y-1">
