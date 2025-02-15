@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { BiUser, BiEnvelope, BiPhone, BiMessageDetail } from 'react-icons/bi';
 import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import emailjs from '@emailjs/browser';
