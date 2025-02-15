@@ -105,7 +105,7 @@ const Hero = ({
           {/* Left Section - Content */}
           <div className="max-w-xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-left">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
                 Learn by{" "}
                 <TypeAnimation
                   sequence={[
@@ -121,10 +121,10 @@ const Hero = ({
                   wrapper="span"
                   speed={50}
                   repeat={Infinity}
-                  className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600"
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white"
                 />
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
                   Excel in Your Career
                 </span>
               </span>

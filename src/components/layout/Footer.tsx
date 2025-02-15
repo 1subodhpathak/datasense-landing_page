@@ -18,19 +18,19 @@ function Footer() {
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
+                href="https://www.linkedin.com/company/data-sense-lms/"
                 className="text-cyan-400 hover:text-cyan-300 transition-colors"
               >
                 <BsLinkedin size={20} />
               </a>
               <a
-                href="#"
+                href="https://www.youtube.com/@Senseofdata"
                 className="text-cyan-400 hover:text-cyan-300 transition-colors"
               >
                 <BsYoutube size={20} />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/senseofdata/"
                 className="text-cyan-400 hover:text-cyan-300 transition-colors"
               >
                 <BsInstagram size={20} />
