@@ -2,7 +2,14 @@ import { useState } from 'react';
 import { BiUser, BiEnvelope, BiPhone, BiMessageDetail } from 'react-icons/bi';
 import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import emailjs from '@emailjs/browser';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+// import { Alert, AlertDescription } from '@/components/ui/alert';
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+}
 
 function Contact() {
   const [loading, setLoading] = useState(false);
@@ -11,7 +18,7 @@ function Contact() {
     type: '',
     message: ''
   });
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     phone: '',
@@ -20,7 +27,7 @@ function Contact() {
 
   emailjs.init("9AD_u6eDVlXMzkW8E");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setShowNotification(false);
