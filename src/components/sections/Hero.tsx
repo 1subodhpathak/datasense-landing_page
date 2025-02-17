@@ -104,18 +104,18 @@ const Hero = ({
         <div className="flex h-full items-center justify-between">
           {/* Left Section - Content */}
           <div className="max-w-xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-left">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-left">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
                 Learn by{" "}
                 <TypeAnimation
                   sequence={[
-                    "Doing",
+                    "Connecting",
+                    1000,
+                    "Interacting",
                     1000,
                     "Practicing",
                     1000,
                     "Solving",
-                    1000,
-                    "Learning",
                     1000,
                   ]}
                   wrapper="span"
@@ -125,15 +125,14 @@ const Hero = ({
                 />
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
-                  Excel in Your Career
+                Accelerate Your Career with Practical, Hands-On Learning
                 </span>
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-bubbles opacity-90">
               <span className="text-primary-cyan font-semibold">
                 {" "}
-                Live Quizzes • Learning Games • Mock Interviews • Career Support
-                to Empower Your Data Journey
+                Engaging Live Quizzes • Interactive Learning Games • Mock Interviews • Personalized Career Support
               </span>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">

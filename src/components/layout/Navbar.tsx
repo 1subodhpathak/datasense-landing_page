@@ -5,13 +5,14 @@ import {
   FaYoutube,
   FaLinkedin,
   FaInstagram,
-  FaTwitter,
   FaWhatsapp,
   FaFacebook,
   FaLaptop,
   FaVideo,
   FaCode,
   FaTrophy,
+  FaDiscord,
+  FaTelegram,
 } from "react-icons/fa";
 
 const Navbar = ({ isScrolled = false }: NavbarProps) => {
@@ -144,10 +145,16 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                       desc: "Visual updates",
                     },
                     {
-                      icon: FaTwitter,
-                      title: "Twitter",
-                      path: "https://twitter.com",
-                      desc: "Latest news",
+                      icon: FaDiscord,
+                      title: "Discord",
+                      path: "https://discord.gg/your-invite-link", // Replace with your Discord invite link
+                      desc: "Community chat",
+                    },
+                    {
+                      icon: FaTelegram,
+                      title: "Telegram",
+                      path: "https://t.me/your-telegram-link", // Replace with your Telegram link
+                      desc: "News and updates",
                     },
                     {
                       icon: FaWhatsapp,
