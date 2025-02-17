@@ -239,7 +239,7 @@ const Services: React.FC = () => {
           viewport={{ once: true }}
           className="text-4xl font-bold text-center text-cyan-100 mb-4"
         >
-          Why Choose DataSense
+          WHY CHOOSE DATASENSE
         </motion.h2>
         
         <motion.p 
@@ -249,7 +249,7 @@ const Services: React.FC = () => {
           transition={{ delay: 0.2 }}
           className="text-center text-cyan-300 mb-16 max-w-2xl mx-auto"
         >
-          Comprehensive tools and resources to accelerate your data analytics career
+          THE SMARTEST PATH TO KICKSTART OR ELEVATE YOUR DATA CAREER
         </motion.p>
 
         <div className="flex flex-col gap-12">

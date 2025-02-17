@@ -94,12 +94,12 @@ function ToolScroller() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           {/* Left side - Text */}
           <div>
-            <h2 className="text-4xl font-bold text-gray-800 leading-tight">
+            <h2 className="text-4xl font-bold text-caribbean leading-tight">
               From Excel to AI:<br />
               Your All-in-One<br />
               Learning Hub
             </h2>
-            <p className="text-lg text-gray-600 mt-4">
+            <p className="text-lg text-teal mt-4">
               Practical Skills, Real-World Scenarios, and<br />
               Expert Guidance for Your Success
             </p>
@@ -115,7 +115,7 @@ function ToolScroller() {
                     key={`row1-${index}`}
                     className="shrink-0 flex items-center justify-center"
                   >
-                    <tool.icon className="w-12 h-12 text-gray-800" />
+                    <tool.icon className="w-12 h-12 text-caribbean" />
                   </div>
                 ))}
               </div>
@@ -129,7 +129,7 @@ function ToolScroller() {
                     key={`row2-${index}`}
                     className="shrink-0 flex items-center justify-center"
                   >
-                    <tool.icon className="w-12 h-12 text-gray-800" />
+                    <tool.icon className="w-12 h-12 text-caribbean" />
                   </div>
                 ))}
               </div>
