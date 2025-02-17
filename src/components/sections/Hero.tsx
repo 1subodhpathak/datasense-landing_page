@@ -124,7 +124,7 @@ const Hero = ({
                   className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white"
                 />
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
+                <span className="text-3xl md:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
                 Accelerate Your Career with Practical, Hands-On Learning
                 </span>
               </span>
