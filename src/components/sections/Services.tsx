@@ -164,8 +164,17 @@ const Services: React.FC = () => {
                 border border-cyan-500/30 hover:border-cyan-500/50
                 rounded-lg text-cyan-300 text-lg font-semibold transition-all duration-300
                 hover:-translate-y-0.5 w-fit"
+              onClick={() => {
+                if (service.title === "Get JobReady Roadmap") {
+                  window.open("https://adarshm500.itch.io/dataanalystadventure", "_blank");
+                } else if (service.title === "Game of Clash") {
+                  window.open("https://battleground.datasenseai.com/game-modes", "_blank");
+                }
+              }}
             >
-              Learn More
+              {service.title === "Get JobReady Roadmap" ? "Play Now" : 
+               service.title === "Game of Clash" ? "Challenge Now" : 
+               "Learn More"}
             </motion.button>
           </div>
 
@@ -260,8 +269,17 @@ const Services: React.FC = () => {
               border border-cyan-500/30 hover:border-cyan-500/50
               rounded-lg text-cyan-300 text-sm transition-all duration-300
               hover:-translate-y-0.5"
+            onClick={() => {
+              if (service.title === "Get JobReady Roadmap") {
+                window.open("https://adarshm500.itch.io/dataanalystadventure", "_blank");
+              } else if (service.title === "Game of Clash") {
+                window.open("https://battleground.datasenseai.com/game-modes", "_blank");
+              }
+            }}
           >
-            Learn More
+            {service.title === "Get JobReady Roadmap" ? "Play Now" : 
+             service.title === "Game of Clash" ? "Challenge Now" : 
+             "Learn More"}
           </motion.button>
         </div>
       </motion.div>
