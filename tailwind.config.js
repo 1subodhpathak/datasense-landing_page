@@ -24,17 +24,22 @@ export default {
         'cadet': '#5F9EA0',
       },
       animation: {
-        'scroll-rtl': 'scroll-rtl 12s linear infinite',
-        'scroll-ltr': 'scroll-ltr 12s linear infinite',
+        'scroll-rtl': 'scroll-rtl 10s linear infinite',
+        'scroll-ltr': 'scroll-ltr 10s linear infinite',
+        'scroll-rtl-text': 'scroll-rtl-text 30s linear infinite',
       },
       keyframes: {
         'scroll-rtl': {
           '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(calc(-100% - 4rem))' }
+          '100%': { transform: 'translateX(-100%)' }
         },
         'scroll-ltr': {
-          '0%': { transform: 'translateX(calc(-100% - 4rem))' },
+          '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0)' }
+        },
+        'scroll-rtl-text': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
         }
       }
     },

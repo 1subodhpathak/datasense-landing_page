@@ -3,6 +3,8 @@ import { AiOutlineThunderbolt } from "react-icons/ai";
 import { BsFileEarmarkCheck, BsFileEarmarkText } from "react-icons/bs";
 import { IconType } from "react-icons";
 import { motion } from "framer-motion";
+import CeoMessage from "./CeoMessage";
+import ScrollingText from "./ScrollingText";
 
 interface ServiceItem {
   title: string;
@@ -13,46 +15,46 @@ interface ServiceItem {
 
 const services: ServiceItem[] = [
   {
-    title: "SQL Code Arena",
-    description: "Practice SQL with real-world scenarios and challenges",
+    title: "Interactive Coding Playground",
+    description: "Practice, experiment, and build real-world skills with DataSense's seamless online coderpad. Write, test, and debug directly in your browser — no setup required. Real world schenarios to sharpen your skills",
     icon: BiCode,
-    image: "/assets/images/tools/SQL Coding Arena.png", 
+    image: "/assets/images/tools/SQL Coding Arena.png",
   },
   {
     title: "Live Quizzes",
-    description: "Interactive quizzes to test your knowledge in real-time",
+    description: "Join real-time quizzes, challenge your knowledge, and compete with peers in an engaging, interactive format",
     icon: BiQuestionMark,
-    image: "/assets/gifs/Live Quiz.gif", 
+    image: "/assets/gifs/Live Quiz.gif",
   },
   {
-    title: "Custom Quiz Section",
-    description: "1000+ Questions covering all aspects of data analysis",
+    title: "Custom Quiz Creation",
+    description: "Design personalized quizzes tailored to your learning needs — perfect for practice, revision, and skill assessment with our 2000+ Questions Library",
     icon: AiOutlineThunderbolt,
-    image: "/assets/gifs/Create Quiz.gif", 
+    image: "/assets/gifs/Create Quiz.gif",
   },
   {
-    title: "Mock Quiz",
-    description: "Simulate real interview scenarios with timed assessments",
+    title: "Mock Quizzes",
+    description: "Simulate real exam conditions with our mock quizzes with time assigments. Test your knowledge, track your progress, and build confidence",
     icon: BiQuestionMark,
-    image: "/assets/gifs/Mock Quiz.gif", 
+    image: "/assets/gifs/Mock Quiz.gif",
   },
   {
-    title: "Data Analyst Job Ready Game",
-    description: "Gamified learning path to become job-ready",
+    title: "Get JobReady Roadmap",
+    description: "The Data Analytics Job Ready Roadmap turns career preparation into an interactive adventure, guiding you step-by-step through the essential skills and concepts needed for a successful data analytics career.",
     icon: BiGame,
-    image: "/assets/images/tools/data-analyst.jpg", 
+    image: "/assets/images/tools/data-analyst.jpg",
   },
+  // {
+  //   title: "Mini Learning Games",
+  //   description: "Fun, bite-sized games to reinforce data concepts",
+  //   icon: BiGame,
+  //   image: "/assets/gifs/Mini Games.gif",
+  // },
   {
-    title: "Mini Learning Games",
-    description: "Fun, bite-sized games to reinforce data concepts",
-    icon: BiGame,
-    image: "/assets/gifs/Mini Games.gif", 
-  },
-  {
-    title: "SQL Game of Clash",
-    description: "Compete with peers in SQL challenges",
+    title: "Game of Clash",
+    description: "The Game of Clash is an innovative, competitive learning game designed to test and improve your SQL and Python skills through head-to-head challenges with friends and peers.",
     icon: AiOutlineThunderbolt,
-    image: "/assets/gifs/SQL Game of Clash.gif", 
+    image: "/assets/images/tools/LeaderBoard.png",
   },
   {
     title: "ATS AI Resume Checker",
@@ -68,8 +70,44 @@ const services: ServiceItem[] = [
   },
 ];
 
+const SectionHeader: React.FC<{
+  title: string;
+  subtitle: string;
+  description: string;
+}> = ({ title, subtitle, description }) => (
+  <>
+    <motion.h2 
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="text-4xl font-bold text-center text-cyan-100 mb-4"
+    >
+      {title}
+    </motion.h2>
+    
+    <motion.p 
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2 }}
+      className="text-2xl text-center text-cyan-300 mb-16 mx-auto"
+    >
+      {subtitle}
+    </motion.p>
+
+    <motion.p 
+      initial={{ opacity: 0, y: -20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.3 }}
+      className="text-lg text-center text-cyan-100 mb-16 mx-auto max-w-3xl"
+    >
+      {description}
+    </motion.p>
+  </>
+);
+
 const Services: React.FC = () => {
-  // Enhanced helper function to render full width card
   const renderFullWidthCard = (service: ServiceItem, reverse: boolean = false) => {
     const ServiceIcon = service.icon;
     return (
@@ -233,24 +271,12 @@ const Services: React.FC = () => {
   return (
     <section className="py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900">
       <div className="container mx-auto px-4">
-        <motion.h2 
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-4xl font-bold text-center text-cyan-100 mb-4"
-        >
-          WHY CHOOSE DATASENSE
-        </motion.h2>
-        
-        <motion.p 
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="text-center text-cyan-300 mb-16 max-w-2xl mx-auto"
-        >
-          THE SMARTEST PATH TO KICKSTART OR ELEVATE YOUR DATA CAREER
-        </motion.p>
+        {/* Main Section Header */}
+        <SectionHeader 
+          title="WHY CHOOSE DATASENSE"
+          subtitle="THE SMARTEST PATH TO KICKSTART OR ELEVATE YOUR DATA CAREER"
+          description="At DataSense, we equip aspiring and seasoned professionals with practical, in-demand Data & AI skills. Join thousands of learners who've transformed their careers — and this is just the beginning."
+        />
 
         <div className="flex flex-col gap-12">
           {/* SQL Code Arena - Full Width */}
@@ -261,17 +287,44 @@ const Services: React.FC = () => {
             {services.slice(1, 4).map(renderGridCard)}
           </div>
 
+          {/* CEO Message */}
+          <CeoMessage />
+          
+          {/* Gaming Section Header */}
+          <div className="mt-20">
+            <SectionHeader 
+              title="DATASENSE GAMING ARENA"
+              subtitle="LEARN, PLAY, AND COMPETE IN THE WORLD OF DATA"
+              description="The DataSense Gaming Arena transforms learning into an engaging and competitive experience. It features interactive games that challenge your data skills, helping you master SQL, Python, and essential analytics concepts while having fun."
+            />
+          </div>
+
           {/* Data Analyst Game - Full Width */}
           {renderFullWidthCard(services[4], true)}
 
           {/* Games Section - 2 cards per row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {services.slice(5, 7).map(renderGridCard)}
+          </div> */}
+
+          {/* Game of Clash - Full Width */}
+          {renderFullWidthCard(services[5])}
+
+          {/* Scrolling Text */}
+          <ScrollingText />
+
+          {/* AI Section Header */}
+          <div className="mt-20">
+            <SectionHeader 
+              title="AI INTEGRATED SERVICES"
+              subtitle="STAY SHARP WITH THE LATEST GENAI SERVICES"
+              description="The AI Integrated Services section showcases cutting-edge tools designed to simplify and enhance your job search and career development. These services leverage the power of AI to provide actionable insights, optimize resumes, and align candidates with the right opportunities."
+            />
           </div>
 
           {/* Resume Section - 2 cards per row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.slice(7).map(renderGridCard)}
+            {services.slice(6).map(renderGridCard)}
           </div>
         </div>
       </div>
