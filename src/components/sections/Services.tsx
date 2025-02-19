@@ -70,27 +70,59 @@ const services: ServiceItem[] = [
   },
 ];
 
-const SectionHeader: React.FC<{
+interface SectionHeaderProps {
   title: string;
   subtitle: string;
   description: string;
-}> = ({ title, subtitle, description }) => (
+  isMain?: boolean;
+}
+
+const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, description, isMain = false }) => (
   <>
-    <motion.h2 
-      initial={{ opacity: 0, y: -20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      className="text-4xl font-bold text-center text-cyan-100 mb-4"
-    >
-      {title}
-    </motion.h2>
+    {isMain ? (
+      // Main heading with special styling
+      <div className="relative mb-8">
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: '100%' }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent absolute -top-4 left-0"
+        />
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-5xl md:text-6xl font-bold text-center bg-gradient-to-r from-cyan-300 via-cyan-100 to-cyan-300 bg-clip-text text-transparent mb-6"
+        >
+          {title}
+        </motion.h1>
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: '100%' }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="h-[1px] bg-gradient-to-r from-transparent via-cyan-500 to-transparent absolute -bottom-4 left-0"
+        />
+      </div>
+    ) : (
+      // Regular section heading (unchanged)
+      <motion.h2 
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-4xl font-bold text-center text-cyan-100 mb-4"
+      >
+        {title}
+      </motion.h2>
+    )}
     
     <motion.p 
       initial={{ opacity: 0, y: -20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.2 }}
-      className="text-2xl text-center text-cyan-300 mb-16 mx-auto"
+      className={`text-2xl text-center text-cyan-300 mb-4 mx-auto ${isMain ? 'md:text-3xl' : ''}`}
     >
       {subtitle}
     </motion.p>
@@ -100,7 +132,7 @@ const SectionHeader: React.FC<{
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: 0.3 }}
-      className="text-lg text-center text-cyan-100 mb-16 mx-auto max-w-3xl"
+      className={`text-lg text-center text-cyan-100 mb-16 mx-auto max-w-3xl ${isMain ? 'md:text-xl' : ''}`}
     >
       {description}
     </motion.p>
@@ -166,7 +198,7 @@ const Services: React.FC = () => {
                 hover:-translate-y-0.5 w-fit"
               onClick={() => {
                 if (service.title === "Get JobReady Roadmap") {
-                  window.open("https://adarshm500.itch.io/dataanalystadventure", "_blank");
+                  window.open("http://localhost:5173/unity-games/index.html", "_blank");
                 } else if (service.title === "Game of Clash") {
                   window.open("https://battleground.datasenseai.com/game-modes", "_blank");
                 }
@@ -271,7 +303,7 @@ const Services: React.FC = () => {
               hover:-translate-y-0.5"
             onClick={() => {
               if (service.title === "Get JobReady Roadmap") {
-                window.open("https://adarshm500.itch.io/dataanalystadventure", "_blank");
+                window.open("http://localhost:5173/unity-games/index.html", "_blank");
               } else if (service.title === "Game of Clash") {
                 window.open("https://battleground.datasenseai.com/game-modes", "_blank");
               }
@@ -294,6 +326,7 @@ const Services: React.FC = () => {
           title="WHY CHOOSE DATASENSE"
           subtitle="THE SMARTEST PATH TO KICKSTART OR ELEVATE YOUR DATA CAREER"
           description="At DataSense, we equip aspiring and seasoned professionals with practical, in-demand Data & AI skills. Join thousands of learners who've transformed their careers — and this is just the beginning."
+          isMain={true}
         />
 
         <div className="flex flex-col gap-12">
@@ -309,16 +342,16 @@ const Services: React.FC = () => {
           <CeoMessage />
           
           {/* Gaming Section Header */}
-          <div className="mt-20">
+          <div className="mt-0">
             <SectionHeader 
-              title="DATASENSE GAMING ARENA"
+              title="DataSense Gaming Arena"
               subtitle="LEARN, PLAY, AND COMPETE IN THE WORLD OF DATA"
               description="The DataSense Gaming Arena transforms learning into an engaging and competitive experience. It features interactive games that challenge your data skills, helping you master SQL, Python, and essential analytics concepts while having fun."
             />
           </div>
 
           {/* Data Analyst Game - Full Width */}
-          {renderFullWidthCard(services[4], true)}
+          {renderFullWidthCard(services[5], true)}
 
           {/* Games Section - 2 cards per row */}
           {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -326,13 +359,13 @@ const Services: React.FC = () => {
           </div> */}
 
           {/* Game of Clash - Full Width */}
-          {renderFullWidthCard(services[5])}
+          {renderFullWidthCard(services[4])}
 
           {/* Scrolling Text */}
           <ScrollingText />
 
           {/* AI Section Header */}
-          <div className="mt-20">
+          <div className="mt-5">
             <SectionHeader 
               title="AI INTEGRATED SERVICES"
               subtitle="STAY SHARP WITH THE LATEST GENAI SERVICES"
