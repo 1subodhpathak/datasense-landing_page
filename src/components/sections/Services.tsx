@@ -303,7 +303,7 @@ const Services: React.FC = () => {
               hover:-translate-y-0.5"
             onClick={() => {
               if (service.title === "Get JobReady Roadmap") {
-                window.open("http://localhost:5173/unity-games/index.html", "_blank");
+                window.open("/unity-games/index.html", "_blank");
               } else if (service.title === "Game of Clash") {
                 window.open("https://battleground.datasenseai.com/game-modes", "_blank");
               }
