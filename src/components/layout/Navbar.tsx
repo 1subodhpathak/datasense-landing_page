@@ -214,14 +214,16 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
     >
       <div className="container mx-auto">
         <div className="flex items-center justify-between h-20">
-          {/* Updated Logo Section */}
-          <a href="/" className="flex items-center max-w-[200px]">
-            <img
-              src="/assets/images/DataSense.png"
-              alt="DataSense Logo"
-              className="h-8 sm:h-12 w-full object-contain"
-            />
-          </a>
+          {/* Logo Section - Simplified */}
+          <div className="relative">
+            <a href="/" className="flex items-center">
+              <img
+                src="/assets/images/logo.png"
+                alt="DataSense Logo"
+                className="h-8 sm:h-12 w-full object-contain"
+              />
+            </a>
+          </div>
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center justify-between flex-1">
