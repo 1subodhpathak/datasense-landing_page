@@ -3,6 +3,7 @@ import {
   BsLinkedin,
   BsInstagram,
   BsPlayCircle,
+  BsX,
 } from "react-icons/bs";
 import { useEffect, useState, useRef } from "react";
 import { useInView } from "framer-motion";
@@ -98,6 +99,38 @@ function Social() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
+  // State to track the current playing video
+  const [currentVideo, setCurrentVideo] = useState<{
+    title: string;
+    youtubeId: string;
+  } | null>(null);
+
+  // Function to handle video click - now opens the overlay player
+  const handleVideoClick = (youtubeId: string, title: string) => {
+    setCurrentVideo({ youtubeId, title });
+    // Prevent scrolling when modal is open
+    document.body.style.overflow = "hidden";
+  };
+
+  // Function to close the video player
+  const closeVideoPlayer = () => {
+    setCurrentVideo(null);
+    // Re-enable scrolling
+    document.body.style.overflow = "auto";
+  };
+
+  // Handle escape key to close the player
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && currentVideo) {
+        closeVideoPlayer();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscKey);
+    return () => window.removeEventListener("keydown", handleEscKey);
+  }, [currentVideo]);
+
   const AnimatedStat = ({
     stat,
   }: {
@@ -115,10 +148,6 @@ function Social() {
     );
   };
 
-  const handleVideoClick = (youtubeId: string) => {
-    window.open(`https://www.youtube.com/watch?v=${youtubeId}`, "_blank");
-  };
-
   const VideoCard = ({
     video,
     isMain = false,
@@ -129,7 +158,7 @@ function Social() {
     <div
       className={`cursor-pointer rounded-2xl overflow-hidden bg-slate-900/50 backdrop-blur-sm
         h-full w-full`}
-      onClick={() => handleVideoClick(video.youtubeId)}
+      onClick={() => handleVideoClick(video.youtubeId, video.title)}
     >
       <div className="relative aspect-video w-full">
         <img
@@ -139,7 +168,11 @@ function Social() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent">
           <div className="absolute bottom-0 left-0 right-0 p-6">
-            <h4 className={`font-bold text-white mb-2 ${isMain ? 'text-2xl' : 'text-lg'}`}>
+            <h4
+              className={`font-bold text-white mb-2 ${
+                isMain ? "text-2xl" : "text-lg"
+              }`}
+            >
               {video.title}
             </h4>
             <div className="flex items-center text-cyan-400 text-sm">
@@ -148,8 +181,10 @@ function Social() {
             </div>
           </div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <div className="w-16 h-16 rounded-full bg-cyan-400 flex items-center justify-center 
-              hover:bg-cyan-300 transition-colors duration-300">
+            <div
+              className="w-16 h-16 rounded-full bg-cyan-400 flex items-center justify-center 
+              hover:bg-cyan-300 transition-colors duration-300"
+            >
               <BsPlayCircle className="text-4xl text-slate-900" />
             </div>
           </div>
@@ -157,6 +192,41 @@ function Social() {
       </div>
     </div>
   );
+
+  // Video Player Overlay Component
+  const VideoPlayerOverlay = () => {
+    if (!currentVideo) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
+        <div className="relative w-full max-w-4xl">
+          {/* Close button */}
+          <button
+            className="absolute -top-12 right-0 text-white z-10 hover:text-cyan-400 transition-colors"
+            onClick={closeVideoPlayer}
+            aria-label="Close video"
+          >
+            <BsX className="text-4xl" />
+          </button>
+
+          {/* Video player container */}
+          <div className="bg-black rounded-lg overflow-hidden shadow-2xl">
+            {/* Fixed aspect ratio container */}
+            <div className="aspect-video w-full">
+              <iframe
+                src={`https://www.youtube.com/embed/${currentVideo.youtubeId}?autoplay=1`}
+                title={currentVideo.title}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                frameBorder="0"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <section className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950">
@@ -211,19 +281,13 @@ function Social() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Main large video card */}
               <div className="md:col-span-2">
-                <VideoCard 
-                  video={socialMediaData.videos[0]} 
-                  isMain={true}
-                />
+                <VideoCard video={socialMediaData.videos[0]} isMain={true} />
               </div>
-              
+
               {/* Stack of smaller video cards */}
               <div className="flex flex-col gap-6">
                 {socialMediaData.videos.slice(1).map((video, index) => (
-                  <VideoCard 
-                    key={index + 1}
-                    video={video}
-                  />
+                  <VideoCard key={index + 1} video={video} />
                 ))}
               </div>
             </div>
@@ -242,6 +306,9 @@ function Social() {
           </a>
         </div>
       </div>
+
+      {/* Video Player Overlay - renders conditionally */}
+      <VideoPlayerOverlay />
     </section>
   );
 }
