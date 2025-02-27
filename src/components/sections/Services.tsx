@@ -431,7 +431,7 @@ const Services: React.FC = () => {
 
   return (
     <section className="py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900">
-      <div className="container mx-auto">
+      <div className="container mx-auto py-12">
         {/* Main Section Header */}
         <SectionHeader 
           title="WHY CHOOSE DATASENSE"
@@ -439,21 +439,25 @@ const Services: React.FC = () => {
           description="At DataSense, we equip aspiring and seasoned professionals with practical, in-demand Data & AI skills. Join thousands of learners who've transformed their careers — and this is just the beginning."
           isMain={true}
         />
-
+  
         <div className="flex flex-col gap-12">
           {/* SQL Code Arena - Full Width */}
           <div className="px-4">
-          {renderFullWidthCard(services[0])}
+            {renderFullWidthCard(services[0])}
           </div>
-
+  
           {/* Quiz Section - 3 cards per row */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
             {services.slice(1, 4).map(renderGridCard)}
           </div>
-
-          {/* CEO Message */}
-          <CeoMessage />
-          
+        </div>
+      </div>
+      
+      {/* CEO Message - MOVED OUTSIDE THE CONTAINER */}
+      <CeoMessage />
+      
+      <div className="container mx-auto py-12">
+        <div className="flex flex-col gap-12">
           {/* Gaming Section Header */}
           <div className="mt-0">
             <SectionHeader 
@@ -462,23 +466,22 @@ const Services: React.FC = () => {
               description="The DataSense Gaming Arena transforms learning into an engaging and competitive experience. It features interactive games that challenge your data skills, helping you master SQL, Python, and essential analytics concepts while having fun."
             />
           </div>
-
+  
           <div className="px-4">
-          {/* Data Analyst Game - Full Width */}
-          {renderFullWidthCard(services[5], true)}
-
-          {/* Games Section - 2 cards per row */}
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {services.slice(5, 7).map(renderGridCard)}
-          </div> */}
-
-          {/* Game of Clash - Full Width */}
-          {renderFullWidthCard(services[4])}
+            {/* Data Analyst Game - Full Width */}
+            {renderFullWidthCard(services[5], true)}
+  
+            {/* Game of Clash - Full Width */}
+            {renderFullWidthCard(services[4])}
           </div>
-
-          {/* Scrolling Text */}
-          <ScrollingText />
-
+        </div>
+      </div>
+      
+      {/* Scrolling Text - MOVED OUTSIDE THE CONTAINER */}
+      <ScrollingText />
+      
+      <div className="container mx-auto py-12">
+        <div className="flex flex-col gap-12">
           {/* AI Section Header */}
           <div className="mt-5">
             <SectionHeader 
@@ -487,7 +490,7 @@ const Services: React.FC = () => {
               description="The AI Integrated Services section showcases cutting-edge tools designed to simplify and enhance your job search and career development. These services leverage the power of AI to provide actionable insights, optimize resumes, and align candidates with the right opportunities."
             />
           </div>
-
+  
           {/* AI Services Section - 2 cards per row with new rendering */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
             {services.slice(6).map(renderAIServiceCard)}
