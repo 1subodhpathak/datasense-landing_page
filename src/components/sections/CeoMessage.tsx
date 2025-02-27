@@ -6,7 +6,7 @@ const CeoMessage: React.FC = () => (
     <div className="absolute top-0 left-0 w-full h-16">
       <div className="w-full h-full bg-dark-cyan/90 rounded-b-[100%]" />
     </div>
-    
+
     {/* Bottom curved border */}
     <div className="absolute bottom-0 left-0 w-full h-16">
       <div className="w-full h-full bg-dark-cyan/90 rounded-t-[100%]" />
@@ -40,31 +40,59 @@ const CeoMessage: React.FC = () => (
 
         {/* Right side - Content */}
         <div>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
             className="text-4xl font-bold text-caribbean leading-tight mb-6 italic"
           >
-            'Message from Our CEO,<br />
+            'Message from Our CEO,
+            <br />
             Shagun Nagpal'
           </motion.h2>
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="text-lg text-teal"
-          >
-            As the CEO of DataSense, I am proud to share our vision with you. We founded this platform 
-            with a mission to make data learning accessible, practical, and engaging for everyone. In 
-            today's fast-evolving world, knowledge alone is not enough; you need real-world practice to 
-            stand out. DataSense is more than just a learning platform – it's a community, a playground, 
-            and a launchpad for aspiring data professionals. Join us, and let's build a future where 
-            learning knows no bounds.
-          </motion.p>
+          <div className="space-y-4">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="text-md text-teal"
+            >
+              "As the CEO of DataSense, I am honored to share our vision with you.
+              We founded this platform with a mission to democratize data
+              learning—making it accessible, practical, and truly impactful. In
+              today's fast-evolving digital landscape, theoretical knowledge alone
+              is not enough; real-world application is the key to standing out.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="text-md text-teal"
+            >
+              At DataSense, we go beyond traditional learning. Our platform is a
+              thriving ecosystem—a collaborative community, an interactive
+              learning space, and a launchpad for aspiring data professionals.
+              Whether you're taking your first steps in data or advancing your
+              expertise, we are committed to providing the resources, guidance,
+              and opportunities to help you succeed.
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+              className="text-md text-teal"
+            >
+              Join us as we shape the future of data education, where learning is
+              limitless and innovation knows no bounds."
+            </motion.p>
+          </div>
         </div>
       </div>
     </div>
