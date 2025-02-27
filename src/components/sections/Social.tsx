@@ -75,22 +75,22 @@ const socialMediaData = {
   ],
   videos: [
     {
-      title: "What is DataSense?",
-      thumbnail: "/assets/images/DataSense.png",
-      views: "15K",
-      youtubeId: "P7Ww4zPAQN4",
-    },
-    {
-      title: "DataSense Guide",
-      thumbnail: "/assets/images/DataSense.png",
+      title: "Don't Get Scammed!",
+      thumbnail: "/assets/images/thumbnails/it.jpg",
       views: "12K",
-      youtubeId: "P7Ww4zPAQN4",
+      youtubeId: "PtzWRgcN-w0",
     },
     {
-      title: "AI vs Data",
-      thumbnail: "/assets/images/DataSense.png",
+      title: "Power BI for Beginners",
+      thumbnail: "/assets/images/thumbnails/powerbi.jpg",
+      views: "15K",
+      youtubeId: "W-jQg5D1RoE",
+    },
+    {
+      title: "Midnight Python Coding Challenge",
+      thumbnail: "/assets/images/thumbnails/python.jpg",
       views: "18K",
-      youtubeId: "P7Ww4zPAQN4",
+      youtubeId: "v_Dpyj7AEIg",
     },
   ],
 };
@@ -177,7 +177,7 @@ function Social() {
             </h4>
             <div className="flex items-center text-cyan-400 text-sm">
               <BsYoutube className="mr-2 text-lg" />
-              {video.views} views
+              {/* {video.views} views */}
             </div>
           </div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
