@@ -71,7 +71,7 @@ const SQLCourse = () => {
   const [activeTab, setActiveTab] = useState("syllabus");
   const [expandedModules, setExpandedModules] = useState([0]);
 
-  const toggleModule = (index) => {
+  const toggleModule = (index: number) => {
     setExpandedModules(prev => 
       prev.includes(index) 
         ? prev.filter(i => i !== index) 
