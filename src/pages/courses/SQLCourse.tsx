@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BsDatabase, BsCheckCircle, BsAward, BsBook } from "react-icons/bs";
+import { BsDatabase, BsCheckCircle, BsAward, BsBook, BsStarFill } from "react-icons/bs";
 import { AiOutlineClockCircle, AiOutlineBulb, AiOutlineProject } from "react-icons/ai";
-import { FaUserGraduate, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaUserGraduate, FaChevronDown, FaChevronUp, FaQuoteLeft } from "react-icons/fa";
 import { MdOutlineComputer, MdWorkspaces } from "react-icons/md";
 
 const syllabusData = [
@@ -64,6 +64,30 @@ const features = [
     icon: <MdWorkspaces />,
     title: "Database Playground",
     description: "Experiment with your own queries in a sandbox environment"
+  }
+];
+
+const testimonials = [
+  {
+    name: "Amit Kumar",
+    role: "Data Scientist at Flipkart",
+    image: "/assets/images/testimonials/sarah.jpg", // Add actual image path
+    quote: "This SQL course transformed my career. The hands-on projects and real-world examples made learning both enjoyable and practical.",
+    rating: 5
+  },
+  {
+    name: "Rahul Sharma",
+    role: "Software Developer",
+    image: "/assets/images/testimonials/michael.jpg", // Add actual image path
+    quote: "The course structure is perfect for beginners. I went from zero SQL knowledge to confidently querying databases in just weeks.",
+    rating: 5
+  },
+  {
+    name: "Priya Patel",
+    role: "Business Intelligence Developer",
+    image: "/assets/images/testimonials/priya.jpg", // Add actual image path
+    quote: "The interactive lessons and practice projects helped me master complex SQL concepts. Now I use these skills daily in my work.",
+    rating: 5
   }
 ];
 
@@ -310,33 +334,69 @@ const SQLCourse = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-16 bg-slate-900/50">
+      {/* Course Features Section */}
+      <section className="py-16 bg-slate-800/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-cyan-100 mb-12 text-center">
+          <h2 className="text-3xl font-bold text-center text-cyan-100 mb-12">
             Course Features
           </h2>
-          
-          <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
             {features.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-slate-800/30 backdrop-blur-sm p-6 rounded-xl 
-                  border border-cyan-900/20 flex items-start"
+                className="bg-slate-800/30 backdrop-blur-sm p-6 rounded-xl border border-cyan-900/20"
               >
-                <div className="text-3xl text-cyan-400 mr-4 mt-1">
-                  {feature.icon}
+                <div className="text-3xl text-cyan-400 mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold text-cyan-100 mb-2">{feature.title}</h3>
+                <p className="text-cyan-300/80">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-cyan-100 mb-12">
+            What Our Students Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-slate-800/30 backdrop-blur-sm p-6 rounded-xl border border-cyan-900/20"
+              >
+                <div className="flex items-start mb-4">
+                  <FaQuoteLeft className="text-2xl text-cyan-400" />
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-cyan-100 mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-cyan-300/80">
-                    {feature.description}
-                  </p>
+                <p className="text-cyan-300 mb-6 italic">"{testimonial.quote}"</p>
+                <div className="flex items-center">
+                  {/* <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://via.placeholder.com/48";
+                      }}
+                    />
+                  </div> */}
+                  <div>
+                    <h4 className="text-cyan-100 font-semibold">{testimonial.name}</h4>
+                    <p className="text-cyan-300/80 text-sm">{testimonial.role}</p>
+                  </div>
+                </div>
+                <div className="flex items-center mt-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <BsStarFill key={i} className="text-yellow-400 mr-1" />
+                  ))}
                 </div>
               </motion.div>
             ))}
