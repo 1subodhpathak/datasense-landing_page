@@ -6,6 +6,7 @@ import About from "./components/sections/About";
 import Footer from "./components/layout/Footer";
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import SQLCourse from './pages/courses/SQLCourse';
 
 // Define proper TypeScript props interface
 interface LoadingScreenProps {
@@ -65,6 +66,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/courses/sql" element={<SQLCourse />} />
             </Routes>
             <Footer />
           </div>

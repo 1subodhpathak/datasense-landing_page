@@ -2,6 +2,7 @@ import Hero from "./components/sections/Hero"
 // import TollScroller from "./components/sections/TollScroller"
 import TollScroller from './components/sections/TollScroller';
 import Services from './components/sections/Services';
+import Courses from './components/sections/Courses';
 import TopMate from './components/sections/TopMate';
 import Rating from './components/sections/Rating';
 import Testimonial from './components/sections/Testimonial';
@@ -14,6 +15,7 @@ function Home() {
       <Hero />
       <TollScroller />
       <Services />
+      <Courses />
       <TopMate />
       <Rating />
       <Testimonial />
