@@ -23,7 +23,7 @@ const courseData = [
     title: "AI & Machine Learning",
     description:
       "Explore cutting-edge AI and ML technologies. Learn model development, deep learning, and practical implementation of AI solutions.",
-    link: "/courses/ai-ml",
+    link: "/courses/sql",
   },
 ];
 

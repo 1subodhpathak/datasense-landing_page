@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import type { NavbarProps } from "../../types";
 import { BsChevronDown } from "react-icons/bs";
 import {
@@ -19,6 +20,9 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(isScrolled);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const location = useLocation();
+
+  const isSQLCoursePage = location.pathname === "/courses/sql";
 
   const navItems = [
     { id: 1, title: "Home", path: "/" },
@@ -49,14 +53,21 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   ];
 
   useEffect(() => {
+    // If we're on the SQL course page, always set scrolled to true
+    if (isSQLCoursePage) {
+      setScrolled(true);
+      return; // Exit early, don't add scroll listener
+    }
+
     const handleScroll = () => {
       const offset = window.scrollY;
       setScrolled(offset > 50);
     };
 
+    // Only add scroll listener if not on SQL course page
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isSQLCoursePage]);
 
   const handleDropdownClick = (title: string) => {
     setActiveDropdown(activeDropdown === title ? null : title);
@@ -209,7 +220,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-dark-cyan/90 backdrop-blur-sm" : "bg-transparent"
+        isSQLCoursePage ? "bg-dark-cyan/90 backdrop-blur-sm" : scrolled ? "bg-dark-cyan/90 backdrop-blur-sm" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto">
