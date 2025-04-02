@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import type { NavbarProps } from "../../types";
 import { BsChevronDown } from "react-icons/bs";
 import {
@@ -22,7 +22,9 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
 
-  const isSQLCoursePage = location.pathname === "/courses/sql";
+  // Check if current page should have consistent nav background
+  const shouldHaveFixedBackground = location.pathname === "/courses/sql" || 
+                                  location.pathname.startsWith("/events");
 
   const navItems = [
     { id: 1, title: "Home", path: "/" },
@@ -53,8 +55,8 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   ];
 
   useEffect(() => {
-    // If we're on the SQL course page, always set scrolled to true
-    if (isSQLCoursePage) {
+    // If we're on pages that need fixed background, always set scrolled to true
+    if (shouldHaveFixedBackground) {
       setScrolled(true);
       return; // Exit early, don't add scroll listener
     }
@@ -64,10 +66,10 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
       setScrolled(offset > 50);
     };
 
-    // Only add scroll listener if not on SQL course page
+    // Only add scroll listener if not on fixed background pages
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isSQLCoursePage]);
+  }, [shouldHaveFixedBackground]);
 
   const handleDropdownClick = (title: string) => {
     setActiveDropdown(activeDropdown === title ? null : title);
@@ -117,9 +119,9 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                       desc: "Competitive coding events",
                     },
                   ].map((subItem) => (
-                    <a
+                    <Link
                       key={subItem.title}
-                      href={subItem.path}
+                      to={subItem.path}
                       className="flex items-start gap-3 p-3 hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200 group/item"
                     >
                       <subItem.icon className="w-5 h-5 mt-1 text-primary-cyan" />
@@ -131,7 +133,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                           {subItem.desc}
                         </div>
                       </div>
-                    </a>
+                    </Link>
                   ))}
                 </>
               ) : (
@@ -220,7 +222,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isSQLCoursePage ? "bg-dark-cyan/90 backdrop-blur-sm" : scrolled ? "bg-dark-cyan/90 backdrop-blur-sm" : "bg-transparent"
+        shouldHaveFixedBackground ? "bg-dark-cyan/90 backdrop-blur-sm" : scrolled ? "bg-dark-cyan/90 backdrop-blur-sm" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto">
