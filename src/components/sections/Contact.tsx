@@ -1,8 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { BiUser, BiEnvelope, BiPhone, BiMessageDetail } from 'react-icons/bi';
 import { CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
-import emailjs from '@emailjs/browser';
-// import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface FormData {
   name: string;
@@ -25,7 +23,8 @@ function Contact() {
     message: ''
   });
 
-  emailjs.init("9AD_u6eDVlXMzkW8E");
+  // Replace this with your Google Apps Script web app URL
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRqBSMWQTtT-FfjEdfEPxcTHj6nlo4X2eSpcsv2ufO90KtuhCwfblpqwqiBDRyA1fo/exec';
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,34 +32,34 @@ function Contact() {
     setShowNotification(false);
 
     try {
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        from_phone: formData.phone,
-        message: formData.message,
-      };
+      const formDataToSend = new FormData();
+      formDataToSend.append('name', formData.name);
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('message', formData.message);
+      formDataToSend.append('timestamp', new Date().toISOString());
 
-      const response = await emailjs.send(
-        "service_7kdv4qj",
-        "template_uhpmnlr",
-        templateParams
-      );
-
-      if (response.status === 200) {
-        setNotificationData({
-          type: 'success',
-          message: 'Thank you for your message! We will get back to you soon.'
-        });
-        // Reset form
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          message: ''
-        });
-      }
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: formDataToSend,
+        mode: 'no-cors'
+      });
+      
+      // Since we're using no-cors, we don't need to check response
+      setNotificationData({
+        type: 'success',
+        message: 'Thank you for your message! We will get back to you soon.'
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      });
     } catch (error) {
-      console.error("Error sending email:", error);
+      console.error("Error submitting form:", error);
       setNotificationData({
         type: 'error',
         message: 'Failed to send message. Please try again.'
@@ -68,7 +67,6 @@ function Contact() {
     } finally {
       setLoading(false);
       setShowNotification(true);
-      // Auto-hide notification after 5 seconds
       setTimeout(() => setShowNotification(false), 5000);
     }
   };

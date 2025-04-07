@@ -98,7 +98,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, descript
     {isMain ? (
       // Enhanced main heading with new styling
       <div className="relative mb-8">
-        <h1 className="text-5xl md:text-7xl font-bold text-center mb-6">
+        <h1 className="text-5xl font-bold text-center mb-6">
           <span className="text-cyan-100">WHY CHOOSE </span>
           <span className="text-bright-cyan">DATASENSE</span>
         </h1>
