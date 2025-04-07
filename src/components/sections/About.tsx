@@ -1,9 +1,7 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   FaLightbulb, 
   FaHandshake, 
-  FaChartLine, 
-  FaGraduationCap, 
   FaUserTie, 
   FaQuestionCircle,
   FaLaptopCode,
@@ -12,6 +10,7 @@ import {
   FaFileAlt
 } from 'react-icons/fa';
 import { BsLinkedin, BsTwitter } from 'react-icons/bs';
+import { useScrollTop } from '../../hooks/useScrollTop';
 
 // Core values based on the PDF content
 const coreValues = [
@@ -207,6 +206,8 @@ const BackgroundPattern = () => (
 );
 
 function About() {
+  useScrollTop();
+
   return (
     <div className="bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900 pt-20">
       {/* Hero Section */}
