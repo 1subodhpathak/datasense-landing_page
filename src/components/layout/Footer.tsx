@@ -1,8 +1,15 @@
 import { BsLinkedin, BsYoutube, BsInstagram, BsTwitter } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { scrollToSection } from "../../utils/scrollUtils";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+
+  const handleNavigation = (sectionId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    scrollToSection(sectionId, location.pathname);
+  };
 
   return (
     <footer className="bg-slate-900 text-cyan-100">
@@ -59,17 +66,29 @@ function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                <a 
+                  href="#services" 
+                  className="text-cyan-300/80 hover:text-cyan-300"
+                  onClick={(e) => handleNavigation('services', e)}
+                >
                   Services
                 </a>
               </li>
               <li>
-                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                <a 
+                  href="#courses" 
+                  className="text-cyan-300/80 hover:text-cyan-300"
+                  onClick={(e) => handleNavigation('courses', e)}
+                >
                   Courses
                 </a>
               </li>
               <li>
-                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                <a 
+                  href="#contact" 
+                  className="text-cyan-300/80 hover:text-cyan-300"
+                  onClick={(e) => handleNavigation('contact', e)}
+                >
                   Contact
                 </a>
               </li>

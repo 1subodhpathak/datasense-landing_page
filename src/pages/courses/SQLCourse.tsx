@@ -4,6 +4,7 @@ import { BsDatabase, BsCheckCircle, BsAward, BsBook, BsStarFill } from "react-ic
 import { AiOutlineClockCircle, AiOutlineBulb, AiOutlineProject } from "react-icons/ai";
 import { FaUserGraduate, FaChevronDown, FaChevronUp, FaQuoteLeft } from "react-icons/fa";
 import { MdOutlineComputer, MdWorkspaces } from "react-icons/md";
+import { useScrollTop } from "../../hooks/useScrollTop";
 
 const syllabusData = [
   {
@@ -92,6 +93,7 @@ const testimonials = [
 ];
 
 const SQLCourse = () => {
+  useScrollTop();
   const [activeTab, setActiveTab] = useState("syllabus");
   const [expandedModules, setExpandedModules] = useState([0]);
 

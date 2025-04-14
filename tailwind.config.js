@@ -27,8 +27,10 @@ export default {
         'scroll-rtl': 'scroll-rtl 10s linear infinite',
         'scroll-ltr': 'scroll-ltr 10s linear infinite',
         'scroll-rtl-text': 'scroll-rtl-text 30s linear infinite',
-        'float': 'float 6s ease-in-out infinite',
-        'float-slow': 'float 8s ease-in-out infinite',
+        'float': 'float 1.5s ease-in-out infinite',
+        'float-slow': 'float 2s ease-in-out infinite',
+        'pulse-slow': 'pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'floating': 'floating 2.6s infinite linear',
       },
       keyframes: {
         'scroll-rtl': {
@@ -46,6 +48,15 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' },
+        },
+        rotation: {
+          '0%': { transform: 'rotateZ(0deg)' },
+          '100%': { transform: 'rotateZ(360deg)' }
+        },
+        floating: {
+          '0%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(10px)' },
+          '100%': { transform: 'translateY(0px)' }
         }
       }
     },
