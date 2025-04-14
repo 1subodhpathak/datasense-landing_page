@@ -1,5 +1,5 @@
-import Hero from "./components/sections/Hero"
-// import TollScroller from "./components/sections/TollScroller"
+import Hero from './components/sections/Hero';
+import CardSection from './components/sections/CardSection';
 import TollScroller from './components/sections/TollScroller';
 import Services from './components/sections/Services';
 import Courses from './components/sections/Courses';
@@ -9,10 +9,11 @@ import Testimonial from './components/sections/Testimonial';
 import Social from './components/sections/Social';
 import Contact from './components/sections/Contact';
 
-function Home() {
+const Home = () => {
   return (
     <>
       <Hero />
+      <CardSection />
       <TollScroller />
       <Services />
       <Courses />
@@ -22,7 +23,7 @@ function Home() {
       <Social />
       <Contact />
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

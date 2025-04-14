@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import SQLCourse from './pages/courses/SQLCourse';
 import UpcomingEvents from './pages/UpcomingEvents';
+import { useScrollEffect } from './hooks/useScrollEffect';
 
 // Define proper TypeScript props interface
 interface LoadingScreenProps {
@@ -42,14 +43,29 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ finishLoading }) => {
   );
 };
 
+function AppContent() {
+  useScrollEffect(); // Move the hook inside this component
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/courses/sql" element={<SQLCourse />} />
+        <Route path="/events" element={<UpcomingEvents />} />
+        <Route path="/events/:eventType" element={<UpcomingEvents />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
+}
+
 function App() {
   const [loading, setLoading] = useState(true);
-  
-  // Optional: Use actual page load events instead of just a timer
+
   useEffect(() => {
-    // Check if the window is fully loaded
     if (document.readyState === 'complete') {
-      setTimeout(() => setLoading(false), 1000); // Minimum display time for loader
+      setTimeout(() => setLoading(false), 1000);
     } else {
       window.addEventListener('load', () => {
         setTimeout(() => setLoading(false), 1000);
@@ -62,17 +78,7 @@ function App() {
       {loading && <LoadingScreen finishLoading={() => setLoading(false)} />}
       <main className={loading ? 'hidden' : 'block'}>
         <Router>
-          <div className="min-h-screen">
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/courses/sql" element={<SQLCourse />} />
-              <Route path="/events" element={<UpcomingEvents />} />
-              <Route path="/events/:eventType" element={<UpcomingEvents />} />
-            </Routes>
-            <Footer />
-          </div>
+          <AppContent />
         </Router>
       </main>
     </>

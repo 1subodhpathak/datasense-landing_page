@@ -29,7 +29,10 @@ const courseData = [
 
 const Courses = () => {
   return (
-    <section className="w-full py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900">
+    <section
+      id="courses"
+      className="w-full py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900"
+    >
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

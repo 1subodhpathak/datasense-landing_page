@@ -3,7 +3,7 @@ import type { HeroProps } from "../../types";
 import { TypeAnimation } from "react-type-animation";
 
 const Hero = ({
-  videoUrl = "/assets/videos/bg_hero.mp4",
+  videoUrl = "https://1subodhpathak.github.io/datasense-hero/bg_hero8.mp4", 
   forwardDuration = 6,
 }: HeroProps) => {
   const videoProps = {
@@ -19,6 +19,7 @@ const Hero = ({
   const frameRef = useRef<number>();
   const lastTimeRef = useRef<number>(0);
   const reverseSpeedRef = useRef<number>(1); // Controls reverse playback speed
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -39,12 +40,9 @@ const Hero = ({
       const decrementAmount = (deltaTime / 1000) * reverseSpeedRef.current;
       video.currentTime = Math.max(0, video.currentTime - decrementAmount);
 
-      // console.log("Reverse time:", video.currentTime);
-
       if (video.currentTime > 0) {
         video.requestVideoFrameCallback(handleReverse); // Request next frame
       } else {
-        // console.log("Reached start, switching to forward playback.");
         setIsReversing(false);
         video.play();
       }
@@ -52,10 +50,8 @@ const Hero = ({
 
     const handleTimeUpdate = () => {
       if (!video || isReversing) return;
-      // console.log('Forward time:', video.currentTime);
 
       if (video.currentTime >= forwardDuration) {
-        // console.log('Starting reverse playback');
         video.pause();
         lastTimeRef.current = 0;
         setIsReversing(true);
@@ -87,15 +83,28 @@ const Hero = ({
     <div className="relative h-[100vh] w-full overflow-hidden">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full z-0">
+        {isLoading && (
+          <div className="absolute inset-0 bg-black flex items-center justify-center">
+            <div className="animate-pulse text-cyan-400">Loading video...</div>
+          </div>
+        )}
         <video
           ref={videoRef}
           {...videoProps}
-          onLoadedData={() => setIsVideoLoaded(true)}
+          onLoadedData={() => {
+            setIsVideoLoaded(true);
+            setIsLoading(false);
+          }}
+          onError={(e) => {
+            console.error("Video error:", e);
+            setIsLoading(false);
+          }}
           className={`object-cover w-full h-full ${
             isVideoLoaded ? "opacity-100" : "opacity-0"
           }`}
         >
           <source src={videoUrl} type="video/mp4" />
+          Your browser does not support video playback.
         </video>
       </div>
 

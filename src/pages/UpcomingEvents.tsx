@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaLaptop, FaVideo, FaCode, FaTrophy, FaCalendar, FaClock, FaUsers, FaMapMarkerAlt } from 'react-icons/fa';
+import { useScrollTop } from '../hooks/useScrollTop';
 
 // Event type definition
 interface Event {
@@ -24,6 +25,7 @@ const eventTypeMap = {
 } as const;
 
 const UpcomingEvents = () => {
+  useScrollTop();
   const { eventType } = useParams();
   const navigate = useNavigate();
 
