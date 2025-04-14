@@ -8,6 +8,7 @@ export interface NavItem {
 
 export interface HeroProps {
   videoUrl?: string;
+  videoBaseUrl?: string;
   forwardDuration?: number;
 }
 
