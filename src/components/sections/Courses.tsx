@@ -16,14 +16,14 @@ const courseData = [
     title: "Python",
     description:
       "Build strong programming foundations with Python. Cover data structures, algorithms, and practical applications in data analysis and automation.",
-    link: "/courses/sql",
+    link: "/courses/python",
   },
   {
     icon: <MdOutlineSmartToy className="text-5xl text-cyan-400" />,
     title: "AI & Machine Learning",
     description:
       "Explore cutting-edge AI and ML technologies. Learn model development, deep learning, and practical implementation of AI solutions.",
-    link: "/courses/sql",
+    link: "/courses/aiml",
   },
 ];
 
@@ -31,7 +31,7 @@ const Courses = () => {
   return (
     <section
       id="courses"
-      className="w-full py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900"
+      className="w-full py-10 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900"
     >
       <div className="container mx-auto px-4">
         <motion.div
@@ -55,7 +55,7 @@ const Courses = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-12"
         >
-          <p className="text-cyan-300 opacity-90 text-center max-w-4xl mx-auto">
+          <p className="text-cyan-100 opacity-90 text-center max-w-4xl mx-auto">
             Start Learning with DataSense offers a diverse selection of courses in
             Data Analytics, Engineering, AI, and Machine Learning. Master key tools
             like SQL and Python, develop real-world projects, and gain expertise in
