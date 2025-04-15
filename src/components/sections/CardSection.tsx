@@ -1,8 +1,8 @@
 // // CardSection.tsx - Production Version (No manual testing)
 // import React, { useEffect, useState } from 'react';
 // import FlipCard from './FlipCard';
-// import { FaPython, FaDatabase } from 'react-icons/fa';
-// import { BiBrain } from 'react-icons/bi';
+// // import { FaPython, FaDatabase } from 'react-icons/fa';
+// // import { BiBrain } from 'react-icons/bi';
 // import { vocabularyData, VocabularyTerm } from '../../data/vocabularyData';
 
 // const CardSection: React.FC = () => {
@@ -48,17 +48,17 @@
 //           <FlipCard
 //             category="SQL"
 //             termOfTheDay={termOfTheDay.SQL}
-//             icon={<FaDatabase className="w-16 h-16 text-cyan-500" />}
+//             // icon={<FaDatabase className="w-16 h-16 text-cyan-500" />}
 //           />
 //           <FlipCard
 //             category="Python"
 //             termOfTheDay={termOfTheDay.Python}
-//             icon={<FaPython className="w-16 h-16 text-cyan-500" />}
+//             // icon={<FaPython className="w-16 h-16 text-cyan-500" />}
 //           />
 //           <FlipCard
 //             category="AI & ML"
 //             termOfTheDay={termOfTheDay['AI & ML']}
-//             icon={<BiBrain className="w-16 h-16 text-cyan-500" />}
+//             // icon={<BiBrain className="w-16 h-16 text-cyan-500" />}
 //           />
 //         </div>
 //       </div>
@@ -68,32 +68,32 @@
 
 // export default CardSection;
 
-// CardSection.tsx - With Manual Testing
+
+// CardSection.tsx
 import React, { useEffect, useState } from 'react';
 import FlipCard from './FlipCard';
-// import { FaPython, FaDatabase } from 'react-icons/fa';
-// import { BiBrain } from 'react-icons/bi';
 import { vocabularyData, VocabularyTerm } from '../../data/vocabularyData';
 
+// Define the categories as a type to ensure type safety
+type CategoryKey = 'SQL' | 'Python' | 'AI & ML';
+
 const CardSection: React.FC = () => {
-  // Track indices manually for development/testing
-  const [indices, setIndices] = useState({
-    SQL: 0,
-    Python: 0,
+  // Properly type the indices state
+  const [indices, setIndices] = useState<Record<CategoryKey, number>>({
+    'SQL': 0,
+    'Python': 0,
     'AI & ML': 0
   });
 
-  const [termOfTheDay, setTermOfTheDay] = useState<{
-    [key: string]: VocabularyTerm
-  }>({
-    SQL: vocabularyData[0].terms[0],
-    Python: vocabularyData[1].terms[0],
+  const [termOfTheDay, setTermOfTheDay] = useState<Record<CategoryKey, VocabularyTerm>>({
+    'SQL': vocabularyData[0].terms[0],
+    'Python': vocabularyData[1].terms[0],
     'AI & ML': vocabularyData[2].terms[0]
   });
 
   useEffect(() => {
     // Function to get term based on day count
-    const getTermForDay = (category: string) => {
+    const getTermForDay = (category: CategoryKey) => {
       const categoryData = vocabularyData.find(item => item.category === category);
       if (!categoryData) return { term: "Error", meaning: "Category not found" };
       
@@ -115,14 +115,14 @@ const CardSection: React.FC = () => {
 
     // Set terms for all categories
     setTermOfTheDay({
-      SQL: getTermForDay("SQL"),
-      Python: getTermForDay("Python"),
-      'AI & ML': getTermForDay("AI & ML")
+      'SQL': getTermForDay('SQL'),
+      'Python': getTermForDay('Python'),
+      'AI & ML': getTermForDay('AI & ML')
     });
   }, []);
 
   // For testing/development only
-  const nextTerm = (category: string) => {
+  const nextTerm = (category: CategoryKey) => {
     const categoryData = vocabularyData.find(item => item.category === category);
     if (!categoryData) return;
     
@@ -148,12 +148,11 @@ const CardSection: React.FC = () => {
         <div className="flex flex-wrap justify-center gap-16">
           <div className="flex flex-col items-center mb-8">
             <FlipCard
-              category={"SQL"}
-              termOfTheDay={termOfTheDay.SQL}
-              // icon={<FaDatabase className="w-16 h-16 text-cyan-500" />}
+              category="SQL"
+              termOfTheDay={termOfTheDay['SQL']}
             />
             <button 
-              onClick={() => nextTerm("SQL")}
+              onClick={() => nextTerm('SQL')}
               className="mt-6 bg-cyan-600 hover:bg-cyan-700 transition-colors text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg"
             >
               Next Term
@@ -163,11 +162,10 @@ const CardSection: React.FC = () => {
           <div className="flex flex-col items-center mb-8">
             <FlipCard
               category="Python"
-              termOfTheDay={termOfTheDay.Python}
-              // icon={<FaPython className="w-16 h-16 text-cyan-500" />}
+              termOfTheDay={termOfTheDay['Python']}
             />
             <button 
-              onClick={() => nextTerm("Python")}
+              onClick={() => nextTerm('Python')}
               className="mt-6 bg-cyan-600 hover:bg-cyan-700 transition-colors text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg"
             >
               Next Term
@@ -178,10 +176,9 @@ const CardSection: React.FC = () => {
             <FlipCard
               category="AI & ML"
               termOfTheDay={termOfTheDay['AI & ML']}
-              // icon={<BiBrain className="w-16 h-16 text-cyan-500" />}
             />
             <button 
-              onClick={() => nextTerm("AI & ML")}
+              onClick={() => nextTerm('AI & ML')}
               className="mt-6 bg-cyan-600 hover:bg-cyan-700 transition-colors text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg"
             >
               Next Term
