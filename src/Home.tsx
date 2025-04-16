@@ -13,8 +13,8 @@ const Home = () => {
   return (
     <>
       <Hero />
-      <CardSection />
       <TollScroller />
+      <CardSection />
       <Services />
       <Courses />
       <TopMate />
