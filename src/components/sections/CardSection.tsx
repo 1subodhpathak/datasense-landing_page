@@ -37,12 +37,7 @@ const CardSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="w-full pt-20 pb-10 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900">
-      <div className="container mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center text-white mb-16">
-          Everyday Tech Vocabulary
-        </h2>
-        <div className="flex flex-wrap justify-center gap-16">
+        <div className="flex flex-wrap justify-center gap-8">
           <FlipCard
             category="SQL"
             termOfTheDay={termOfTheDay.SQL}
@@ -56,8 +51,6 @@ const CardSection: React.FC = () => {
             termOfTheDay={termOfTheDay['AI & ML']}
           />
         </div>
-      </div>
-    </section>
   );
 };
 
