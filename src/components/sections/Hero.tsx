@@ -222,12 +222,11 @@ const Hero = () => {
 
   return (
     <div className="relative h-[100vh] w-full overflow-hidden">
-      {/* 3D Background Canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" aria-hidden="true" />
 
       <div className="relative z-10 container mx-auto px-4 h-full flex flex-col">
-        {/* Upper section with main content - taking up most of the space but not all */}
-        <div className="flex h-[80%] items-center justify-between">
+        {/* Main content section - Adjust height based on screen size */}
+        <div className="flex h-[90%] lg:h-[80%] items-center justify-between">
           {/* Left side content */}
           <div className="max-w-xl mt-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-left">
@@ -275,7 +274,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Right side 3D visualization */}
+          {/* Right side 3D visualization - Show on medium and up */}
           <div className="hidden md:flex items-center justify-center w-1/2 h-full">
             <canvas
               ref={rightSideRef}
@@ -285,8 +284,43 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Bottom card section - fixed height to ensure visibility */}
-        <div className="h-[13%] flex items-center justify-center">
+        {/* Bottom card section - Show only on desktop (lg) screens */}
+        <div className="hidden lg:flex h-[12%] items-center justify-between">
+          {/* Left side heading */}
+          <div className="flex items-center gap-6">
+            <div>
+              <h2 className="text-2xl font-bold">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
+                  Everyday Tech
+                </span>
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-white">
+                  Vocabulary
+                </span>
+              </h2>
+            </div>
+            {/* Animated Arrow */}
+            <div className="animate-bounce-x">
+              <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-cyan-400"
+              >
+                <path 
+                  d="M4 12H20M20 12L14 6M20 12L14 18" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Card Section */}
           <CardSection />
         </div>
       </div>
