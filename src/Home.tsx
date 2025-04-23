@@ -1,5 +1,4 @@
 import Hero from './components/sections/Hero';
-// import CardSection from './components/sections/CardSection';
 import TollScroller from './components/sections/TollScroller';
 import Services from './components/sections/Services';
 import Courses from './components/sections/Courses';
@@ -14,7 +13,6 @@ const Home = () => {
     <>
       <Hero />
       <TollScroller />
-      {/* <CardSection /> */}
       <Services />
       <Courses />
       <TopMate />
