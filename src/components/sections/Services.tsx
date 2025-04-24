@@ -41,6 +41,7 @@ const services: ServiceItem[] = [
     description: "Simulate real exam conditions with our mock quizzes with time assigments. Test your knowledge, track your progress, and build confidence",
     icon: BiQuestionMark,
     image: "/assets/gifs/Mock Quiz.gif",
+    working_link: "/coming-soon"
   },
   {
     title: "Get JobReady Roadmap",
@@ -55,8 +56,8 @@ const services: ServiceItem[] = [
   //   image: "/assets/gifs/Mini Games.gif",
   // },
   {
-    title: "Game of Clash",
-    description: "The Game of Clash is an innovative, competitive learning game designed to test and improve your SQL and Python skills through head-to-head challenges with friends and peers.",
+    title: "DataSense Battleground",
+    description: "The DataSense Battleground is an innovative, competitive learning game designed to test and improve your SQL and Python skills through head-to-head challenges with friends and peers.",
     icon: AiOutlineThunderbolt,
     image: "/assets/images/tools/LeaderBoard.png",
   },
@@ -70,7 +71,7 @@ const services: ServiceItem[] = [
       "OPTIMIZATION SUGGESTIONS",
       "INDUSTRY-SPECIFIC INSIGHTS",
       "USER-FRIENDLY INTERFACE"
-    ]
+    ],
   },
   {
     title: "JD and Resume Comparison",
@@ -82,7 +83,7 @@ const services: ServiceItem[] = [
       "GAP IDENTIFICATION",
       "SUCCESS PROBABILITY",
       "CAREER RECOMMENDATIONS"
-    ]
+    ],
   },
 ];
 
@@ -197,13 +198,14 @@ const Services: React.FC = () => {
               onClick={() => {
                 if (service.title === "Get JobReady Roadmap") {
                   window.open("/unity-games/index.html", "_blank");
-                } else if (service.title === "Game of Clash") {
-                  window.open("https://battleground.datasenseai.com/game-modes", "_blank");
+                } else if (service.title === "DataSense Battleground") {
+                  window.open("https://battleground.datasenseai.com/", "_blank");
                 }
               }}
             >
               {service.title === "Get JobReady Roadmap" ? "Play Now" : 
-               service.title === "Game of Clash" ? "Challenge Now" : 
+               service.title === "DataSense Battleground" ? "Challenge Now" : 
+               service.title === "Interactive Coding Playground" ? "Code Now" :
                "Learn More"}
             </motion.button>
           </div>
@@ -248,8 +250,10 @@ const Services: React.FC = () => {
           return "Custom Test";
         case "Get JobReady Roadmap":
           return "Play Now";
-        case "Game of Clash":
+        case "DataSense Battleground":
           return "Challenge Now";
+        case "Interactive Coding Playground":
+          return "Code Now";
         default:
           return "Learn More";
       }
@@ -321,8 +325,8 @@ const Services: React.FC = () => {
                 window.open(service.working_link, "_blank");
               } else if (service.title === "Get JobReady Roadmap") {
                 window.open("/unity-games/index.html", "_blank");
-              } else if (service.title === "Game of Clash") {
-                window.open("https://battleground.datasenseai.com/game-modes", "_blank");
+              } else if (service.title === "DataSense Battleground") {
+                window.open("https://battleground.datasenseai.com", "_blank");
               }
             }}
           >
@@ -421,8 +425,17 @@ const Services: React.FC = () => {
               rounded-lg text-cyan-300 text-lg font-medium
               transition-all duration-300 hover:-translate-y-0.5
               hover:shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+              onClick={() => {
+                // Redirect to coming-soon page for AI services
+                if (service.title === "AI Resume ATS Score Checking" || 
+                    service.title === "JD and Resume Comparison") {
+                  window.location.href = "/coming-soon";
+                }
+              }}
           >
-            Learn More
+            {service.title === "AI Resume ATS Score Checking" ? "Check Now" :
+             service.title === "JD and Resume Comparison" ? "Explore" :
+             "Learn More"}
           </motion.button>
         </div>
       </motion.div>
@@ -471,7 +484,7 @@ const Services: React.FC = () => {
             {/* Data Analyst Game - Full Width */}
             {renderFullWidthCard(services[5], true)}
   
-            {/* Game of Clash - Full Width */}
+            {/* DataSense Battleground - Full Width */}
             {renderFullWidthCard(services[4])}
           </div>
         </div>
