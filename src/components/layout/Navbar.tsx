@@ -13,7 +13,6 @@ import {
   FaCode,
   FaTrophy,
   FaDiscord,
-  FaTelegram,
 } from "react-icons/fa";
 
 const Navbar = ({ isScrolled = false }: NavbarProps) => {
