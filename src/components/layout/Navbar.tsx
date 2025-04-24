@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import type { NavbarProps } from "../../types";
-import { BsChevronDown } from "react-icons/bs";
+import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 import {
   FaYoutube,
   FaLinkedin,
@@ -54,7 +54,50 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
       ],
     },
     // { id: 6, title: "Testimonials", path: "/testimonials" },
-    { id: 7, title: "Contact Us", path: "/contact" },
+    { id: 7, title: "Contact Us", path: "#contact" },
+  ];
+
+  const whatsappCommunities = [
+    {
+      title: "DataSense Community ",
+      desc: "Join our primary learning group",
+      path: "https://chat.whatsapp.com/DYgDxOA8nBvJp4tPz5J6ox"
+    },
+    {
+      title: "Connect with Our CEO ",
+      desc: "Join our CEO's group",
+      path: "https://chat.whatsapp.com/IxZq4qkM1lE4IwIYWJWYHr"
+    },
+    {
+      title: "Google Job Placement Drive",
+      desc: "Google Job Updates",
+      path: "https://chat.whatsapp.com/KIObYuXxwcO3vhIaGmalVe"
+    },
+    {
+      title: "India Job Postings",
+      desc: "Get Job Updates",
+      path: "https://chat.whatsapp.com/GGdit7X3p2DBRT6bGPARW"
+    },
+    {
+      title: "SQL Practice Group",
+      desc: "SQL-focused discussions",
+      path: "https://chat.whatsapp.com/KDdVaX4gvWACik8pFBLe0W"
+    },
+    {
+      title: "Python Practice Group",
+      desc: "Python programming group",
+      path: "https://chat.whatsapp.com/EtYoG2yZuNsA9yhJkK4XbV"
+    },
+    {
+      title: "AI/ML Discussion Group",
+      desc: "AI & Machine Learning",
+      path: "https://chat.whatsapp.com/IzQ2S5DP4TkIh3lXwG9sE4"
+    },
+    {
+      title: "Git and GitHub Group",
+      desc: "Git & GitHub discussions",
+      path: "https://chat.whatsapp.com/IDpnOqT9rZe9I6yqbvh2z6"
+    }
   ];
 
   useEffect(() => {
@@ -167,16 +210,51 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                       desc: "Community chat",
                     },
                     {
-                      icon: FaTelegram,
-                      title: "Telegram",
-                      path: "https://t.me/your-telegram-link", // Replace with your Telegram link
-                      desc: "News and updates",
-                    },
-                    {
                       icon: FaWhatsapp,
                       title: "WhatsApp",
-                      path: "https://chat.whatsapp.com/DYgDxOA8nBvJp4tPz5J6ox",
-                      desc: "Direct messaging",
+                      path: "#",
+                      desc: "Join Communities",
+                      template: (
+                        <div className="relative group/whatsapp">
+                          <div className="flex items-start gap-3 p-3 hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200 group/item cursor-pointer">
+                            <FaWhatsapp className="w-5 h-5 mt-1 text-primary-cyan" />
+                            <div>
+                              <div className="font-medium text-light-cyan group-hover/item:text-primary-cyan transition-colors duration-200 flex items-center gap-2">
+                                WhatsApp Communities
+                                <BsChevronRight className="transition-transform duration-300 group-hover/whatsapp:rotate-180" />
+                              </div>
+                              <div className="text-xs text-gray-400 group-hover/item:text-gray-300">
+                                Join our learning groups
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* WhatsApp Communities Dropdown */}
+                          <div className="absolute left-full top-[-200px] ml-2 w-64 bg-dark-cyan/95 backdrop-blur-sm rounded-xl shadow-2xl transform opacity-0 scale-95 invisible group-hover/whatsapp:opacity-100 group-hover/whatsapp:scale-100 group-hover/whatsapp:visible transition-all duration-300 border border-primary-cyan/20">
+                            <div className="p-2 grid grid-cols-1 gap-1">
+                              {whatsappCommunities.map((community) => (
+                                <a
+                                  key={community.title}
+                                  href={community.path}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-start gap-3 p-2 hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200 group/item"
+                                >
+                                  <FaWhatsapp className="w-4 h-4 mt-1 text-primary-cyan" />
+                                  <div>
+                                    <div className="font-medium text-sm text-light-cyan group-hover/item:text-primary-cyan transition-colors duration-200">
+                                      {community.title}
+                                    </div>
+                                    <div className="text-xs text-gray-400 group-hover/item:text-gray-300">
+                                      {community.desc}
+                                    </div>
+                                  </div>
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ),
                     },
                     {
                       icon: FaFacebook,
@@ -184,25 +262,29 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                       path: "https://www.facebook.com/people/Data-Sense/61550202884240/?mibextid=LQQJ4d",
                       desc: "Social updates",
                     },
-                  ].map((subItem) => (
-                    <a
-                      key={subItem.title}
-                      href={subItem.path}
-                      className="flex items-start gap-3 p-3 hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200 group/item"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <subItem.icon className="w-5 h-5 mt-1 text-primary-cyan" />
-                      <div>
-                        <div className="font-medium text-light-cyan group-hover/item:text-primary-cyan transition-colors duration-200">
-                          {subItem.title}
+                  ].map((subItem) =>
+                    subItem.template ? (
+                      subItem.template
+                    ) : (
+                      <a
+                        key={subItem.title}
+                        href={subItem.path}
+                        className="flex items-start gap-3 p-3 hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200 group/item"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <subItem.icon className="w-5 h-5 mt-1 text-primary-cyan" />
+                        <div>
+                          <div className="font-medium text-light-cyan group-hover/item:text-primary-cyan transition-colors duration-200">
+                            {subItem.title}
+                          </div>
+                          <div className="text-xs text-gray-400 group-hover/item:text-gray-300">
+                            {subItem.desc}
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-400 group-hover/item:text-gray-300">
-                          {subItem.desc}
-                        </div>
-                      </div>
-                    </a>
-                  ))}
+                      </a>
+                    )
+                  )}
                 </>
               )}
             </div>
