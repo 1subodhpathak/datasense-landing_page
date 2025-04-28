@@ -1,4 +1,4 @@
-import { BsLinkedin, BsYoutube, BsInstagram, BsTwitter } from "react-icons/bs";
+import { BsLinkedin, BsYoutube, BsInstagram} from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { scrollToSection } from "../../utils/scrollUtils";
 
@@ -41,12 +41,6 @@ function Footer() {
                 className="text-cyan-400 hover:text-cyan-300 transition-colors"
               >
                 <BsInstagram size={20} />
-              </a>
-              <a
-                href="#"
-                className="text-cyan-400 hover:text-cyan-300 transition-colors"
-              >
-                <BsTwitter size={20} />
               </a>
             </div>
           </div>
@@ -100,22 +94,31 @@ function Footer() {
             <h3 className="text-xl font-bold mb-4 text-cyan-400">Services</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                <Link
+                  to="/courses/sql"
+                  className="text-cyan-300/80 hover:text-cyan-300"
+                >
                   SQL Training
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
-                  Mock Interviews
-                </a>
+                <Link
+                  to="/courses/python"
+                  className="text-cyan-300/80 hover:text-cyan-300"
+                >
+                  Python Training
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
-                  Resume Review
-                </a>
+                <Link
+                  to="/courses/aiml"
+                  className="text-cyan-300/80 hover:text-cyan-300"
+                >
+                  AI & ML Training
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-cyan-300/80 hover:text-cyan-300">
+                <a href="#topmate" className="text-cyan-300/80 hover:text-cyan-300">
                   Career Guidance
                 </a>
               </li>

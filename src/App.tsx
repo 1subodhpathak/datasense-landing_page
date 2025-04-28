@@ -12,6 +12,7 @@ import AIMLCourse from './pages/courses/AIMLCourse';
 import UpcomingEvents from './pages/UpcomingEvents';
 import { useScrollEffect } from './hooks/useScrollEffect';
 import AvailableSoon from './pages/AvailableSoon';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 // Define proper TypeScript props interface
 interface LoadingScreenProps {
@@ -54,9 +55,30 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/courses/sql" element={<SQLCourse />} />
-        <Route path="/courses/python" element={<PythonCourse />} /> 
-        <Route path="/courses/aiml" element={<AIMLCourse />} />
+        <Route 
+          path="/courses/sql" 
+          element={
+            <ProtectedRoute>
+              <SQLCourse />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/courses/python" 
+          element={
+            <ProtectedRoute>
+              <PythonCourse />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/courses/aiml" 
+          element={
+            <ProtectedRoute>
+              <AIMLCourse />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/events" element={<UpcomingEvents />} />
         <Route path="/events/:eventType" element={<UpcomingEvents />} />
         <Route path="/coming-soon" element={<AvailableSoon />} />
