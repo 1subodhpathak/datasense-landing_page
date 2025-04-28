@@ -14,8 +14,10 @@ import {
   FaTrophy,
   FaDiscord,
 } from "react-icons/fa";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/clerk-react";
 
 const Navbar = ({ isScrolled = false }: NavbarProps) => {
+  const { isSignedIn, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(isScrolled);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -203,10 +205,10 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                       desc: "Visual updates",
                     },
                     {
-                      icon: FaDiscord,
-                      title: "Discord",
-                      path: "https://discord.gg/your-invite-link", // Replace with your Discord invite link
-                      desc: "Community chat",
+                      icon: FaFacebook,
+                      title: "Facebook",
+                      path: "https://www.facebook.com/people/Data-Sense/61550202884240/?mibextid=LQQJ4d",
+                      desc: "Social updates",
                     },
                     {
                       icon: FaWhatsapp,
@@ -256,10 +258,16 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                       ),
                     },
                     {
-                      icon: FaFacebook,
-                      title: "Facebook",
-                      path: "https://www.facebook.com/people/Data-Sense/61550202884240/?mibextid=LQQJ4d",
-                      desc: "Social updates",
+                      icon: FaDiscord,
+                      title: "Discord",
+                      path: "https://discord.gg/your-invite-link", // Replace with your Discord invite link
+                      desc: "Community chat",
+                    },
+                    {
+                      icon: FaLaptop,
+                      title: "Topmate",
+                      path: "https://topmate.io/datasense",
+                      desc: "1:1 Mentorship Sessions",
                     },
                   ].map((subItem) =>
                     subItem.template ? (
@@ -303,6 +311,34 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
     );
   };
 
+  const AuthSection = () => {
+    if (isSignedIn && user) {
+      return (
+        <div className="flex items-center space-x-4">
+          <span className="text-white">
+            Welcome, {user.firstName || 'User'}
+          </span>
+          <UserButton afterSignOutUrl="/" />
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex items-center space-x-4">
+        <SignInButton mode="modal">
+          <button className="whitespace-nowrap border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-2 px-5 rounded-lg transition-all duration-300">
+            Login
+          </button>
+        </SignInButton>
+        <SignUpButton mode="modal">
+          <button className="bg-caribbean hover:bg-teal text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105">
+            Register
+          </button>
+        </SignUpButton>
+      </div>
+    );
+  };
+
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
@@ -334,20 +370,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
             </div>
 
             {/* Auth Buttons - Right Aligned */}
-            <div className="flex items-center space-x-4">
-              <a
-                href="/login"
-                className="whitespace-nowrap border-2 border-primary-cyan hover:bg-primary-cyan/20 text-white font-bold py-2 px-5 rounded-lg transition-all duration-300"
-              >
-                Login
-              </a>
-              <a
-                href="/register"
-                className="bg-caribbean hover:bg-teal text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105"
-              >
-                Register
-              </a>
-            </div>
+            <AuthSection />
           </div>
 
           {/* Mobile Menu Button */}
@@ -428,18 +451,16 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
               ))}
               {/* Mobile Auth Button */}
               <div className="mt-4 px-3">
-                <a
-                  href="/login"
-                  className="block w-full text-center py-2 text-base font-medium text-white border-2 border-primary-cyan hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200"
-                >
-                  Login
-                </a>
-                <a
-                  href="/login"
-                  className="block w-full text-center py-2 mt-2 text-base font-medium text-white border-2 border-primary-cyan hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200"
-                >
-                  Register
-                </a>
+                <SignInButton mode="modal">
+                  <button className="block w-full text-center py-2 text-base font-medium text-white border-2 border-primary-cyan hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200">
+                    Login
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="block w-full text-center py-2 mt-2 text-base font-medium text-white border-2 border-primary-cyan hover:bg-primary-cyan/20 rounded-lg transition-colors duration-200">
+                    Register
+                  </button>
+                </SignUpButton>
               </div>
             </div>
           </div>
