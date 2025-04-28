@@ -443,7 +443,7 @@ const Services: React.FC = () => {
   };
 
   return (
-    <section id="services" className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950">
+    <section id="services" className="py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900">
       <div className="container mx-auto py-12">
         {/* Main Section Header */}
         <SectionHeader 
