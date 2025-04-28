@@ -31,7 +31,7 @@ const Courses = () => {
   return (
     <section
       id="courses"
-      className="w-full py-10 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900"
+      className="w-full py-10 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950"
     >
       <div className="container mx-auto px-4">
         <motion.div

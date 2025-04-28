@@ -47,7 +47,7 @@ const TopMate: React.FC = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
-    <section id ="topmate" className="py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950 relative overflow-hidden">
+    <section id ="topmate" className="py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900 relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
         <h2 className="text-4xl font-bold text-center text-cyan-100 mb-4">
           TopMate Services
