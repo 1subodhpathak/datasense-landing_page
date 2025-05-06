@@ -129,9 +129,11 @@ function Footer() {
           <div>
             <h3 className="text-xl font-bold mb-4 text-cyan-400">Contact Us</h3>
             <ul className="space-y-2">
-              <li className="text-cyan-300/80">contact@datasense.com</li>
-              <li className="text-cyan-300/80">+1 (555) 123-4567</li>
-              <li className="text-cyan-300/80">Bangalore, India</li>
+              <li className="text-cyan-300/80">
+                <a href="mailto:datasense.learning@gmail.com">datasense.learning@gmail.com</a>
+              </li>
+              <li className="text-cyan-300/80">+1 201 893 6385 | +91 989 688 9051</li>
+              <li className="text-cyan-300/80">85 CourtHouse PI, Jersey City <br /> New Jersey - 07306</li>
             </ul>
           </div>
         </div>

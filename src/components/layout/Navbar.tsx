@@ -28,7 +28,9 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                                   location.pathname === "/courses/python" ||  
                                   location.pathname === "/courses/aiml" ||
                                   location.pathname.startsWith("/events") || 
-                                  location.pathname === "/about";
+                                  location.pathname === "/about" ||
+                                  location.pathname === "/coming-soon" ||
+                                  location.pathname === "/pricing";
 
   const navItems = [
     { id: 1, title: "Home", path: "/" },
@@ -260,7 +262,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                     {
                       icon: FaDiscord,
                       title: "Discord",
-                      path: "https://discord.gg/your-invite-link", // Replace with your Discord invite link
+                      path: "https://discord.gg/BKFRhRw9", // Replace with your Discord invite link
                       desc: "Community chat",
                     },
                     {

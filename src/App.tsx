@@ -13,6 +13,7 @@ import UpcomingEvents from './pages/UpcomingEvents';
 import { useScrollEffect } from './hooks/useScrollEffect';
 import AvailableSoon from './pages/AvailableSoon';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import PricingPage from "./pages/Pricing";
 
 // Define proper TypeScript props interface
 interface LoadingScreenProps {
@@ -82,6 +83,7 @@ function AppContent() {
         <Route path="/events" element={<UpcomingEvents />} />
         <Route path="/events/:eventType" element={<UpcomingEvents />} />
         <Route path="/coming-soon" element={<AvailableSoon />} />
+        <Route path="/pricing" element={<PricingPage />} />
       </Routes>
       <Footer />
     </div>
