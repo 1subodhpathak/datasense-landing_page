@@ -221,7 +221,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative h-[100vh] w-full overflow-hidden">
+    <div className="relative h-[100vh] w-full overflow-hidden bg-slate-900">
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" aria-hidden="true" />
 
       <div className="relative z-10 container mx-auto px-4 h-full flex flex-col">

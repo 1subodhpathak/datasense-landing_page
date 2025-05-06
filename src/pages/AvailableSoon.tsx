@@ -60,7 +60,7 @@ const AvailableSoon = () => {
             Want to be notified when we launch?
           </p>
           <a
-            href="mailto:contact@datasense.com"
+            href="mailto:datasense.learning@gmail.com"
             className="text-cyan-400 hover:text-cyan-300 underline transition-colors"
           >
             Contact us
