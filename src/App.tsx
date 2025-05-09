@@ -94,6 +94,13 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Only apply loading screen for non coming-soon routes
+    const currentPath = window.location.pathname;
+    if (currentPath === '/coming-soon') {
+      setLoading(false);
+      return;
+    }
+
     if (document.readyState === 'complete') {
       setTimeout(() => setLoading(false), 1000);
     } else {
@@ -105,8 +112,10 @@ function App() {
 
   return (
     <>
-      {loading && <LoadingScreen finishLoading={() => setLoading(false)} />}
-      <main className={loading ? 'hidden' : 'block'}>
+      {loading && window.location.pathname !== '/coming-soon' && (
+        <LoadingScreen finishLoading={() => setLoading(false)} />
+      )}
+      <main className={loading && window.location.pathname !== '/coming-soon' ? 'hidden' : 'block'}>
         <Router>
           <AppContent />
         </Router>
