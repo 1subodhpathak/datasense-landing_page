@@ -14,11 +14,10 @@ import {
   FaTrophy,
   FaDiscord,
 } from "react-icons/fa";
-import { SignInButton, SignUpButton, UserButton, useUser, useClerk } from "@clerk/clerk-react";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/clerk-react";
 
 const Navbar = ({ isScrolled = false }: NavbarProps) => {
   const { isSignedIn, user } = useUser();
-  const { signOut } = useClerk();
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(isScrolled);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -33,24 +32,8 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
                                   location.pathname === "/coming-soon" ||
                                   location.pathname === "/pricing";
 
-  // Check if we're on the main landing page
-  const isMainLandingPage = location.pathname === "/";
-
-  // Add effect to handle automatic sign out when returning to landing page
-  useEffect(() => {
-    // If we're on the main landing page and user is signed in, sign them out
-    if (isMainLandingPage && isSignedIn) {
-      signOut();
-    }
-  }, [isMainLandingPage, isSignedIn, signOut]);
-
-  // Add effect to handle automatic redirection after sign-in
-  useEffect(() => {
-    // If user is signed in and we're not already on the dashboard, redirect them
-    if (isSignedIn && !window.location.href.includes("battleground.datasenseai.com")) {
-      window.location.href = "https://battleground.datasenseai.com/main";
-    }
-  }, [isSignedIn]);
+  // We're removing the automatic redirect
+  // Instead we'll show a "Go to Dashboard" button when user is signed in
 
   const navItems = [
     { id: 1, title: "Home", path: "/" },
@@ -70,9 +53,9 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
       id: 5,
       title: "Our Community",
       items: [
-        { title: "LinkedIn", path: "https://www.linkedin.com/company/data-sense-lms/" },
-        { title: "YouTube", path: "https://www.youtube.com/@Senseofdata" },
-        { title: "Instagram", path: "https://www.instagram.com/senseofdata/" },
+        { title: "LinkedIn", path: "https://linkedin.com" },
+        { title: "YouTube", path: "https://youtube.com" },
+        { title: "Instagram", path: "https://instagram.com" },
         { title: "Twitter", path: "https://twitter.com" },
       ],
     },
@@ -334,17 +317,20 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   };
 
   const AuthSection = () => {
-    // If user is signed in, only show the UserButton for account management
-    // (they should be redirected to dashboard via useEffect)
     if (isSignedIn && user) {
       return (
-        <div className="flex items-center">
+        <div className="flex items-center space-x-4">
+          <a 
+            href="https://battleground.datasenseai.com/main" 
+            className="bg-caribbean hover:bg-teal text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105"
+          >
+            Go to Dashboard
+          </a>
           <UserButton afterSignOutUrl="/" />
         </div>
       );
     }
 
-    // If not signed in, show login and register buttons
     return (
       <div className="flex items-center space-x-4">
         <SignInButton mode="modal">
@@ -473,9 +459,17 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
               ))}
               {/* Mobile Auth Button */}
               <div className="mt-4 px-3">
-                {isSignedIn ? (
-                  <div className="flex justify-center">
-                    <UserButton afterSignOutUrl="/" />
+                {isSignedIn && user ? (
+                  <div className="flex flex-col space-y-2">
+                    <a 
+                      href="https://battleground.datasenseai.com/main" 
+                      className="block w-full text-center py-2 text-base font-medium text-white bg-caribbean hover:bg-teal rounded-lg transition-all duration-300"
+                    >
+                      Go to Dashboard
+                    </a>
+                    <div className="flex justify-center">
+                      <UserButton afterSignOutUrl="/" />
+                    </div>
                   </div>
                 ) : (
                   <>
