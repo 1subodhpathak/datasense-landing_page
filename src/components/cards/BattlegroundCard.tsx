@@ -72,7 +72,7 @@ const BattlegroundCard = () => {
           </motion.button>
         </div>
 
-        <div className="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
+        <div className="md:w-1/2 relative h-[420px] md:h-auto overflow-hidden">
           <div className="relative w-full h-full p-4">
             {/* Leaderboard Stats Panel */}
             <motion.div 
@@ -134,7 +134,7 @@ const BattlegroundCard = () => {
                   <img 
                     src={serviceData.image}
                     alt="Battleground Leaderboard"
-                    className="w-full h-[280px] object-cover object-center rounded-lg shadow-lg"
+                    className="w-full h-[200px] md:h-[280px] object-cover object-center rounded-lg shadow-lg"
                   />
                 </div>
               </div>
