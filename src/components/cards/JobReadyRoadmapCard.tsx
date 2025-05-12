@@ -72,7 +72,7 @@ const JobReadyRoadmapCard = () => {
           </motion.button>
         </div>
 
-        <div className="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
+        <div className="md:w-1/2 relative h-[420px] md:h-auto overflow-hidden">
           <div className="relative w-full h-full p-4">
             {/* Top Rankings Panel */}
             <motion.div 
@@ -134,7 +134,7 @@ const JobReadyRoadmapCard = () => {
                   <img 
                     src={serviceData.image} 
                     alt="Data Analyst Roadmap" 
-                    className="w-full h-[280px] object-cover object-center rounded-lg shadow-lg"
+                    className="w-full h-[200px] md:h-[280px] object-cover object-center rounded-lg shadow-lg"
                   />
                 </div>
               </div>
