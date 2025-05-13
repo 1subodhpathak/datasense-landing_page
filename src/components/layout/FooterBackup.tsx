@@ -1,7 +1,6 @@
 import { BsLinkedin, BsYoutube, BsInstagram} from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { scrollToSection } from "../../utils/scrollUtils";
-import AnimatedLogo from '../3d/AnimatedLogo';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -14,7 +13,6 @@ function Footer() {
 
   return (
     <footer className="bg-slate-900 text-cyan-100">
-      
       <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
@@ -44,9 +42,6 @@ function Footer() {
               >
                 <BsInstagram size={20} />
               </a>
-            </div>
-            <div className="mt-4 text-cyan-300/60">
-              <p>&copy; {currentYear} DataSense. All rights reserved.</p>
             </div>
           </div>
 
@@ -142,9 +137,13 @@ function Footer() {
             </ul>
           </div>
         </div>
-      </div>
-      <div className="w-full h-[200px] bg-slate-900/50 backdrop-blur-sm">
-        <AnimatedLogo />
+
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-cyan-900/30">
+          <div className="text-center text-cyan-300/60">
+            <p>&copy; {currentYear} DataSense. All rights reserved.</p>
+          </div>
+        </div>
       </div>
     </footer>
   );
