@@ -13,20 +13,20 @@ const ScrollingText: React.FC = () => {
       <div className="relative flex">
         {/* First scroll container */}
         <div className="flex animate-scroll-rtl-text whitespace-nowrap">
-          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300">
+          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300 opacity-10">
             {scrollingContent}
           </span>
-          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300">
+          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300 opacity-10">
             {scrollingContent}
           </span>
         </div>
         
         {/* Duplicate for seamless loop */}
         <div className="flex animate-scroll-rtl-text whitespace-nowrap">
-          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300">
+          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300 opacity-10">
             {scrollingContent}
           </span>
-          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300">
+          <span className="mx-12 text-3xl md:text-5xl lg:text-6xl font-bold text-cyan-300 opacity-10">
             {scrollingContent}
           </span>
         </div>
