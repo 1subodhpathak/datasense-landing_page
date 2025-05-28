@@ -7,6 +7,7 @@ import { FaRoad } from "react-icons/fa";
 import { AiOutlineTrophy } from "react-icons/ai";
 import { useState } from "react";
 import AnimatedBackground from '../animations/AnimatedBackground';
+import ScrollingText from "./ScrollingText";
 
 // Type for tab content
 type TabType = 'courses' | 'dashboard' | 'roadmap' | 'badges';
@@ -35,7 +36,7 @@ const Courses = () => {
             <div className="flex flex-col md:flex-row items-center">
               {/* Left side with content and animation */}
               <div className="md:w-1/2 p-6 relative min-h-[500px]"> {/* Added relative and min-height */}
-                <AnimatedBackground type="dots" />
+                <AnimatedBackground type="cubes" />
                 <div className="relative z-10"> {/* Added to keep content above animation */}
                   <h3 className="text-3xl font-bold text-cyan-100 mb-6">Self Placed Courses</h3>
                   <p className="text-cyan-300 mb-8">
@@ -278,7 +279,7 @@ const Courses = () => {
       case 'roadmap':
         return (
           <div className="mt-12 relative">
-            <AnimatedBackground type="waves" />
+            <AnimatedBackground type="cubes" />
             <div className="flex flex-col md:flex-row items-center">
               {/* Left content */}
               <div className="md:w-1/2 p-6">
@@ -414,7 +415,7 @@ const Courses = () => {
       case 'badges':
         return (
           <div className="mt-12 relative">
-            <AnimatedBackground type="dots" />
+            <AnimatedBackground type="cubes" />
             <div className="flex flex-col md:flex-row items-center">
               {/* Left content */}
               <div className="md:w-1/2 p-6">
@@ -566,8 +567,9 @@ const Courses = () => {
   };
 
   return (
-    <section className="w-full overflow-hidden py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950"> {/* Added overflow-hidden */}
-      <div className="container mx-auto px-4">
+    <section id="courses" className="w-full overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950">
+      <ScrollingText />
+      <div className="container mx-auto px-4 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -10,3 +10,215 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Futuristic Neural Network Background Pattern */
+.neural-bg {
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(0, 245, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(30, 144, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+  background-size: 300px 300px, 200px 200px, 250px 250px;
+  animation: neural-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes neural-pulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+/* Animated Grid Pattern */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: grid-move 8s linear infinite;
+}
+
+@keyframes grid-move {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(20px, 20px);
+  }
+}
+
+/* Holographic Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Pulse Ring Animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Cyber Border Animation */
+@keyframes cyber-border {
+  0% {
+    border-image-source: linear-gradient(0deg, #00f5ff, #1e90ff, #8a2be2, #ff1493);
+  }
+  25% {
+    border-image-source: linear-gradient(90deg, #00f5ff, #1e90ff, #8a2be2, #ff1493);
+  }
+  50% {
+    border-image-source: linear-gradient(180deg, #00f5ff, #1e90ff, #8a2be2, #ff1493);
+  }
+  75% {
+    border-image-source: linear-gradient(270deg, #00f5ff, #1e90ff, #8a2be2, #ff1493);
+  }
+  100% {
+    border-image-source: linear-gradient(360deg, #00f5ff, #1e90ff, #8a2be2, #ff1493);
+  }
+}
+
+/* Neon Glow Text */
+.neon-text {
+  text-shadow: 
+    0 0 5px #00f5ff,
+    0 0 10px #00f5ff,
+    0 0 15px #00f5ff,
+    0 0 20px #00f5ff;
+}
+
+/* Holographic Button Effect */
+.holographic-btn {
+  position: relative;
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(0, 245, 255, 0.1), 
+    transparent
+  );
+  background-size: 200% 200%;
+  animation: holographic-move 2s ease-in-out infinite;
+}
+
+@keyframes holographic-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Matrix Rain Effect (Optional - for background) */
+@keyframes matrix-rain {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Smooth Transitions */
+* {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Scrollbar for Futuristic Look */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00f5ff, #1e90ff);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #1e90ff, #00f5ff);
+}
+
+/* Book styles */
+.book-container {
+  perspective: 2000px;
+  background: #101d24;
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.book-cover {
+  transform-style: preserve-3d;
+  transition: all 0.6s cubic-bezier(0.645, 0.045, 0.355, 1);
+  backface-visibility: hidden;
+  transform-origin: left;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2),
+              0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.book-open {
+  transform: rotateY(-80deg);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.2),
+              0 0 50px rgba(0, 255, 255, 0.2),
+              0 0 75px rgba(0, 255, 255, 0.2);
+}
+
+.book-content-front {
+  transform-style: preserve-3d;
+  transform: translateZ(1px);
+}
+
+.book-content-back {
+  background: #0a1419;
+  border-radius: 0.75rem;
+  z-index: -1;
+}

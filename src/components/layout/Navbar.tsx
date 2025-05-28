@@ -24,9 +24,10 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
   const location = useLocation();
 
   // Check if current page should have consistent nav background
-  const shouldHaveFixedBackground = location.pathname === "/courses/sql" || 
-                                  location.pathname === "/courses/python" ||  
-                                  location.pathname === "/courses/aiml" ||
+  const shouldHaveFixedBackground = location.pathname === "/courses" ||  
+                                  location.pathname.startsWith("/courses/sql") ||
+                                  location.pathname.startsWith("/courses/python") ||
+                                  location.pathname.startsWith("/courses/aiml") ||
                                   location.pathname.startsWith("/events") || 
                                   location.pathname === "/about" ||
                                   location.pathname === "/coming-soon" ||
