@@ -26,6 +26,8 @@ export default {
       animation: {
         'scroll-rtl': 'scroll-rtl 10s linear infinite',
         'scroll-ltr': 'scroll-ltr 10s linear infinite',
+        'scroll-ltr-img': 'scroll-ltr-img 10s linear infinite',
+        'scroll-infinite': 'scroll-infinite 20s linear infinite',
         'scroll-rtl-text': 'scroll-rtl-text 30s linear infinite',
         'float': 'float 1.5s ease-in-out infinite',
         'float-slow': 'float 2s ease-in-out infinite',
@@ -33,6 +35,7 @@ export default {
         'floating': 'floating 2.6s infinite linear',
         'bounce-x': 'bounce-x 1s infinite',
         'rotation': 'rotation 5s linear infinite',
+        'pulse-glow': 'pulse-glow 2.5s infinite alternate',
       },
       keyframes: {
         'scroll-rtl': {
@@ -42,6 +45,14 @@ export default {
         'scroll-ltr': {
           '0%': { transform: 'translateX(-100%)' },
           '100%': { transform: 'translateX(0)' }
+        },
+        'scroll-ltr-img': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'scroll-infinite': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
         },
         'scroll-rtl-text': {
           '0%': { transform: 'translateX(0)' },
@@ -63,9 +74,44 @@ export default {
         'bounce-x': {
           '0%, 100%': { transform: 'translateX(-25%)' },
           '50%': { transform: 'translateX(0)' },
-        }
-      }
+        },
+        'pulse-glow': {
+          '0%': { 
+            boxShadow: '0 0 10px #00FFFF, 0 0 20px #00FFFF' 
+          },
+          '100%': { 
+            boxShadow: '0 0 25px #00FFFF, 0 0 50px #00FFFF, 0 0 75px #00FFFF' 
+          }
+        },
+        fadeIn: {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(48px)'
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)'
+          }
+        },
+      },
+      transformStyle: {
+        'preserve-3d': 'preserve-3d',
+      },
+      perspective: {
+        '2000': '2000px',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.preserve-3d': {
+          'transform-style': 'preserve-3d',
+        },
+        '.perspective-2000': {
+          'perspective': '2000px',
+        },
+      });
+    },
+  ],
 }

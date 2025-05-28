@@ -6,9 +6,10 @@ import About from "./components/sections/About";
 import Footer from "./components/layout/Footer";
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import SQLCourse from './pages/courses/SQLCourse';
-import PythonCourse from './pages/courses/PythonCourse'; 
-import AIMLCourse from './pages/courses/AIMLCourse';
+import CoursePage from './pages/courses/CoursePage';
+// import SQLCourse from './pages/courses/SQLCourse';
+// import PythonCourse from './pages/courses/PythonCourse'; 
+// import AIMLCourse from './pages/courses/AIMLCourse';
 import UpcomingEvents from './pages/UpcomingEvents';
 import { useScrollEffect } from './hooks/useScrollEffect';
 import AvailableSoon from './pages/AvailableSoon';
@@ -56,9 +57,11 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/courses/sql" element={<SQLCourse />} />
+        <Route path="/courses" element={<CoursePage />} />
+        <Route path="/courses/:courseType" element={<CoursePage />} />
+        {/* <Route path="/courses/sql" element={<SQLCourse />} />
         <Route path="/courses/python" element={<PythonCourse />} />
-        <Route path="/courses/aiml" element={<AIMLCourse />} />
+        <Route path="/courses/aiml" element={<AIMLCourse />} /> */}
         <Route path="/events" element={<UpcomingEvents />} />
         <Route path="/events/:eventType" element={<UpcomingEvents />} />
         <Route path="/coming-soon" element={<AvailableSoon />} />

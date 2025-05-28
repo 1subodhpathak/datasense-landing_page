@@ -47,14 +47,24 @@ const TopMate: React.FC = () => {
   const [activeCard, setActiveCard] = useState<number | null>(null);
 
   return (
-    <section id ="topmate" className="py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900 relative overflow-hidden">
+    <section id="expert-services" className="py-20 bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900 relative overflow-hidden">
       <div className="container mx-auto px-4 relative z-10">
-        <h2 className="text-4xl font-bold text-center text-cyan-100 mb-4">
-          Expert Services
-        </h2>
-        <p className="text-center text-cyan-300 mb-16 max-w-2xl mx-auto">
-          Personalized support to accelerate your data analytics career journey
-        </p>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-5xl font-bold text-bright-cyan mb-6">
+            EXPERT SERVICES
+          </h2>
+          <p className="text-2xl text-cyan-100 mb-4">
+            ACCELERATE YOUR CAREER WITH PERSONALIZED GUIDANCE
+          </p>
+          <p className="text-lg text-cyan-300 max-w-4xl mx-auto">
+            Personalized support to accelerate your data analytics career journey with Expert Mentors and Career Coaches.
+          </p>
+        </motion.div>
 
         <div className="space-y-8">
           {/* First Row - 2 Cards */}
