@@ -36,8 +36,14 @@ export default {
         'bounce-x': 'bounce-x 1s infinite',
         'rotation': 'rotation 5s linear infinite',
         'pulse-glow': 'pulse-glow 2.5s infinite alternate',
+        'scroll-x': 'scroll-x 20s linear infinite',
+        'scroll-seamless': 'scroll-seamless 32s linear infinite'
       },
       keyframes: {
+        'scroll-seamless': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' }
+        },
         'scroll-rtl': {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-100%)' }
@@ -93,6 +99,10 @@ export default {
             transform: 'translateY(0)'
           }
         },
+        'scroll-x': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' }
+        }
       },
       transformStyle: {
         'preserve-3d': 'preserve-3d',

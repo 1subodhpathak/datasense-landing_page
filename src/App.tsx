@@ -15,6 +15,7 @@ import { useScrollEffect } from './hooks/useScrollEffect';
 import AvailableSoon from './pages/AvailableSoon';
 // import { ProtectedRoute } from './components/ProtectedRoute';
 import PricingPage from "./pages/Pricing";
+import QuizWrapper from './pages/coderpad/QuizWrapper';
 
 // Define proper TypeScript props interface
 interface LoadingScreenProps {
@@ -66,6 +67,7 @@ function AppContent() {
         <Route path="/events/:eventType" element={<UpcomingEvents />} />
         <Route path="/coming-soon" element={<AvailableSoon />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/quiz" element={<QuizWrapper />} />
       </Routes>
       <Footer />
     </div>
@@ -78,7 +80,7 @@ function App() {
   useEffect(() => {
     // Only apply loading screen for non coming-soon routes
     const currentPath = window.location.pathname;
-    if (currentPath === '/coming-soon') {
+    if (currentPath === '/coming-soon' || currentPath === '/quiz') {
       setLoading(false);
       return;
     }
