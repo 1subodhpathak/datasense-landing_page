@@ -91,9 +91,9 @@ function ToolScroller() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="flex flex-col md:flex-row items-center">
           {/* Left side - Text */}
-          <div>
+          <div className="w-full md:w-2/5 md:pr-8">
             <h2 className="text-4xl font-bold text-caribbean leading-tight">
               From Excel to AI:<br />
               Your All-in-One<br />
@@ -105,8 +105,8 @@ function ToolScroller() {
             </p>
           </div>
 
-          {/* Right side - Scrolling Tools */}
-          <div className="space-y-12">
+          {/* Right side - Scrolling Tools (moved left with negative margin) */}
+          <div className="w-full md:w-3/5 space-y-12 -ml-0 md:-ml-16">
             {/* First Row - Right to Left */}
             <div className="relative overflow-hidden">
               <div className="flex animate-scroll-rtl gap-16">

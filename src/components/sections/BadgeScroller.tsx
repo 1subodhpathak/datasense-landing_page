@@ -1,28 +1,39 @@
 const badges = [
   {
-    title: "Learn",
-    description: "Master data skills with structured learning paths",
-    icon: "🎓",
+    title: "Excel",
+    description: "Master spreadsheets, formulas, data cleaning, and automation. Learn advanced Excel tricks for business and analytics.",
+    icon: "📊",
+    extra: "Pivot tables, charts, macros, and more.",
   },
   {
-    title: "Practice",
-    description: "2000+ hands-on exercises and real-world projects",
-    icon: "⚡",
+    title: "Power BI",
+    description: "Create interactive dashboards and reports. Connect, model, and visualize your data for impactful business decisions.",
+    icon: "🖥️",
+    extra: "DAX, Power Query, and real-time analytics.",
   },
   {
-    title: "Play",
-    description: "Interactive coding challenges and competitions",
-    icon: "🎮",
+    title: "Tableau",
+    description: "Visualize data with beautiful dashboards. Drag-and-drop analytics for quick insights and storytelling.",
+    icon: "📈",
+    extra: "Calculated fields, parameters, and live data connections.",
   },
   {
-    title: "AI",
-    description: "Cutting-edge AI tools and implementations and tutorials",
+    title: "SQL",
+    description: "Query, join, and analyze data from databases. Practice with 2000+ real-world SQL exercises and projects.",
+    icon: "🗄️",
+    extra: "Subqueries, window functions, and performance tuning.",
+  },
+  {
+    title: "Python",
+    description: "Automate tasks, analyze data, and build applications. Learn Python for data science, web, and scripting.",
+    icon: "🐍",
+    extra: "Pandas, NumPy, data visualization, and APIs.",
+  },
+  {
+    title: "AI/ML",
+    description: "Explore artificial intelligence and machine learning. Build models, make predictions, and solve real problems.",
     icon: "🤖",
-  },
-  {
-    title: "Expert Services",
-    description: "Personalized mentorship and career guidance",
-    icon: "👨‍💻",
+    extra: "Regression, classification, clustering, and deep learning.",
   },
 ];
 
@@ -75,9 +86,10 @@ const BadgeScroller = () => {
                 </div>
                 
                 {/* Badge description */}
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                <p className="text-gray-300 text-sm leading-relaxed mb-1">
                   {badge.description}
                 </p>
+                <p className="text-cyan-200 text-xs mb-4">{badge.extra}</p>
                 
                 {/* Progress bar simulation */}
                 <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
@@ -136,9 +148,10 @@ const BadgeScroller = () => {
                 </div>
                 
                 {/* Badge description */}
-                <p className="text-gray-300 text-sm leading-relaxed mb-4">
+                <p className="text-gray-300 text-sm leading-relaxed mb-1">
                   {badge.description}
                 </p>
+                <p className="text-cyan-200 text-xs mb-4">{badge.extra}</p>
                 
                 {/* Progress bar simulation */}
                 <div className="w-full bg-gray-800 rounded-full h-2 overflow-hidden">

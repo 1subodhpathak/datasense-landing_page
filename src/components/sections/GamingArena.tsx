@@ -1,12 +1,38 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
 import ScrollingText from "./ScrollingText";
 
 type TabType = 'battleground' | 'investigation' | 'analytics' | 'aijourney';
 
+// Add service links interface and constant
+interface GameLinks {
+  battleground: string;
+  investigation: string;
+  analytics: string;
+  aijourney: string;
+}
+
+const gameLinks: GameLinks = {
+  battleground: 'https://www.youtube.com/', // Replace with actual link when ready
+  investigation: '/coming-soon', // Replace with actual link when ready
+  analytics: '/coming-soon', // Replace with actual link when ready
+  aijourney: '/coming-soon' // Replace with actual link when ready
+};
+
 const GamingArena: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('battleground');
+  const navigate = useNavigate();
+
+  // Add navigation handler
+  const handleNavigation = (url: string) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      window.location.href = url;
+    } else {
+      navigate(url);
+    }
+  };
 
   const TabButton = ({ type, label, isActive }: { type: TabType, label: string, isActive: boolean }) => (
     <button
@@ -54,6 +80,7 @@ const GamingArena: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavigation(gameLinks.battleground)}
                     className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                       hover:bg-cyan-300 transition-all duration-300"
                   >
@@ -185,6 +212,7 @@ const GamingArena: React.FC = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => handleNavigation(gameLinks.investigation)}
                       className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                         hover:bg-cyan-300 transition-all duration-300"
                     >
@@ -316,6 +344,7 @@ const GamingArena: React.FC = () => {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        onClick={() => handleNavigation(gameLinks.analytics)}
                         className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                           hover:bg-cyan-300 transition-all duration-300"
                       >
@@ -434,6 +463,7 @@ const GamingArena: React.FC = () => {
                       <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        onClick={() => handleNavigation(gameLinks.aijourney)}
                         className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                           hover:bg-cyan-300 transition-all duration-300"
                       >

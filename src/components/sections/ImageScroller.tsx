@@ -107,10 +107,14 @@ const ImageScroller = () => {
   const totalWidth = images.length * (160 + 32); // 160px = w-40, 32px = gap-8
 
   return (
-    <div className="w-full overflow-hidden bg-gradient-to-br from-dark-cyan via-caribbean to-bright-cyan py-16 relative">
-      {/* Animated background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent animate-pulse"></div>
+    <div className="relative w-full overflow-hidden bg-white py-16">
+      {/* Top curved border */}
+      <div className="absolute top-0 left-0 w-full h-16">
+        <div className="w-full h-full bg-dark-cyan/90 rounded-b-[100%]" />
+      </div>
+      {/* Bottom curved border */}
+      <div className="absolute bottom-0 left-0 w-full h-16">
+        <div className="w-full h-full bg-dark-cyan/90 rounded-t-[100%]" />
       </div>
       
       <div className="relative flex overflow-hidden">
@@ -132,7 +136,7 @@ const ImageScroller = () => {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-caribbean via-bright-cyan to-caribbean rounded-xl blur opacity-75 group-hover:opacity-100 animate-pulse"></div>
               
               {/* Main image container */}
-              <div className="relative bg-gray-900/90 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
+              <div className="relative bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
                             transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-caribbean/50">
                 <img 
                   src={image} 
@@ -150,7 +154,7 @@ const ImageScroller = () => {
               className="shrink-0 relative group inline-flex"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-caribbean via-bright-cyan to-caribbean rounded-xl blur opacity-75 group-hover:opacity-100 animate-pulse"></div>
-              <div className="relative bg-gray-900/90 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
+              <div className="relative bg-gradient-to-b from-cyan-900 via-blue-900 to-gray-900 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
                             transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-caribbean/50">
                 <img 
                   src={image} 

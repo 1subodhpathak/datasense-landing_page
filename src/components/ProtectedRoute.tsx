@@ -1,12 +1,12 @@
 import { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '@clerk/clerk-react'; // If using Clerk
+import { useAuth } from '@clerk/clerk-react';
+// import { Navigation } from 'lucide-react';
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { isSignedIn, isLoaded } = useAuth();
 
   if (!isLoaded) {
@@ -14,7 +14,8 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
 
   if (!isSignedIn) {
-    return <Navigate to="/sign-in" replace />;
+    alert('You must be signed in to access this page.');
+    // return <Navigation to={'/'} className="text-blue-500" />;
   }
 
   return <>{children}</>;

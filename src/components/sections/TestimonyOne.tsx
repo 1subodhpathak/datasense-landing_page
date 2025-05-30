@@ -39,21 +39,34 @@ const TestimonyOne = () => {
           <motion.div 
             className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-8 md:p-10 relative z-10"
             whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            transition={{ type: 'spring', stiffness: 300 }}
           >
-            <motion.p 
-              className="text-gray-800 text-lg md:text-xl leading-relaxed"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              "I wanted to switch into data analytics but didn't know where to start. 
-              DataSense gave me the structure I needed. Their learning roadmap is 
-              beginner-friendly, and the Practice Arena—with over 2,000 SQL and Python 
-              questions—really helped me build confidence through consistent practice. 
-              It changed the way I approached learning."
-            </motion.p>
+            <div className="flex items-center md:items-start gap-6">
+              {/* Avatar and Name */}
+              <div className="flex flex-col items-center min-w-[90px]">
+                <img
+                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  alt="User Avatar"
+                  className="w-20 h-20 rounded-full object-cover border-4 border-caribbean shadow"
+                />
+                <span className="mt-3 font-semibold text-gray-700 text-base">Alex carry</span>
+                {/* <span className="text-xs text-gray-400">DataSense Learner</span> */}
+              </div>
+              {/* Testimony Text */}
+              <motion.p 
+                className="text-gray-800 text-lg md:text-xl leading-relaxed text-left"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+              >
+                "I wanted to switch into data analytics but didn't know where to start. 
+                DataSense gave me the structure I needed. Their learning roadmap is 
+                beginner-friendly, and the Practice Arena—with over 2,000 SQL and Python 
+                questions—really helped me build confidence through consistent practice. 
+                It changed the way I approached learning."
+              </motion.p>
+            </div>
           </motion.div>
 
           {/* Decorative elements */}

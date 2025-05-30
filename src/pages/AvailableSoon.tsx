@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion';
 import { FiClock } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { useScrollTop } from '../hooks/useScrollTop';
 
 const AvailableSoon = () => {
+  useScrollTop();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900 flex items-center justify-center px-4">
       <div className="text-center">

@@ -1,7 +1,7 @@
 import { BsLinkedin, BsYoutube, BsInstagram} from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { scrollToSection } from "../../utils/scrollUtils";
-import AnimatedLogo from '../3d/AnimatedLogo';
+// import AnimatedLogo from '../3d/AnimatedLogo';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -143,9 +143,9 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="w-full h-[200px] bg-slate-900/50 backdrop-blur-sm">
+      {/* <div className="w-full h-[200px] bg-slate-900/50 backdrop-blur-sm">
         <AnimatedLogo />
-      </div>
+      </div> */}
     </footer>
   );
 }

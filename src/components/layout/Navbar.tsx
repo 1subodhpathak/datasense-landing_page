@@ -380,7 +380,7 @@ const Navbar = ({ isScrolled = false }: NavbarProps) => {
             </div>
 
             {/* Auth Buttons - Right Aligned */}
-            <AuthSection />
+            {location.pathname !== "/quiz" && <AuthSection />}
           </div>
 
           {/* Mobile Menu Button */}
