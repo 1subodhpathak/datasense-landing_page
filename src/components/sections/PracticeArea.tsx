@@ -1,13 +1,39 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
 import ScrollingText from "./ScrollingText";
 
 // Type for tab content
 type TabType = 'coderpad' | 'custom' | 'live' | 'mock';
 
+// Add service links interface and constant after imports
+interface PracticeLinks {
+  coderpad: string;
+  custom: string;
+  live: string;
+  mock: string;
+}
+
+const practiceLinks: PracticeLinks = {
+  coderpad: '/quiz', // Replace with actual link when ready
+  custom: 'https://www.youtube.com/', // Example external link
+  live: '/coming-soon',
+  mock: '/coming-soon'
+};
+
 const PracticeArea: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('coderpad');
+  const navigate = useNavigate();
+
+  // Add navigation handler
+  const handleNavigation = (url: string) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      window.location.href = url;
+    } else {
+      navigate(url);
+    }
+  };
 
   const TabButton = ({ type, label, isActive }: { type: TabType, label: string, isActive: boolean }) => (
     <button
@@ -41,10 +67,11 @@ const PracticeArea: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavigation(practiceLinks.coderpad)}
                     className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                       hover:bg-cyan-300 transition-all duration-300"
                   >
-                    EXPLORE
+                    Code Now
                   </motion.button>
                 </div>
               </div>
@@ -156,6 +183,7 @@ const PracticeArea: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavigation(practiceLinks.custom)}
                   className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                     hover:bg-cyan-300 transition-all duration-300"
                 >
@@ -276,6 +304,7 @@ const PracticeArea: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavigation(practiceLinks.live)}
                   className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                     hover:bg-cyan-300 transition-all duration-300"
                 >
@@ -387,6 +416,7 @@ const PracticeArea: React.FC = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavigation(practiceLinks.mock)}
                   className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                     hover:bg-cyan-300 transition-all duration-300"
                 >

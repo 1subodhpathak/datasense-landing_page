@@ -1,25 +1,57 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
 import ScrollingText from "./ScrollingText";
 
 type TabType = 'ats' | 'builder' | 'comparison';
 
+interface ServiceLinks {
+  ats: string;
+  builder: string;
+  comparison: string;
+}
+
+const serviceLinks: ServiceLinks = {
+  ats: 'https://www.youtube.com/', // Replace with actual link when ready
+  builder: '/coming-soon', // Replace with actual link when ready
+  comparison: '/coming-soon' // Replace with actual link when ready
+};
+
 const AIServices: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('ats');
+  const navigate = useNavigate();
 
-  const TabButton = ({ type, label, isActive }: { type: TabType, label: string, isActive: boolean }) => (
-    <button
-      onClick={() => setActiveTab(type)}
-      className={`px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300 ${
-        isActive 
-          ? 'bg-bright-cyan text-slate-900' 
-          : 'bg-cyan-900/20 text-cyan-100 hover:bg-cyan-800/30'
-      }`}
-    >
-      {label}
-    </button>
-  );
+  const TabButton = ({ type, label, isActive }: { type: TabType, label: string, isActive: boolean }) => {
+    const handleClick = () => {
+      setActiveTab(type); // Only change the active tab, no navigation
+    };
+
+    return (
+      <button
+        onClick={handleClick}
+        className={`px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300 ${
+          isActive 
+            ? 'bg-bright-cyan text-slate-900' 
+            : 'bg-cyan-900/20 text-cyan-100 hover:bg-cyan-800/30'
+        }`}
+      >
+        {label}
+      </button>
+    );
+  };
+
+  const handleNavigation = (url: string) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      // For external URLs
+      window.location.href = url;
+      // Or if you want to open in new tab:
+      // window.open(url, '_blank');
+    } else {
+      // For internal routes
+      navigate(url);
+    }
+  };
 
   const renderContent = () => {
     switch (activeTab) {
@@ -50,6 +82,7 @@ const AIServices: React.FC = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavigation(serviceLinks.ats)}
                     className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                       hover:bg-cyan-300 transition-all duration-300"
                   >
@@ -180,6 +213,7 @@ const AIServices: React.FC = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => handleNavigation(serviceLinks.builder)}
                       className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                         hover:bg-cyan-300 transition-all duration-300"
                     >
@@ -286,6 +320,7 @@ const AIServices: React.FC = () => {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => handleNavigation(serviceLinks.comparison)}
                       className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                         hover:bg-cyan-300 transition-all duration-300"
                     >

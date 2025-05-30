@@ -13,7 +13,7 @@ import CoursePage from './pages/courses/CoursePage';
 import UpcomingEvents from './pages/UpcomingEvents';
 import { useScrollEffect } from './hooks/useScrollEffect';
 import AvailableSoon from './pages/AvailableSoon';
-// import { ProtectedRoute } from './components/ProtectedRoute';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import PricingPage from "./pages/Pricing";
 import QuizWrapper from './pages/coderpad/QuizWrapper';
 
@@ -51,7 +51,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ finishLoading }) => {
 };
 
 function AppContent() {
-  useScrollEffect(); // Move the hook inside this component
+  useScrollEffect();
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -60,13 +60,17 @@ function AppContent() {
         <Route path="/about" element={<About />} />
         <Route path="/courses" element={<CoursePage />} />
         <Route path="/courses/:courseType" element={<CoursePage />} />
-        {/* <Route path="/courses/sql" element={<SQLCourse />} />
-        <Route path="/courses/python" element={<PythonCourse />} />
-        <Route path="/courses/aiml" element={<AIMLCourse />} /> */}
         <Route path="/events" element={<UpcomingEvents />} />
         <Route path="/events/:eventType" element={<UpcomingEvents />} />
         <Route path="/coming-soon" element={<AvailableSoon />} />
-        <Route path="/pricing" element={<PricingPage />} />
+        <Route 
+          path="/pricing" 
+          element={
+            <ProtectedRoute>
+              <PricingPage />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/quiz" element={<QuizWrapper />} />
       </Routes>
       <Footer />

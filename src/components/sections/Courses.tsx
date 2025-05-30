@@ -6,14 +6,40 @@ import { IoMdAnalytics } from "react-icons/io";
 import { FaRoad } from "react-icons/fa";
 import { AiOutlineTrophy } from "react-icons/ai";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import AnimatedBackground from '../animations/AnimatedBackground';
 import ScrollingText from "./ScrollingText";
 
 // Type for tab content
 type TabType = 'courses' | 'dashboard' | 'roadmap' | 'badges';
 
-const Courses = () => {
+// Add service links interface and constant
+interface CourseLinks {
+  courses: string;
+  dashboard: string;
+  roadmap: string;
+  badges: string;
+}
+
+const courseLinks: CourseLinks = {
+  courses: '/courses', // Replace with actual link when ready
+  dashboard: 'https://www.youtube.com/', // Example external link
+  roadmap: '/coming-soon',
+  badges: '/coming-soon'
+};
+
+const Courses: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('courses');
+  const navigate = useNavigate();
+
+  // Add navigation handler
+  const handleNavigation = (url: string) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      window.location.href = url;
+    } else {
+      navigate(url);
+    }
+  };
 
   const TabButton = ({ type, label, isActive }: { type: TabType, label: string, isActive: boolean }) => (
     <button
@@ -47,6 +73,7 @@ const Courses = () => {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavigation(courseLinks.courses)}
                     className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                       hover:bg-cyan-300 transition-all duration-300"
                   >
@@ -178,6 +205,7 @@ const Courses = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavigation(courseLinks.dashboard)}
                   className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                     hover:bg-cyan-300 transition-all duration-300"
                 >
@@ -309,6 +337,7 @@ const Courses = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavigation(courseLinks.roadmap)}
                   className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                     hover:bg-cyan-300 transition-all duration-300"
                 >
@@ -445,6 +474,7 @@ const Courses = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavigation(courseLinks.badges)}
                   className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
                     hover:bg-cyan-300 transition-all duration-300"
                 >
