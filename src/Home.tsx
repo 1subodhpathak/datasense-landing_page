@@ -13,9 +13,10 @@ import ServicesMainNew from './components/sections/ServiceMainNew';
 import PracticeArea from './components/sections/PracticeArea';
 import GamingArena from './components/sections/GamingArena';
 import AIServices from './components/sections/AIServices';
-import ToolScrollerImage from './components/sections/ToolScrollerImage';
+// import ToolScrollerImage from './components/sections/ToolScrollerImage';
 import TestimonyOne from './components/sections/TestimonyOne';
 import BadgeScroller from './components/sections/BadgeScroller';
+import ImageScroller from './components/sections/ImageScroller';
 
 const Home = () => {
   return (
@@ -31,7 +32,8 @@ const Home = () => {
       <TestimonyOne />
       <GamingArena />
       <AIServices />
-      <ToolScrollerImage />
+      {/* <ToolScrollerImage /> */}
+      <ImageScroller />
       <TopMate />
       <Rating />
       <Testimonial />

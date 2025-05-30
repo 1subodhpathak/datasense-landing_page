@@ -24,7 +24,7 @@ const images = [
 
 function ToolScrollerImage() {
   return (
-    <section className="relative w-full bg-white overflow-hidden py-16">
+    <section className="relative w-full bg-black overflow-hidden py-16">
       {/* Top curved border */}
       <div className="absolute top-0 left-0 w-full h-16">
         <div className="w-full h-full bg-dark-cyan/90 rounded-b-[100%]" />
@@ -36,19 +36,30 @@ function ToolScrollerImage() {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        {/* Single Row Image Scroll */}
-        <div className="relative overflow-hidden py-8">
-          <div className="flex animate-scroll-ltr-img gap-8">
-            {/* Double the images array for continuous loop effect */}
-            {[...images, ...images].map((image, index) => (
+        {/* Image Scroll Container */}
+        <div className="relative flex overflow-hidden">
+          <div className="flex animate-scroll-x gap-8 py-4">
+            {images.map((image, index) => (
               <div
-                key={`image-${index}`}
+                key={`image-1-${index}`}
                 className="shrink-0 flex items-center justify-center"
               >
                 <img 
                   src={image} 
                   alt={`Scroll image ${index + 1}`}
-                  className="w-30 h-20 object-cover rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+                  className="w-48 h-40 object-cover rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+            ))}
+            {images.map((image, index) => (
+              <div
+                key={`image-2-${index}`}
+                className="shrink-0 flex items-center justify-center"
+              >
+                <img 
+                  src={image} 
+                  alt={`Scroll image ${index + 1}`}
+                  className="w-48 h-40 object-cover rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
                 />
               </div>
             ))}
