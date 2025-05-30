@@ -31,9 +31,9 @@ const Home = () => {
       <PracticeArea />
       <TestimonyOne />
       <GamingArena />
+      <ImageScroller />
       <AIServices />
       {/* <ToolScrollerImage /> */}
-      <ImageScroller />
       <TopMate />
       <Rating />
       <Testimonial />

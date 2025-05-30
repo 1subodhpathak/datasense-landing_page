@@ -27,7 +27,7 @@ export default {
         'scroll-rtl': 'scroll-rtl 10s linear infinite',
         'scroll-ltr': 'scroll-ltr 10s linear infinite',
         'scroll-ltr-img': 'scroll-ltr-img 10s linear infinite',
-        'scroll-infinite': 'scroll-infinite 20s linear infinite',
+        'scroll-infinite': 'scroll-infinite 30s linear infinite',
         'scroll-rtl-text': 'scroll-rtl-text 30s linear infinite',
         'float': 'float 1.5s ease-in-out infinite',
         'float-slow': 'float 2s ease-in-out infinite',
