@@ -55,7 +55,7 @@ const TopMate: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-bright-cyan mb-6">
+          <h2 className="text-5xl font-bold text-bright-cyan mb-6 hover:text-cyan-100">
             EXPERT SERVICES
           </h2>
           <p className="text-2xl text-cyan-100 mb-4">

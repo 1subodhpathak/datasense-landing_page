@@ -29,7 +29,10 @@ const ImageScroller = () => {
     <div className="relative w-full overflow-hidden bg-white py-16">
       {/* Top curved border */}
       <div className="absolute top-0 left-0 w-full h-16">
-        <div className="w-full h-full bg-dark-cyan/90 rounded-b-[100%]" />
+        {/* <p className="text-white text-center text-2xl font-bold">Data Analytis For Job Ready Roadmap</p> */}
+        <div className="w-full h-full bg-dark-cyan/90 rounded-b-[100%]">
+          <p className="text-white text-center text-2xl font-bold pt-4">"Data Analytis For Job Ready Roadmap"</p>
+        </div>
       </div>
       {/* Bottom curved border */}
       <div className="absolute bottom-0 left-0 w-full h-16">
@@ -55,7 +58,7 @@ const ImageScroller = () => {
               <div className="absolute -inset-0.5 bg-gradient-to-r from-caribbean via-bright-cyan to-caribbean rounded-xl blur opacity-75 group-hover:opacity-100 animate-pulse"></div>
               
               {/* Main image container */}
-              <div className="relative bg-gradient-to-b from-slate-900 via-blue-900 to-teal-800 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
+              <div className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-teal-800 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
                             transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-caribbean/50">
                 <img 
                   src={image} 

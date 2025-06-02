@@ -23,11 +23,16 @@ const ServicesMain: React.FC = () => {
     <>
       {isMain ? (
         <div className="relative mb-8">
-          <h1 className="text-5xl font-bold text-center mb-6">
-            <span className="text-cyan-100">WHY CHOOSE </span>
-            <span className="text-bright-cyan">DATASENSE</span>
+          <h1 className="text-5xl font-bold text-center mb-6 group">
+            <span className="text-cyan-100 group-hover:text-bright-cyan transition-colors duration-300">
+              WHY CHOOSE{" "}
+            </span>
+            <span className="text-bright-cyan group-hover:text-cyan-100 transition-colors duration-300">
+              DATASENSE
+            </span>
           </h1>
         </div>
+
       ) : (
         <h2 
           className="text-4xl font-bold text-center text-cyan-100 mb-4"

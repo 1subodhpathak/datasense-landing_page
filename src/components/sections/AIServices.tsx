@@ -30,7 +30,7 @@ const AIServices: React.FC = () => {
     return (
       <button
         onClick={handleClick}
-        className={`px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300 ${
+        className={`px-6 py-3 rounded-lg text-lg font-semibold transition-all duration-300 ${
           isActive 
             ? 'bg-bright-cyan text-slate-900' 
             : 'bg-cyan-900/20 text-cyan-100 hover:bg-cyan-800/30'
@@ -83,8 +83,9 @@ const AIServices: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleNavigation(serviceLinks.ats)}
-                    className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                      hover:bg-cyan-300 transition-all duration-300"
+                    className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                   >
                     CHECK NOW
                   </motion.button>
@@ -214,8 +215,9 @@ const AIServices: React.FC = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleNavigation(serviceLinks.builder)}
-                      className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                        hover:bg-cyan-300 transition-all duration-300"
+                      className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                     >
                       BUILD NOW
                     </motion.button>
@@ -321,8 +323,9 @@ const AIServices: React.FC = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleNavigation(serviceLinks.comparison)}
-                      className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                        hover:bg-cyan-300 transition-all duration-300"
+                      className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                     >
                       COMPARE NOW
                     </motion.button>
@@ -431,7 +434,7 @@ const AIServices: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-bright-cyan mb-6">
+          <h2 className="text-5xl font-bold text-bright-cyan mb-6 hover:text-cyan-100">
             AI INTEGRATED SERVICES
           </h2>
           <p className="text-2xl text-cyan-100 mb-4">
