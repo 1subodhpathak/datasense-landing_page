@@ -44,7 +44,7 @@ const Courses: React.FC = () => {
   const TabButton = ({ type, label, isActive }: { type: TabType, label: string, isActive: boolean }) => (
     <button
       onClick={() => setActiveTab(type)}
-      className={`px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300 ${
+      className={`px-6 py-3 rounded-lg text-lg font-semibold transition-all duration-300 ${
         isActive 
           ? 'bg-bright-cyan text-slate-900' 
           : 'bg-cyan-900/20 text-cyan-100 hover:bg-cyan-800/30'
@@ -74,8 +74,9 @@ const Courses: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleNavigation(courseLinks.courses)}
-                    className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                      hover:bg-cyan-300 transition-all duration-300"
+                    className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                   >
                     EXPLORE
                   </motion.button>
@@ -206,8 +207,9 @@ const Courses: React.FC = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleNavigation(courseLinks.dashboard)}
-                  className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                    hover:bg-cyan-300 transition-all duration-300"
+                  className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                 >
                   VIEW DASHBOARD
                 </motion.button>
@@ -338,8 +340,9 @@ const Courses: React.FC = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleNavigation(courseLinks.roadmap)}
-                  className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                    hover:bg-cyan-300 transition-all duration-300"
+                  className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                 >
                   VIEW ROADMAP
                 </motion.button>
@@ -475,8 +478,9 @@ const Courses: React.FC = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleNavigation(courseLinks.badges)}
-                  className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                    hover:bg-cyan-300 transition-all duration-300"
+                  className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                 >
                   VIEW BADGES
                 </motion.button>
@@ -606,7 +610,7 @@ const Courses: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-bright-cyan mb-6">
+          <h2 className="text-5xl font-bold text-bright-cyan mb-6 hover:text-cyan-100">
             LEARN ON YOUR TERMS
           </h2>
           <p className="text-2xl text-cyan-100 mb-4">

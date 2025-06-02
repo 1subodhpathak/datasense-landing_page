@@ -27,7 +27,7 @@ export default {
         'scroll-rtl': 'scroll-rtl 10s linear infinite',
         'scroll-ltr': 'scroll-ltr 10s linear infinite',
         'scroll-ltr-img': 'scroll-ltr-img 10s linear infinite',
-        'scroll-infinite': 'scroll-infinite 30s linear infinite',
+        // 'scroll-infinite': 'scroll-infinite 30s linear infinite',
         'scroll-rtl-text': 'scroll-rtl-text 30s linear infinite',
         'float': 'float 1.5s ease-in-out infinite',
         'float-slow': 'float 2s ease-in-out infinite',
@@ -56,10 +56,10 @@ export default {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
-        'scroll-infinite': {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-100%)' },
-        },
+        // 'scroll-infinite': {
+        //   '0%': { transform: 'translateX(0)' },
+        //   '100%': { transform: 'translateX(-100%)' },
+        // },
         'scroll-rtl-text': {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },

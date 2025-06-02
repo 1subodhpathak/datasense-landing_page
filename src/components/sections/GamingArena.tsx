@@ -37,7 +37,7 @@ const GamingArena: React.FC = () => {
   const TabButton = ({ type, label, isActive }: { type: TabType, label: string, isActive: boolean }) => (
     <button
       onClick={() => setActiveTab(type)}
-      className={`px-6 py-3 rounded-full text-lg font-semibold transition-all duration-300 whitespace-nowrap
+      className={`px-6 py-3 rounded-lg text-lg font-semibold transition-all duration-300 whitespace-nowrap
         ${isActive 
           ? 'bg-bright-cyan text-slate-900' 
           : 'bg-cyan-900/20 text-cyan-100 hover:bg-cyan-800/30'
@@ -57,7 +57,7 @@ const GamingArena: React.FC = () => {
               {/* Left content */}
               <div className="md:w-1/2 p-6 relative min-h-[500px]">
                 <div className="relative z-10">
-                  <h3 className="text-3xl font-bold text-cyan-100 mb-6">DataSense Battleground</h3>
+                  <h3 className="text-3xl font-bold text-cyan-100 mb-6">Battleground</h3>
                   <p className="text-cyan-300 mb-8">
                     The Game of Clash is an innovative, competitive learning game designed to test 
                     and improve your SQL and Python skills through head-to-head challenges with 
@@ -81,8 +81,9 @@ const GamingArena: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handleNavigation(gameLinks.battleground)}
-                    className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                      hover:bg-cyan-300 transition-all duration-300"
+                    className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                   >
                     START CHALLENGE
                   </motion.button>
@@ -213,8 +214,9 @@ const GamingArena: React.FC = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleNavigation(gameLinks.investigation)}
-                      className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                        hover:bg-cyan-300 transition-all duration-300"
+                      className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                      font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                      shadow-[0_0_10px_#00ffff] transition-all duration-300"
                     >
                       START INVESTIGATION
                     </motion.button>
@@ -321,7 +323,7 @@ const GamingArena: React.FC = () => {
                   {/* Left content */}
                   <div className="md:w-1/2 p-6 relative min-h-[500px]">
                     <div className="relative z-10">
-                      <h3 className="text-3xl font-bold text-cyan-100 mb-6">Data Analytics Job Ready Roadmap</h3>
+                      <h3 className="text-3xl font-bold text-cyan-100 mb-6">Data Analytics Roadmap</h3>
                       <p className="text-cyan-300 mb-8">
                         Follow a structured learning path designed to prepare you for a career in data analytics. 
                         Master essential tools, techniques, and best practices through hands-on projects and 
@@ -345,8 +347,9 @@ const GamingArena: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleNavigation(gameLinks.analytics)}
-                        className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                          hover:bg-cyan-300 transition-all duration-300"
+                        className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                       >
                         START JOURNEY
                       </motion.button>
@@ -464,8 +467,9 @@ const GamingArena: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleNavigation(gameLinks.aijourney)}
-                        className="px-8 py-3 bg-bright-cyan text-slate-900 font-bold rounded-full 
-                          hover:bg-cyan-300 transition-all duration-300"
+                        className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
                       >
                         EXPLORE AI
                       </motion.button>
@@ -578,7 +582,7 @@ const GamingArena: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-bright-cyan mb-6">
+          <h2 className="text-5xl font-bold text-bright-cyan mb-6 hover:text-cyan-100">
             DATASENSE GAMING ARENA
           </h2>
           <p className="text-2xl text-cyan-100 mb-4">
@@ -594,7 +598,7 @@ const GamingArena: React.FC = () => {
         <div className="flex flex-wrap justify-center gap-4 mb-8">
           <TabButton 
             type="battleground" 
-            label="DATASENSE BATTLEGROUND" 
+            label="BATTLEGROUND" 
             isActive={activeTab === 'battleground'} 
           />
           <TabButton 
@@ -604,7 +608,7 @@ const GamingArena: React.FC = () => {
           />
           <TabButton 
             type="analytics" 
-            label="DATA ANALYTICS JOB READY ROADMAP" 
+            label="DATA ANALYTICS ROADMAP" 
             isActive={activeTab === 'analytics'} 
           />
           <TabButton 
