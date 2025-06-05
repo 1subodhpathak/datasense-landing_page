@@ -64,6 +64,21 @@ const PracticeArea: React.FC = () => {
                     coderpad. Write, test, and debug directly in your browser — no setup required. Real-world 
                     scenarios to sharpen your skills.
                   </p>
+                  {/* Add the grid here */}
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>💻</span> Interactive Coding
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>⚡</span> Real-time Output
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>📊</span> Data Analysis
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>🎯</span> Skill Practice
+                    </div>
+                  </div>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -171,32 +186,53 @@ const PracticeArea: React.FC = () => {
       case 'custom':
         return (
           <div className="mt-12 relative">
-            <AnimatedBackground type="cubes" />
             <div className="flex flex-col md:flex-row items-center">
               {/* Left content */}
-              <div className="md:w-1/2 p-6">
-                <h3 className="text-3xl font-bold text-cyan-100 mb-6">Custom Quiz Creation</h3>
-                <p className="text-cyan-300 mb-8">
-                  Create personalized quizzes tailored to your learning needs. Test your knowledge, 
-                  challenge yourself, and track your progress with custom quizzes designed to help you 
-                  master key concepts.
-                </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleNavigation(practiceLinks.custom)}
-                  className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+              <div className="md:w-1/2 p-6 relative min-h-[500px]"> {/* Added relative and min-height */}
+                <AnimatedBackground type="cubes" />
+                <div className="relative z-10"> {/* Added to keep content above animation */}
+                  <h3 className="text-3xl font-bold text-cyan-100 mb-6">Custom Quiz Creation</h3>
+                  <p className="text-cyan-300 mb-8">
+                    Create personalized quizzes tailored to your learning needs. Test your knowledge, 
+                    challenge yourself, and track your progress with custom quizzes designed to help you 
+                    master key concepts.
+                  </p>
+                  {/* Add the grid here */}
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>🎨</span> Custom Design
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>📝</span> Question Bank
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>🎯</span> Topic Focus
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>📊</span> Progress Tracking
+                    </div>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavigation(practiceLinks.custom)}
+                    className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
                        font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
                        shadow-[0_0_10px_#00ffff] transition-all duration-300"
-                >
-                  CREATE QUIZ
-                </motion.button>
+                  >
+                    CREATE QUIZ
+                  </motion.button>
+                </div>
               </div>
 
               {/* Right side with Quiz Creator Interface */}
               <div className="md:w-1/2 relative h-[500px] overflow-hidden rounded-xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-20" />
-                
+                <img
+                  src="/assets/images/tools/SQL Coding Arena.png"
+                  alt="Coderpad Interface"
+                  className="w-full h-full object-cover opacity-30"
+                />
                 {/* Main Quiz Creator Interface */}
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
@@ -293,33 +329,50 @@ const PracticeArea: React.FC = () => {
       case 'live':
         return (
           <div className="mt-12 relative">
-            <AnimatedBackground type="cubes" />
             <div className="flex flex-col md:flex-row items-center">
               {/* Left content remains the same */}
-              <div className="md:w-1/2 p-6">
-                <h3 className="text-3xl font-bold text-cyan-100 mb-6">Everyday Live Quizzes</h3>
-                <p className="text-cyan-300 mb-8">
-                  Participate in live quizzes every day to test your skills against others. 
-                  Compete, learn, and improve in real-time with interactive challenges designed 
-                  to keep you engaged and motivated.
-                </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleNavigation(practiceLinks.live)}
-                  className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+              <div className="md:w-1/2 p-6 relative min-h-[500px]"> {/* Added relative and min-height */}
+                <AnimatedBackground type="cubes" />
+                <div className="relative z-10"> {/* Added to keep content above animation */}
+                  <h3 className="text-3xl font-bold text-cyan-100 mb-6">Everyday Live Quizzes</h3>
+                  <p className="text-cyan-300 mb-8">
+                    Participate in live quizzes every day to test your skills against others. 
+                    Compete, learn, and improve in real-time with interactive challenges designed 
+                    to keep you engaged and motivated.
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>🔴</span> Live Challenges
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>🏆</span> Compete Daily
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>⚡</span> Real-time Results
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>📈</span> Leaderboards
+                    </div>
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavigation(practiceLinks.live)}
+                    className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
                        font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
                        shadow-[0_0_10px_#00ffff] transition-all duration-300"
-                >
-                  JOIN QUIZ
-                </motion.button>
+                  >
+                    JOIN QUIZ
+                  </motion.button>
+                </div>
               </div>
 
               {/* Right side with Live Quiz Interface */}
               <div className="md:w-1/2 relative h-[500px] overflow-hidden rounded-xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-20" />
                 <img
-                  src="/assets/images/tools/LiveQuiz.png"
+                  src="/assets/images/tools/SQL Coding Arena.png"
                   alt="Live Quiz Interface"
                   className="w-full h-full object-cover opacity-30"
                 />
@@ -406,33 +459,49 @@ const PracticeArea: React.FC = () => {
       case 'mock':
         return (
           <div className="mt-12 relative">
-            <AnimatedBackground type="cubes" />
             <div className="flex flex-col md:flex-row items-center">
               {/* Left content remains the same */}
-              <div className="md:w-1/2 p-6">
-                <h3 className="text-3xl font-bold text-cyan-100 mb-6">Mock Quizzes</h3>
-                <p className="text-cyan-300 mb-8">
-                  Prepare for real-world challenges with mock quizzes. Simulate exam conditions, 
-                  test your knowledge, and identify areas for improvement to ensure you're ready 
-                  for success.
-                </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleNavigation(practiceLinks.mock)}
-                  className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+              <div className="md:w-1/2 p-6 relative min-h-[500px]"> {/* Added relative and min-height */}
+                <AnimatedBackground type="cubes" />
+                <div className="relative z-10"> {/* Added to keep content above animation */}
+                  <h3 className="text-3xl font-bold text-cyan-100 mb-6">Mock Quizzes</h3>
+                  <p className="text-cyan-300 mb-8">
+                    Prepare for real-world challenges with mock quizzes. Simulate exam conditions, 
+                    test your knowledge, and identify areas for improvement to ensure you're ready 
+                    for success.
+                  </p>
+                  <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>📚</span> Exam Prep
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>⏱️</span> Timed Tests
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>📊</span> Performance Analysis
+                    </div>
+                    <div className="flex items-center gap-2 text-cyan-300">
+                      <span>🎯</span> Topic Coverage
+                    </div>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleNavigation(practiceLinks.mock)}
+                    className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
                        font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
                        shadow-[0_0_10px_#00ffff] transition-all duration-300"
-                >
-                  START MOCK QUIZ
-                </motion.button>
+                  >
+                    START MOCK QUIZ
+                  </motion.button>
+                </div>
               </div>
 
               {/* Right side with Mock Quiz Interface */}
               <div className="md:w-1/2 relative h-[500px] overflow-hidden rounded-xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-20" />
                 <img
-                  src="/assets/images/tools/MockQuiz.png"
+                  src="/assets/images/tools/SQL Coding Arena.png"
                   alt="Mock Quiz Interface"
                   className="w-full h-full object-cover opacity-30"
                 />
@@ -528,7 +597,7 @@ const PracticeArea: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-bright-cyan mb-6 hover:text-cyan-100">
+          <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent font-mono tracking-wider ">
             PRACTICE REAL TIME
           </h2>
           <p className="text-2xl text-cyan-100 mb-4">

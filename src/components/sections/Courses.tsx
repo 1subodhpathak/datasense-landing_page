@@ -60,30 +60,43 @@ const Courses: React.FC = () => {
         return (
           <div className="mt-12 relative">
             <div className="flex flex-col md:flex-row items-center">
-              {/* Left side with content and animation */}
-              <div className="md:w-1/2 p-6 relative min-h-[500px]"> {/* Added relative and min-height */}
-                <AnimatedBackground type="cubes" />
-                <div className="relative z-10"> {/* Added to keep content above animation */}
-                  <h3 className="text-3xl font-bold text-cyan-100 mb-6">Self Placed Courses</h3>
-                  <p className="text-cyan-300 mb-8">
-                    Practice, experiment, and build real-world skills with DataSense's seamless online 
-                    coderpad. Write, test, and debug directly in your browser — no setup required. Real-world 
-                    scenarios to sharpen your skills.
-                  </p>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleNavigation(courseLinks.courses)}
-                    className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
-                       font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
-                       shadow-[0_0_10px_#00ffff] transition-all duration-300"
-                  >
-                    EXPLORE
-                  </motion.button>
+              {/* Left content (updated for consistency) */}
+              <div className="md:w-1/2 p-6">
+                <h3 className="text-3xl font-bold text-cyan-100 mb-6">Self Placed Courses</h3>
+                <p className="text-cyan-300 mb-8">
+                  Practice, experiment, and build real-world skills with DataSense's seamless online 
+                  coderpad. Write, test, and debug directly in your browser — no setup required. Real-world 
+                  scenarios to sharpen your skills.
+                </p>
+                <div className="bg-slate-800/30 backdrop-blur-sm p-6 rounded-xl 
+                  border border-cyan-900/20 hover:border-cyan-500/30
+                  hover:bg-slate-700/40 transition-all duration-300 mb-8">
+                  <div className="flex items-center">
+                    <div className="mr-4 transform hover:scale-110 transition-all duration-500">
+                      <BsDatabase className="text-5xl text-cyan-400" />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold text-cyan-100 mb-2">Real-World Coding Arena</h4>
+                      <p className="text-cyan-300 opacity-90">
+                        Write, test, and debug SQL, Python, and more directly in your browser. No setup, just learning.
+                      </p>
+                    </div>
+                  </div>
                 </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => handleNavigation(courseLinks.courses)}
+                  className="px-6 py-2 bg-cyan-400 text-slate-900 rounded-lg 
+                     font-semibold hover:bg-cyan-300 hover:scale-105 active:scale-95
+                     shadow-[0_0_10px_#00ffff] transition-all duration-300"
+                >
+                  EXPLORE
+                </motion.button>
+                <AnimatedBackground type="cubes" />
               </div>
 
-              {/* Right side with interface preview */}
+              {/* Right side with interface preview (unchanged) */}
               <div className="md:w-1/2 relative h-[500px] overflow-hidden rounded-xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent z-20" />
                 <img
@@ -91,7 +104,6 @@ const Courses: React.FC = () => {
                   alt="Course Interface"
                   className="w-full h-full object-cover opacity-30"
                 />
-                
                 {/* Main Course Interface */}
                 <motion.div 
                   initial={{ opacity: 0, y: 10 }}
@@ -114,7 +126,6 @@ const Courses: React.FC = () => {
                         <div className="mb-2">Module 3: Advanced Queries</div>
                         <div className="text-cyan-300/70">Learn how to optimize complex queries and improve database performance</div>
                       </div>
-                      
                       <div className="mt-4">
                         <div className="bg-slate-800/50 p-3 rounded-lg font-mono text-sm">
                           <div className="text-cyan-300">SELECT u.name, COUNT(o.id) as order_count</div>
@@ -127,7 +138,6 @@ const Courses: React.FC = () => {
                     </div>
                   </div>
                 </motion.div>
-                
                 {/* Course Modules Panel */}
                 <motion.div 
                   initial={{ opacity: 0, x: -20 }}
@@ -154,7 +164,6 @@ const Courses: React.FC = () => {
                     </div>
                   </div>
                 </motion.div>
-                
                 {/* Progress Bar */}
                 <motion.div 
                   initial={{ opacity: 0 }}
@@ -610,7 +619,7 @@ const Courses: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-bright-cyan mb-6 hover:text-cyan-100">
+          <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent font-mono tracking-wider">
             LEARN ON YOUR TERMS
           </h2>
           <p className="text-2xl text-cyan-100 mb-4">
