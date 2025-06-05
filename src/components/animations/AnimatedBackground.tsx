@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 interface AnimatedBackgroundProps {
@@ -11,6 +11,8 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const particlesRef = useRef<THREE.Object3D | null>(null);
+  const frameIdRef = useRef<number | null>(null);
+  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -18,7 +20,12 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
     // Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ 
+      alpha: true, 
+      antialias: true,
+      powerPreference: "high-performance",
+      precision: "mediump"
+    });
     
     sceneRef.current = scene;
     cameraRef.current = camera;
@@ -32,7 +39,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
     const createParticles = () => {
       if (type === 'dots') {
         const geometry = new THREE.BufferGeometry();
-        const particles = 2000;
+        const particles = 500; // Reduced from 2000
         const positions = new Float32Array(particles * 3);
 
         for (let i = 0; i < particles * 3; i += 3) {
@@ -44,7 +51,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         const material = new THREE.PointsMaterial({
           size: 0.02,
-          color: 0x06b6d4, // cyan-500
+          color: 0x06b6d4,
           transparent: true,
           opacity: 0.5,
         });
@@ -61,7 +68,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
         });
 
         const group = new THREE.Group();
-        for (let i = 0; i < 100; i++) {
+        for (let i = 0; i < 50; i++) { // Reduced from 100
           const cube = new THREE.Mesh(geometry, material);
           cube.position.set(
             (Math.random() - 0.5) * 10,
@@ -74,7 +81,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
       }
 
       // Waves
-      const geometry = new THREE.PlaneGeometry(10, 10, 100, 100);
+      const geometry = new THREE.PlaneGeometry(10, 10, 50, 50); // Reduced from 100,100
       const material = new THREE.MeshPhongMaterial({
         color: 0x06b6d4,
         wireframe: true,
@@ -99,9 +106,20 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
 
     camera.position.z = 5;
 
+    let lastTime = 0;
     // Animation
-    const animate = () => {
-      requestAnimationFrame(animate);
+    const animate = (time: number) => {
+      if (!isVisible) {
+        frameIdRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      // Throttle animation to ~60fps
+      if (time - lastTime < 16) {
+        frameIdRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastTime = time;
 
       if (particlesRef.current) {
         if (type === 'dots' || type === 'cubes') {
@@ -122,14 +140,54 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
       }
 
       renderer.render(scene, camera);
+      frameIdRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    frameIdRef.current = requestAnimationFrame(animate);
+
+    // Handle visibility change
+    const handleVisibilityChange = () => {
+      setIsVisible(document.visibilityState === 'visible');
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Handle window resize
+    const handleResize = () => {
+      if (!containerRef.current) return;
+      const width = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+      
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    };
+
+    window.addEventListener('resize', handleResize);
 
     // Cleanup
     return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('resize', handleResize);
+      
+      if (frameIdRef.current) {
+        cancelAnimationFrame(frameIdRef.current);
+      }
+
+      // Dispose of Three.js resources
+      scene.traverse((object) => {
+        if (object instanceof THREE.Mesh) {
+          object.geometry.dispose();
+          if (Array.isArray(object.material)) {
+            object.material.forEach(material => material.dispose());
+          } else {
+            object.material.dispose();
+          }
+        }
+      });
+
       renderer.dispose();
-      if (containerRef.current) {
+      if (containerRef.current && renderer.domElement) {
         containerRef.current.removeChild(renderer.domElement);
       }
     };
@@ -138,7 +196,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 overflow-hidden -z-0" // Added overflow-hidden
+      className="absolute inset-0 overflow-hidden -z-0"
       style={{ 
         pointerEvents: 'none',
         opacity: 0.2,

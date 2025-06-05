@@ -41,14 +41,17 @@ const CardSection: React.FC = () => {
           <FlipCard
             category="SQL"
             termOfTheDay={termOfTheDay.SQL}
+            colorScheme="cyan"
           />
           <FlipCard
             category="Python"
             termOfTheDay={termOfTheDay.Python}
+            colorScheme="purple"
           />
           <FlipCard
             category="AI & ML"
             termOfTheDay={termOfTheDay['AI & ML']}
+            colorScheme="green"
           />
         </div>
   );
