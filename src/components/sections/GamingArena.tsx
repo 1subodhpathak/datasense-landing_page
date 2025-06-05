@@ -582,7 +582,7 @@ const GamingArena: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold text-bright-cyan mb-6 hover:text-cyan-100">
+          <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent font-mono tracking-wider">
             DATASENSE GAMING ARENA
           </h2>
           <p className="text-2xl text-cyan-100 mb-4">
