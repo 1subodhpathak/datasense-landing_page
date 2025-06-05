@@ -4,9 +4,21 @@ import { VocabularyTerm } from '../../data/vocabularyData';
 interface FlipCardProps {
   category: string;
   termOfTheDay: VocabularyTerm;
+  colorScheme?: 'cyan' | 'purple' | 'green';
 }
 
-const FlipCard: React.FC<FlipCardProps> = ({ category, termOfTheDay }) => {
+const borderGradients: Record<string, string> = {
+  cyan: 'from-cyan-400 via-cyan-300 to-blue-400',
+  purple: 'from-purple-400 via-pink-400 to-purple-600',
+  green: 'from-green-400 via-teal-400 to-green-600',
+};
+const headingColors: Record<string, string> = {
+  cyan: 'text-cyan-400',
+  purple: 'text-purple-400',
+  green: 'text-green-400',
+};
+
+const FlipCard: React.FC<FlipCardProps> = ({ category, termOfTheDay, colorScheme = 'cyan' }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -21,7 +33,7 @@ const FlipCard: React.FC<FlipCardProps> = ({ category, termOfTheDay }) => {
       {/* Rotating border wrapper */}
       <div className="absolute inset-0 rounded-lg overflow-hidden">
         {/* Rotating gradient border */}
-        <div className="absolute inset-0 w-[200%] h-[200%] top-[-50%] left-[-50%] bg-gradient-to-r from-bright-cyan via-primary-cyan to-bright-cyan animate-[rotation_3s_linear_infinite]" />
+        <div className={`absolute inset-0 w-[200%] h-[200%] top-[-50%] left-[-50%] bg-gradient-to-r ${borderGradients[colorScheme]} animate-[rotation_3s_linear_infinite]`} />
       </div>
       
       {/* Card content wrapper */}
@@ -41,10 +53,10 @@ const FlipCard: React.FC<FlipCardProps> = ({ category, termOfTheDay }) => {
               </div>
               
               <div className="absolute w-full h-full bg-gradient-to-b from-slate-900 to-slate-800 rounded-lg text-white flex flex-col justify-center items-center gap-2 p-4">
-                <h1 className={`text-white text-base font-bold transition-all duration-300 ${isHovered ? 'scale-110' : ''}`}>
+                <h1 className={`text-white text-base font-bold transition-all duration-300 ${isHovered ? 'scale-110' : ''} ${headingColors[colorScheme]}`}>
                   {category}
                 </h1>
-                <h3 className={`text-xl font-bold text-center  text-primary-cyan transition-all duration-500 ${isHovered ? 'scale-110' : ''}`}>
+                <h3 className={`text-xl font-bold text-center ${headingColors[colorScheme]} transition-all duration-500`}>
                   {termOfTheDay.term}
                 </h3>
                 <p className={`text-xs text-white text-center transition-all duration-300 ${isHovered ? 'text-primary-cyan' : ''}`}>
@@ -72,10 +84,10 @@ const FlipCard: React.FC<FlipCardProps> = ({ category, termOfTheDay }) => {
                 }}
               >
                 <div className="flex justify-between items-center mb-2">
-                  <p className="font-bold text-base text-transparent bg-clip-text bg-gradient-to-r from-primary-cyan to-white">
+                  <p className={`font-bold text-base ${headingColors[colorScheme]}`}>
                     {termOfTheDay.term}
                   </p>
-                  <svg className={`w-4 h-4 text-primary-cyan transition-transform duration-300 ${isHovered ? 'scale-125' : ''}`} viewBox="0 0 256 256" fill="currentColor">
+                  <svg className={`w-4 h-4 ${headingColors[colorScheme]} transition-transform duration-300 ${isHovered ? 'scale-125' : ''}`} viewBox="0 0 256 256" fill="currentColor">
                     <g transform="scale(8,8)">
                       <path d="M25,27l-9,-6.75l-9,6.75v-23h18z" />
                     </g>
@@ -84,7 +96,7 @@ const FlipCard: React.FC<FlipCardProps> = ({ category, termOfTheDay }) => {
                 <p className="text-xs leading-relaxed overflow-auto max-h-32 text-gray-300">
                   {termOfTheDay.meaning}
                 </p>
-                <p className={`mt-2 text-xs text-primary-cyan text-right italic transition-colors ${isHovered ? 'text-bright-cyan' : ''}`}>
+                <p className={`mt-2 text-xs ${headingColors[colorScheme]} text-right italic transition-colors`}>
                   Click to flip back
                 </p>
               </div>
