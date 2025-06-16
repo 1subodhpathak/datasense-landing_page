@@ -8,7 +8,7 @@ const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rightSideRef = useRef<HTMLCanvasElement>(null);
   const { registerAnimation, unregisterAnimation, isVisible } = useThree();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!canvasRef.current || !rightSideRef.current) return;

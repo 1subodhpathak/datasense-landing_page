@@ -13,7 +13,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
   const particlesRef = useRef<THREE.Object3D | null>(null);
   const frameIdRef = useRef<number | null>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const [isPageVisible, setIsPageVisible] = useState(true);
+  const [, setIsPageVisible] = useState(true);
 
   useEffect(() => {
     if (!containerRef.current) return;
