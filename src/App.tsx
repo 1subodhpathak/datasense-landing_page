@@ -16,6 +16,7 @@ import AvailableSoon from './pages/AvailableSoon';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import PricingPage from "./pages/Pricing";
 import QuizWrapper from './pages/coderpad/QuizWrapper';
+import { ThreeProvider } from './context/ThreeContext';
 
 // Define proper TypeScript props interface
 interface LoadingScreenProps {
@@ -99,7 +100,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <ThreeProvider>
       {loading && window.location.pathname !== '/coming-soon' && (
         <LoadingScreen finishLoading={() => setLoading(false)} />
       )}
@@ -108,7 +109,7 @@ function App() {
           <AppContent />
         </Router>
       </main>
-    </>
+    </ThreeProvider>
   );
 }
 

@@ -13,6 +13,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
   const particlesRef = useRef<THREE.Object3D | null>(null);
   const frameIdRef = useRef<number | null>(null);
   const [isVisible, setIsVisible] = useState(true);
+  const [isPageVisible, setIsPageVisible] = useState(true);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -24,7 +25,10 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
       alpha: true, 
       antialias: true,
       powerPreference: "high-performance",
-      precision: "mediump"
+      precision: "mediump",
+      stencil: false,
+      depth: false,
+      failIfMajorPerformanceCaveat: true
     });
     
     sceneRef.current = scene;
@@ -35,11 +39,32 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
     renderer.setClearColor(0x000000, 0);
     containerRef.current.appendChild(renderer.domElement);
 
+    // Add performance monitoring
+    let frameCount = 0;
+    let lastFPSUpdate = 0;
+    let fps = 0;
+
+    const updateFPS = (time: number) => {
+      frameCount++;
+      if (time - lastFPSUpdate >= 1000) {
+        fps = frameCount;
+        frameCount = 0;
+        lastFPSUpdate = time;
+        
+        // If FPS drops below 30, reduce quality
+        if (fps < 30) {
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
+        } else {
+          renderer.setPixelRatio(window.devicePixelRatio);
+        }
+      }
+    };
+
     // Create particles based on type
     const createParticles = () => {
       if (type === 'dots') {
         const geometry = new THREE.BufferGeometry();
-        const particles = 500; // Reduced from 2000
+        const particles = window.innerWidth < 768 ? 200 : 500; // Responsive particle count
         const positions = new Float32Array(particles * 3);
 
         for (let i = 0; i < particles * 3; i += 3) {
@@ -54,6 +79,8 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
           color: 0x06b6d4,
           transparent: true,
           opacity: 0.5,
+          sizeAttenuation: true,
+          depthWrite: false
         });
 
         return new THREE.Points(geometry, material);
@@ -65,10 +92,12 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
           color: 0x06b6d4,
           opacity: 0.5,
           transparent: true,
+          depthWrite: false
         });
 
         const group = new THREE.Group();
-        for (let i = 0; i < 50; i++) { // Reduced from 100
+        const cubeCount = window.innerWidth < 768 ? 25 : 50; // Responsive cube count
+        for (let i = 0; i < cubeCount; i++) {
           const cube = new THREE.Mesh(geometry, material);
           cube.position.set(
             (Math.random() - 0.5) * 10,
@@ -81,12 +110,14 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
       }
 
       // Waves
-      const geometry = new THREE.PlaneGeometry(10, 10, 50, 50); // Reduced from 100,100
+      const segments = window.innerWidth < 768 ? 25 : 50; // Responsive segments
+      const geometry = new THREE.PlaneGeometry(10, 10, segments, segments);
       const material = new THREE.MeshPhongMaterial({
         color: 0x06b6d4,
         wireframe: true,
         transparent: true,
         opacity: 0.3,
+        depthWrite: false
       });
 
       return new THREE.Mesh(geometry, material);
@@ -113,6 +144,8 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
         frameIdRef.current = requestAnimationFrame(animate);
         return;
       }
+
+      updateFPS(time);
 
       // Throttle animation to ~60fps
       if (time - lastTime < 16) {
@@ -152,6 +185,26 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
+    // Handle page visibility
+    const handlePageVisibility = () => {
+      const isPageHidden = document.hidden;
+      setIsPageVisible(!isPageHidden);
+      
+      if (isPageHidden) {
+        // Pause animation and reduce quality when page is hidden
+        if (rendererRef.current) {
+          rendererRef.current.setPixelRatio(0.5);
+        }
+      } else {
+        // Resume normal quality when page is visible
+        if (rendererRef.current) {
+          rendererRef.current.setPixelRatio(window.devicePixelRatio);
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handlePageVisibility);
+
     // Handle window resize
     const handleResize = () => {
       if (!containerRef.current) return;
@@ -168,28 +221,44 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
     // Cleanup
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('visibilitychange', handlePageVisibility);
       window.removeEventListener('resize', handleResize);
       
       if (frameIdRef.current) {
         cancelAnimationFrame(frameIdRef.current);
       }
 
-      // Dispose of Three.js resources
-      scene.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          object.geometry.dispose();
-          if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
-          } else {
-            object.material.dispose();
+      // Enhanced cleanup of Three.js resources
+      if (sceneRef.current) {
+        sceneRef.current.traverse((object) => {
+          if (object instanceof THREE.Mesh || object instanceof THREE.Points) {
+            if (object.geometry) {
+              object.geometry.dispose();
+            }
+            if (Array.isArray(object.material)) {
+              object.material.forEach(material => {
+                if (material.map) material.map.dispose();
+                material.dispose();
+              });
+            } else if (object.material) {
+              if (object.material.map) object.material.map.dispose();
+              object.material.dispose();
+            }
           }
-        }
-      });
-
-      renderer.dispose();
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement);
+        });
       }
+
+      if (rendererRef.current) {
+        rendererRef.current.dispose();
+        rendererRef.current.forceContextLoss();
+        rendererRef.current.domElement.remove();
+      }
+
+      // Clear references
+      sceneRef.current = null;
+      cameraRef.current = null;
+      rendererRef.current = null;
+      particlesRef.current = null;
     };
   }, [type]);
 

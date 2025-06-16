@@ -3,6 +3,7 @@ import AnimatedIcon from "./AnimatedIcon";
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import * as THREE from 'three';
+import { useThree, getRenderer, getScene, disposeRenderer, disposeScene } from '../../context/ThreeContext';
 
 // AI Particle class for background (simplified version of Footer's)
 class AIParticle extends THREE.Mesh {
@@ -33,14 +34,19 @@ class NeuralNode extends THREE.Mesh {
 // Services AI Background Component
 const ServicesAIBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const frameId = useRef<number | null>(null);
+  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
     if (!mountRef.current) return;
+
+    const renderer = getRenderer('services-main', {
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance"
+    });
+    const scene = getScene('services-main');
+
     // Get section height dynamically
     const getSectionSize = () => {
       const el = mountRef.current;
@@ -49,21 +55,13 @@ const ServicesAIBackground: React.FC = () => {
         height: el ? el.clientHeight : window.innerHeight
       };
     };
-    // Scene Setup
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0f172a, 5, 30);
+
     const { width, height } = getSectionSize();
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
-      alpha: true,
-      powerPreference: "high-performance"
-    });
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
     mountRef.current.appendChild(renderer.domElement);
-    sceneRef.current = scene;
-    rendererRef.current = renderer;
+
     // --- Footer-style Animations ---
     // Neural Nodes
     const neuralNodes: NeuralNode[] = [];
@@ -213,19 +211,11 @@ const ServicesAIBackground: React.FC = () => {
     camera.position.set(0, 1, 8);
     camera.lookAt(0, 0, 0);
     let time = 0;
-    let lastTime = 0;
+    // let lastTime = 0;
     // Animation Loop
-    const animate = (): void => {
-      if (!isVisible) {
-        frameId.current = requestAnimationFrame(animate);
-        return;
-      }
-      const now = performance.now();
-      if (now - lastTime < 16) {
-        frameId.current = requestAnimationFrame(animate);
-        return;
-      }
-      lastTime = now;
+    const animate = () => {
+      if (!isVisible) return;
+
       time += 0.008;
       // Neural Network Pulsing
       neuralNodes.forEach((node: NeuralNode, index: number) => {
@@ -329,54 +319,36 @@ const ServicesAIBackground: React.FC = () => {
       camera.position.y = 1 + Math.cos(time * 0.08) * 0.8;
       camera.lookAt(0, 0, 0);
       renderer.render(scene, camera);
-      frameId.current = requestAnimationFrame(animate);
     };
-    frameId.current = requestAnimationFrame(animate);
+
+    registerAnimation('services-main', animate);
     setIsLoaded(true);
-    // Handle visibility change
-    const handleVisibilityChange = () => {
-      setIsVisible(document.visibilityState === 'visible');
-    };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    // Resize handler
+
+    // Handle resize
     const handleResize = () => {
-      if (rendererRef.current && mountRef.current) {
+      if (renderer && mountRef.current) {
         const width = mountRef.current.clientWidth;
         const height = mountRef.current.clientHeight;
-        rendererRef.current.setSize(width, height);
+        renderer.setSize(width, height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
       }
     };
-    // Use ResizeObserver for more reliable resizing
-    const resizeObserver = new window.ResizeObserver(handleResize);
+
+    const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(mountRef.current);
-    // Initial resize (in case the container is already sized)
-    handleResize();
+
     return () => {
       resizeObserver.disconnect();
-      window.removeEventListener('resize', handleResize);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      if (frameId.current !== null) {
-        cancelAnimationFrame(frameId.current);
-      }
-      // Dispose of Three.js resources
-      scene.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          object.geometry.dispose();
-          if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
-          } else {
-            object.material.dispose();
-          }
-        }
-      });
-      renderer.dispose();
-      if (mountRef.current && renderer.domElement && mountRef.current.contains(renderer.domElement)) {
+      unregisterAnimation('services-main');
+      disposeRenderer('services-main');
+      disposeScene('services-main');
+      if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [registerAnimation, unregisterAnimation, isVisible]);
+
   return (
     <div ref={mountRef} className="absolute inset-0 w-full h-full">
       {!isLoaded && (
