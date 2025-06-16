@@ -2,47 +2,48 @@ import { useEffect, useRef, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 import * as THREE from "three";
 import CardSection from "./CardSection";
+import { useThree, getRenderer, getScene, disposeRenderer, disposeScene } from "../../context/ThreeContext";
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rightSideRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const rightAnimationFrameRef = useRef<number | null>(null);
-  const [isVisible, setIsVisible] = useState(true);
-  const rightRendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const rightCameraRef = useRef<THREE.PerspectiveCamera | null>(null);
+  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
+  const [, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Background animation setup
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvasRef.current || !rightSideRef.current) return;
 
-    const scene = new THREE.Scene();
+    // Get shared renderer and scene
+    const renderer = getRenderer('hero-main', { canvas: canvasRef.current });
+    const rightRenderer = getRenderer('hero-right', { canvas: rightSideRef.current });
+    const scene = getScene('hero-main');
+    const rightScene = getScene('hero-right');
+
+    // Setup camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ 
-      canvas, 
-      antialias: true, 
-      alpha: true,
-      powerPreference: "high-performance",
-      precision: "mediump"
-    });
+    const rightCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x111827, 1);
 
+    const containerWidth = window.innerWidth * 0.4;
+    const containerHeight = window.innerHeight * 0.8;
+    rightRenderer.setSize(containerWidth, containerHeight);
+    rightRenderer.setClearColor(0x000000, 0);
+
     // Create particles
     const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = 1500; // Reduced from 1500
+    const particleCount = 1500;
 
     const posArray = new Float32Array(particleCount * 3);
     const colorArray = new Float32Array(particleCount * 3);
     const sizeArray = new Float32Array(particleCount);
 
-    // Define color palette
     const colorPalette = [
-      new THREE.Color('#06b6d4'), // cyan-400
-      new THREE.Color('#a21caf'), // purple-700
-      new THREE.Color('#22c55e'), // green-400
-      new THREE.Color('#2563eb'), // blue-600
+      new THREE.Color('#06b6d4'),
+      new THREE.Color('#a21caf'),
+      new THREE.Color('#22c55e'),
+      new THREE.Color('#2563eb'),
     ];
 
     for (let i = 0; i < particleCount; i++) {
@@ -50,7 +51,6 @@ const Hero = () => {
       posArray[i * 3 + 1] = (Math.random() - 0.5) * 20;
       posArray[i * 3 + 2] = (Math.random() - 0.5) * 20;
       sizeArray[i] = Math.random() * 2;
-      // Assign random color
       const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
       color.toArray(colorArray, i * 3);
     }
@@ -70,26 +70,22 @@ const Hero = () => {
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
-    const gridHelper = new THREE.GridHelper(20, 20, 0x006d6f, 0x008080);
-    gridHelper.position.y = -5;
-    scene.add(gridHelper);
+    // Right side cube setup
+    const cubeGroup = new THREE.Group();
+    const cubeGeometry = new THREE.BoxGeometry(3, 3, 3);
+    const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry);
+    const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x06b6d4, linewidth: 2 });
+    const wireframeCube = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+    cubeGroup.add(wireframeCube);
 
-    camera.position.z = 8;
+    rightScene.add(cubeGroup);
+    rightCamera.position.z = 6;
 
-    let lastTime = 0;
-    const animate = (currentTime: number) => {
-      if (!isVisible) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-        return;
-      }
+    // Register animations
+    const animate = () => {
+      if (!isVisible) return;
 
-      // Throttle animation to ~60fps
-      if (currentTime - lastTime < 16) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-        return;
-      }
-      lastTime = currentTime;
-
+      // Main scene animation
       particlesMesh.rotation.y += 0.001;
       particlesMesh.rotation.x += 0.0005;
 
@@ -103,115 +99,15 @@ const Hero = () => {
 
       particlesGeometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
-      animationFrameRef.current = requestAnimationFrame(animate);
+
+      // Right scene animation
+      cubeGroup.rotation.y += 0.01;
+      cubeGroup.rotation.x += 0.005;
+      cubeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.2;
+      rightRenderer.render(rightScene, rightCamera);
     };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
-
-    // Setup the right side 3D model
-    const rightSideCanvas = rightSideRef.current;
-    if (rightSideCanvas) {
-      const rightScene = new THREE.Scene();
-      const rightCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const rightRenderer = new THREE.WebGLRenderer({ 
-        canvas: rightSideCanvas, 
-        antialias: true, 
-        alpha: true,
-        powerPreference: "high-performance",
-        precision: "mediump"
-      });
-
-      rightCameraRef.current = rightCamera;
-      rightRendererRef.current = rightRenderer;
-
-      const containerWidth = window.innerWidth * 0.4;
-      const containerHeight = window.innerHeight * 0.8;
-      rightRenderer.setSize(containerWidth, containerHeight);
-      rightRenderer.setClearColor(0x000000, 0);
-
-      const cubeGroup = new THREE.Group();
-      const cubeGeometry = new THREE.BoxGeometry(3, 3, 3);
-      const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry);
-      const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x06b6d4, linewidth: 2 });
-      const wireframeCube = new THREE.LineSegments(edgesGeometry, edgesMaterial);
-      cubeGroup.add(wireframeCube);
-
-      const dataPointsGeometry = new THREE.BufferGeometry();
-      const dataPointCount = 50; // Reduced from 50
-
-      const dataPointsArray = new Float32Array(dataPointCount * 3);
-      for (let i = 0; i < dataPointCount * 3; i += 3) {
-        dataPointsArray[i] = (Math.random() - 0.5) * 2.5;
-        dataPointsArray[i + 1] = (Math.random() - 0.5) * 2.5;
-        dataPointsArray[i + 2] = (Math.random() - 0.5) * 2.5;
-      }
-
-      dataPointsGeometry.setAttribute("position", new THREE.BufferAttribute(dataPointsArray, 3));
-      const dataPointsMaterial = new THREE.PointsMaterial({
-        size: 0.15,
-        color: 0x40e0d0,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending,
-      });
-
-      const dataPoints = new THREE.Points(dataPointsGeometry, dataPointsMaterial);
-      cubeGroup.add(dataPoints);
-
-      const linesMaterial = new THREE.LineBasicMaterial({ color: 0x2563eb, transparent: true, opacity: 0.5 });
-
-      for (let i = 0; i < 20; i++) { // Reduced from 20
-        const lineGeometry = new THREE.BufferGeometry();
-        const p1 = Math.floor(Math.random() * dataPointCount);
-        const p2 = Math.floor(Math.random() * dataPointCount);
-
-        const vertices = new Float32Array([
-          dataPointsArray[p1 * 3],
-          dataPointsArray[p1 * 3 + 1],
-          dataPointsArray[p1 * 3 + 2],
-          dataPointsArray[p2 * 3],
-          dataPointsArray[p2 * 3 + 1],
-          dataPointsArray[p2 * 3 + 2],
-        ]);
-
-        lineGeometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
-        const line = new THREE.Line(lineGeometry, linesMaterial);
-        cubeGroup.add(line);
-      }
-
-      rightScene.add(cubeGroup);
-      rightCamera.position.z = 6;
-
-      let rightLastTime = 0;
-      const animateRightSide = (currentTime: number) => {
-        if (!isVisible) {
-          rightAnimationFrameRef.current = requestAnimationFrame(animateRightSide);
-          return;
-        }
-
-        // Throttle animation to ~60fps
-        if (currentTime - rightLastTime < 16) {
-          rightAnimationFrameRef.current = requestAnimationFrame(animateRightSide);
-          return;
-        }
-        rightLastTime = currentTime;
-
-        cubeGroup.rotation.y += 0.01;
-        cubeGroup.rotation.x += 0.005;
-        cubeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.2;
-        rightRenderer.render(rightScene, rightCamera);
-        rightAnimationFrameRef.current = requestAnimationFrame(animateRightSide);
-      };
-
-      rightAnimationFrameRef.current = requestAnimationFrame(animateRightSide);
-    }
-
-    // Handle visibility change
-    const handleVisibilityChange = () => {
-      setIsVisible(document.visibilityState === 'visible');
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    registerAnimation('hero', animate);
 
     // Handle window resize
     const handleResize = () => {
@@ -219,47 +115,25 @@ const Hero = () => {
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
 
-      if (rightSideCanvas && rightCameraRef.current && rightRendererRef.current) {
-        const newContainerWidth = window.innerWidth * 0.4;
-        const newContainerHeight = window.innerHeight * 0.8;
-        rightCameraRef.current.aspect = newContainerWidth / newContainerHeight;
-        rightCameraRef.current.updateProjectionMatrix();
-        rightRendererRef.current.setSize(newContainerWidth, newContainerHeight);
-      }
+      const newContainerWidth = window.innerWidth * 0.4;
+      const newContainerHeight = window.innerHeight * 0.8;
+      rightCamera.aspect = newContainerWidth / newContainerHeight;
+      rightCamera.updateProjectionMatrix();
+      rightRenderer.setSize(newContainerWidth, newContainerHeight);
     };
 
     window.addEventListener("resize", handleResize);
+    setIsLoaded(true);
 
-    // Cleanup
     return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener("resize", handleResize);
-
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (rightAnimationFrameRef.current) {
-        cancelAnimationFrame(rightAnimationFrameRef.current);
-      }
-
-      // Dispose of Three.js resources
-      scene.traverse((object) => {
-        if (object instanceof THREE.Mesh) {
-          object.geometry.dispose();
-          if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
-          } else {
-            object.material.dispose();
-          }
-        }
-      });
-
-      renderer.dispose();
-      if (rightRendererRef.current) {
-        rightRendererRef.current.dispose();
-      }
+      unregisterAnimation('hero');
+      disposeRenderer('hero-main');
+      disposeRenderer('hero-right');
+      disposeScene('hero-main');
+      disposeScene('hero-right');
     };
-  }, []);
+  }, [registerAnimation, unregisterAnimation, isVisible]);
 
   return (
     <div className="relative h-[100vh] w-full overflow-hidden bg-slate-900">

@@ -1,4 +1,7 @@
 import React from 'react';
+import { useThree, disposeRenderer, disposeScene } from '../../context/ThreeContext';
+import { useEffect, useRef } from 'react';
+// import * as THREE from 'three';
 
 const courses = [
   {
@@ -64,44 +67,93 @@ const courses = [
 ];
 
 const AIParticleBackground: React.FC = () => {
+  const mountRef = useRef<HTMLDivElement>(null);
+  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    // const renderer = getRenderer('badge-scroller', { 
+    //   canvas: mountRef.current,
+    //   alpha: true,
+    //   antialias: true,
+    //   powerPreference: "high-performance",
+    //   precision: "mediump"
+    // });
+    // const scene = getScene('badge-scroller');
+
+    // Create particles
+    const particles = [...Array(15)].map(() => {
+      const particle = document.createElement('div');
+      particle.className = "absolute w-1 h-1 bg-cyan-400 rounded-full animate-pulse";
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.animationDelay = `${Math.random() * 3}s`;
+      particle.style.animationDuration = `${2 + Math.random() * 2}s`;
+      mountRef.current?.appendChild(particle);
+      return particle;
+    });
+
+    // Create neural network lines
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("class", "absolute inset-0 w-full h-full opacity-20");
+    
+    const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+    const gradient = document.createElementNS("http://www.w3.org/2000/svg", "linearGradient");
+    gradient.setAttribute("id", "neuralGradient");
+    gradient.setAttribute("x1", "0%");
+    gradient.setAttribute("y1", "0%");
+    gradient.setAttribute("x2", "100%");
+    gradient.setAttribute("y2", "100%");
+    
+    const stop1 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+    stop1.setAttribute("offset", "0%");
+    stop1.setAttribute("stop-color", "#0891b2");
+    
+    const stop2 = document.createElementNS("http://www.w3.org/2000/svg", "stop");
+    stop2.setAttribute("offset", "100%");
+    stop2.setAttribute("stop-color", "#06b6d4");
+    
+    gradient.appendChild(stop1);
+    gradient.appendChild(stop2);
+    defs.appendChild(gradient);
+    svg.appendChild(defs);
+
+    [...Array(8)].forEach((_, i) => {
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", `${i * 12.5}%`);
+      line.setAttribute("y1", "0%");
+      line.setAttribute("x2", `${(i + 1) * 12.5}%`);
+      line.setAttribute("y2", "100%");
+      line.setAttribute("stroke", "url(#neuralGradient)");
+      line.setAttribute("stroke-width", "1");
+      line.setAttribute("class", "animate-pulse");
+      line.style.animationDelay = `${i * 0.2}s`;
+      svg.appendChild(line);
+    });
+
+    mountRef.current?.appendChild(svg);
+
+    // Register animation
+    const animate = () => {
+      if (!isVisible) return;
+      // Animation logic is handled by CSS animations
+    };
+
+    registerAnimation('badge-scroller', animate);
+
+    return () => {
+      unregisterAnimation('badge-scroller');
+      particles.forEach(particle => particle.remove());
+      svg.remove();
+      disposeRenderer('badge-scroller');
+      disposeScene('badge-scroller');
+    };
+  }, [registerAnimation, unregisterAnimation, isVisible]);
+
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      {/* Floating AI Particles */}
-      {[...Array(15)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-1 h-1 bg-cyan-400 rounded-full animate-pulse"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 3}s`,
-            animationDuration: `${2 + Math.random() * 2}s`
-          }}
-        />
-      ))}
-      
-      {/* Neural Network Lines */}
-      <svg className="absolute inset-0 w-full h-full opacity-20">
-        <defs>
-          <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#0891b2" />
-            <stop offset="100%" stopColor="#06b6d4" />
-          </linearGradient>
-        </defs>
-        {[...Array(8)].map((_, i) => (
-          <line
-            key={i}
-            x1={`${i * 12.5}%`}
-            y1="0%"
-            x2={`${(i + 1) * 12.5}%`}
-            y2="100%"
-            stroke="url(#neuralGradient)"
-            strokeWidth="1"
-            className="animate-pulse"
-            style={{ animationDelay: `${i * 0.2}s` }}
-          />
-        ))}
-      </svg>
+    <div ref={mountRef} className="absolute inset-0 overflow-hidden">
+      {/* Content is handled by DOM elements */}
     </div>
   );
 };

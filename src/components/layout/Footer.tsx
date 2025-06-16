@@ -3,6 +3,7 @@ import { BsLinkedin, BsYoutube, BsInstagram } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { scrollToSection } from "../../utils/scrollUtils";
 import * as THREE from 'three';
+import { useThree, getRenderer, getScene, disposeRenderer, disposeScene } from '../../context/ThreeContext';
 
 // Extended Mesh type with AI properties - FIXED
 class AIParticle extends THREE.Mesh {
@@ -39,34 +40,28 @@ class NeuralNode extends THREE.Mesh {
 // Advanced AI-Powered 3D Background
 const AIDataVisualization: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const frameId = useRef<number | null>(null);
+  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    // Advanced Scene Setup with Post-Processing
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0f172a, 10, 50);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 400, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
+    const renderer = getRenderer('footer', {
+      antialias: true,
       alpha: true,
-      powerPreference: "high-performance",
-      precision: "highp"
+      powerPreference: "high-performance"
     });
-    
-    renderer.setSize(window.innerWidth, 400);
+    const scene = getScene('footer');
+
+    const width = mountRef.current.clientWidth;
+    const height = 400;
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+
+    renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     mountRef.current.appendChild(renderer.domElement);
-    
-    sceneRef.current = scene;
-    rendererRef.current = renderer;
 
     // AI Data Particles with Intelligence
     const aiParticles: AIParticle[] = [];
@@ -237,17 +232,16 @@ const AIDataVisualization: React.FC = () => {
 
     let time = 0;
 
-    // Advanced AI Animation Loop
-    const animate = (): void => {
-      frameId.current = requestAnimationFrame(animate);
-      time += 0.01;
+    // Register animation
+    const animate = () => {
+      if (!isVisible) return;
 
+      time += 0.008;
       // Neural Network Pulsing
       neuralNodes.forEach((node: NeuralNode, index: number) => {
         node.activation = (Math.sin(time * 2 + index) + 1) / 2;
         const scale = 0.8 + node.activation * 0.6;
         node.scale.setScalar(scale);
-        
         const material = node.material as THREE.MeshPhongMaterial;
         material.emissive.setHSL(0.5 + node.layer * 0.1, 0.5, node.activation * 0.3);
       });
@@ -354,15 +348,14 @@ const AIDataVisualization: React.FC = () => {
       renderer.render(scene, camera);
     };
 
-    animate();
-    setIsLoaded(true);
+    registerAnimation('footer', animate);
 
     // Handle resize
-    const handleResize = (): void => {
-      if (rendererRef.current && mountRef.current) {
+    const handleResize = () => {
+      if (renderer && mountRef.current) {
         const width = mountRef.current.clientWidth;
         const height = 400;
-        rendererRef.current.setSize(width, height);
+        renderer.setSize(width, height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
       }
@@ -370,17 +363,18 @@ const AIDataVisualization: React.FC = () => {
 
     window.addEventListener('resize', handleResize);
 
+    setIsLoaded(true);
+
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (frameId.current !== null) {
-        cancelAnimationFrame(frameId.current);
-      }
-      if (mountRef.current && renderer.domElement && mountRef.current.contains(renderer.domElement)) {
+      unregisterAnimation('footer');
+      disposeRenderer('footer');
+      disposeScene('footer');
+      if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
-      renderer.dispose();
     };
-  }, []);
+  }, [registerAnimation, unregisterAnimation, isVisible]);
 
   return (
     <div className="absolute inset-0">
