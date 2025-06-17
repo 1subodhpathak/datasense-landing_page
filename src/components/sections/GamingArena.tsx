@@ -15,11 +15,11 @@ interface GameLinks {
 }
 
 const gameLinks: GameLinks = {
-  battleground: 'https://www.youtube.com/', // Replace with actual link when ready
-  investigation: '/coming-soon', // Replace with actual link when ready
-  analytics: '/coming-soon', // Replace with actual link when ready
-  aijourney: '/coming-soon' // Replace with actual link when ready
-};
+  battleground: '/coming-soon',
+  investigation: '/coming-soon',
+  analytics: '/unity-games', // Update this
+  aijourney: '/coming-soon'
+} as const;
 
 const GamingArena: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('battleground');

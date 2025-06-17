@@ -17,6 +17,8 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import PricingPage from "./pages/Pricing";
 import QuizWrapper from './pages/coderpad/QuizWrapper';
 import { ThreeProvider } from './context/ThreeContext';
+import UnityGameWrapper from './components/game/UnityGameWrapper';
+import UnityGameGuard from './components/guards/UnityGameGuard';
 
 // Define proper TypeScript props interface
 interface LoadingScreenProps {
@@ -73,6 +75,7 @@ function AppContent() {
           } 
         />
         <Route path="/quiz" element={<QuizWrapper />} />
+        <Route path="/unity-games" element={<UnityGameWrapper />} />
       </Routes>
       <Footer />
     </div>
@@ -85,7 +88,7 @@ function App() {
   useEffect(() => {
     // Only apply loading screen for non coming-soon routes
     const currentPath = window.location.pathname;
-    if (currentPath === '/coming-soon' || currentPath === '/quiz') {
+    if (currentPath === '/coming-soon' || currentPath === '/quiz' || currentPath === '/unity-games') {
       setLoading(false);
       return;
     }
@@ -106,6 +109,7 @@ function App() {
       )}
       <main className={loading && window.location.pathname !== '/coming-soon' ? 'hidden' : 'block'}>
         <Router>
+          <UnityGameGuard />
           <AppContent />
         </Router>
       </main>

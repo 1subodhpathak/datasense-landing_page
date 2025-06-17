@@ -76,7 +76,7 @@ const ImageScroller = () => {
               className="shrink-0 relative group inline-flex"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-caribbean via-bright-cyan to-caribbean rounded-xl blur opacity-75 group-hover:opacity-100 animate-pulse"></div>
-              <div className="relative bg-gradient-to-b from-slate-900 via-blue-900 to-teal-800 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
+              <div className="relative bg-gradient-to-b from-slate-900 via-slate-800 to-teal-800 backdrop-blur-xl rounded-xl p-4 border border-caribbean/30 
                             transform hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-caribbean/50">
                 <img 
                   src={image} 
