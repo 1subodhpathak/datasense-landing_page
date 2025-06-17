@@ -250,3 +250,8 @@
 .animate-scan-line {
   animation: scan-line 3s ease-in-out infinite;
 }
+
+body.unity-game-active nav,
+body.unity-game-active footer {
+  display: none !important;
+}

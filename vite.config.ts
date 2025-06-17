@@ -4,7 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  // server: {
+  //   port: 3000
+  // },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
     target: 'esnext',
     minify: 'terser',
     rollupOptions: {
@@ -25,6 +30,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
     sourcemap: false
   },
+  publicDir: 'public', // This ensures public folder files are served correctly
   optimizeDeps: {
     include: ['three', '@react-three/fiber', '@react-three/drei']
   }
