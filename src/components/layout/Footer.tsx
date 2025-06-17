@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { BsLinkedin, BsYoutube, BsInstagram } from "react-icons/bs";
+import { BsLinkedin, BsYoutube, BsInstagram, BsWhatsapp } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 import { scrollToSection } from "../../utils/scrollUtils";
 import * as THREE from 'three';
@@ -455,22 +455,28 @@ const Footer: React.FC = () => {
                 Next-generation AI platform for data scientists, analysts, and ML engineers seeking mastery.
               </p>
               <div className="flex space-x-4 mb-6">
-                <a href="https://www.linkedin.com/company/data-sense-lms/" className="group/social relative">
+                <a href="https://www.linkedin.com/company/data-sense-lms/" className="group/social relative" target="_blank" rel="noopener noreferrer">
                   <div className="absolute inset-0 bg-cyan-400/20 rounded-lg blur group-hover/social:bg-cyan-400/40 transition-all"></div>
                   <div className="relative text-cyan-400 hover:text-white transition-all duration-300 p-3 rounded-lg border border-cyan-400/30 hover:border-cyan-400/60">
                     <BsLinkedin size={24} />
                   </div>
                 </a>
-                <a href="https://www.youtube.com/@Senseofdata" className="group/social relative">
+                <a href="https://www.youtube.com/@Senseofdata" className="group/social relative" target="_blank" rel="noopener noreferrer">
                   <div className="absolute inset-0 bg-red-400/20 rounded-lg blur group-hover/social:bg-red-400/40 transition-all"></div>
                   <div className="relative text-red-400 hover:text-white transition-all duration-300 p-3 rounded-lg border border-red-400/30 hover:border-red-400/60">
                     <BsYoutube size={24} />
                   </div>
                 </a>
-                <a href="https://www.instagram.com/senseofdata/" className="group/social relative">
+                <a href="https://www.instagram.com/senseofdata/" className="group/social relative" target="_blank" rel="noopener noreferrer">
                   <div className="absolute inset-0 bg-purple-400/20 rounded-lg blur group-hover/social:bg-purple-400/40 transition-all"></div>
                   <div className="relative text-purple-400 hover:text-white transition-all duration-300 p-3 rounded-lg border border-purple-400/30 hover:border-purple-400/60">
                     <BsInstagram size={24} />
+                  </div>
+                </a>
+                <a href="https://chat.whatsapp.com/DYgDxOA8nBvJp4tPz5J6ox" className="group/social relative" target="_blank" rel="noopener noreferrer">
+                  <div className="absolute inset-0 bg-green-400/20 rounded-lg blur group-hover/social:bg-green-400/40 transition-all"></div>
+                  <div className="relative text-green-400 hover:text-white transition-all duration-300 p-3 rounded-lg border border-green-400/30 hover:border-green-400/60">
+                    <BsWhatsapp size={24} />
                   </div>
                 </a>
               </div>
