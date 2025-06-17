@@ -1,33 +1,28 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import * as THREE from 'three';
 import CeoMessage from "./CeoMessage";
 import AnimatedIcon from "./AnimatedIcon";
+import { useState, useRef, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import * as THREE from 'three';
+import { useThree, getRenderer, getScene, disposeRenderer, disposeScene } from '../../context/ThreeContext';
 
-// Extended Mesh type with AI properties
+// AI Particle class for background (simplified version of Footer's)
 class AIParticle extends THREE.Mesh {
   velocity: THREE.Vector3;
   targetPosition: THREE.Vector3;
   aiState: 'learning' | 'processing' | 'analyzing';
-  dataValue: number;
-  connections: AIParticle[];
 
   constructor(geometry: THREE.BufferGeometry, material: THREE.Material | THREE.Material[]) {
     super(geometry, material);
     this.velocity = new THREE.Vector3();
     this.targetPosition = new THREE.Vector3();
     this.aiState = 'learning';
-    this.dataValue = 0;
-    this.connections = [];
   }
 }
 
-// Neural Network Node
 class NeuralNode extends THREE.Mesh {
   activation: number;
   layer: number;
   nodeIndex: number;
-
   constructor(geometry: THREE.BufferGeometry, material: THREE.Material | THREE.Material[]) {
     super(geometry, material);
     this.activation = 0;
@@ -36,255 +31,337 @@ class NeuralNode extends THREE.Mesh {
   }
 }
 
-// AI-Powered 3D Background Component
-const AIServicesVisualization: React.FC = () => {
+// Services AI Background Component
+const ServicesAIBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const frameId = useRef<number | null>(null);
+  const { registerAnimation, unregisterAnimation, isVisible, quality } = useThree();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    // Advanced Scene Setup
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0f172a, 5, 40);
-    
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 600, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
+    const renderer = getRenderer('services-main', {
+      antialias: quality === 'high',
       alpha: true,
-      powerPreference: "high-performance"
+      powerPreference: "high-performance",
+      precision: quality === 'high' ? "highp" : "mediump"
     });
-    
-    renderer.setSize(window.innerWidth, 600);
+    const scene = getScene('services-main');
+
+    // Get section height dynamically
+    const getSectionSize = () => {
+      const el = mountRef.current;
+      return {
+        width: el ? el.clientWidth : window.innerWidth,
+        height: el ? el.clientHeight : window.innerHeight
+      };
+    };
+
+    const { width, height } = getSectionSize();
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     mountRef.current.appendChild(renderer.domElement);
-    
-    sceneRef.current = scene;
-    rendererRef.current = renderer;
 
-    // AI Data Particles
-    const aiParticles: AIParticle[] = [];
+    // Quality-based particle counts
+    const particleCount = quality === 'high' ? 80 : quality === 'medium' ? 50 : 30;
+    const layers = quality === 'high' ? 5 : quality === 'medium' ? 4 : 3;
+
+    // Create neural nodes with quality-based complexity
     const neuralNodes: NeuralNode[] = [];
-    const particleCount = 60;
-    const layers = 4;
+    const nodeGeometry = new THREE.SphereGeometry(0.1, quality === 'high' ? 16 : quality === 'medium' ? 12 : 8);
+    const nodeMaterial = new THREE.MeshPhongMaterial({
+      color: 0x06b6d4,
+      emissive: 0x0891b2,
+      emissiveIntensity: 0.5,
+      transparent: true,
+      opacity: 0.8
+    });
 
-    // Create Neural Network
     for (let layer = 0; layer < layers; layer++) {
-      const nodesInLayer = Math.floor(6 - layer * 1);
+      const nodesInLayer = Math.floor(6 - layer * 1.2);
       for (let node = 0; node < nodesInLayer; node++) {
-        const geometry = new THREE.SphereGeometry(0.06, 12, 12);
-        const material = new THREE.MeshPhongMaterial({ 
-          color: new THREE.Color().setHSL(0.6 + layer * 0.1, 1, 0.5),
-          transparent: true,
-          opacity: 0.7,
-          emissive: new THREE.Color().setHSL(0.6 + layer * 0.1, 0.5, 0.1)
-        });
-        
-        const neuralNode = new NeuralNode(geometry, material);
+        const neuralNode = new NeuralNode(nodeGeometry, nodeMaterial);
         neuralNode.position.set(
-          (layer - layers/2) * 3,
-          (node - nodesInLayer/2) * 1.2,
-          Math.sin(layer + node) * 1.5
+          (layer - layers/2) * 4,
+          (node - nodesInLayer/2) * 1.5,
+          Math.sin(layer + node) * 2
         );
-        
         neuralNode.activation = Math.random();
         neuralNode.layer = layer;
         neuralNode.nodeIndex = node;
-        
+        neuralNode.castShadow = true;
         neuralNodes.push(neuralNode);
         scene.add(neuralNode);
       }
     }
-
-    // AI Particles with Intelligence
+    // Holographic Matrices
+    const createHolographicMatrix = () => {
+      const matrixGroup = new THREE.Group();
+      for (let i = 0; i < 5; i++) {
+        for (let j = 0; j < 5; j++) {
+          const geometry = new THREE.PlaneGeometry(0.3, 0.3);
+          const material = new THREE.MeshBasicMaterial({ 
+            color: 0x00ffff,
+            transparent: true,
+            opacity: 0.1 + Math.random() * 0.3,
+            side: THREE.DoubleSide
+          });
+          const plane = new THREE.Mesh(geometry, material);
+          plane.position.set(i - 2.5, j - 2.5, 0);
+          matrixGroup.add(plane);
+        }
+      }
+      return matrixGroup;
+    };
+    const matrix1 = createHolographicMatrix();
+    matrix1.position.set(-10, 0, -8);
+    matrix1.rotation.y = Math.PI / 4;
+    scene.add(matrix1);
+    const matrix2 = createHolographicMatrix();
+    matrix2.position.set(10, 0, -5);
+    matrix2.rotation.y = -Math.PI / 4;
+    scene.add(matrix2);
+    // AI Particles
+    const aiParticles: AIParticle[] = [];
     for (let i = 0; i < particleCount; i++) {
-      const geometry = new THREE.OctahedronGeometry(0.04, 1);
-      const hue = (i / particleCount) * 0.4 + 0.5;
+      const geometry = new THREE.IcosahedronGeometry(0.03, 1);
+      const hue = (i / particleCount) * 0.3 + 0.4;
       const material = new THREE.MeshPhongMaterial({ 
-        color: new THREE.Color().setHSL(hue, 1, 0.6),
+        color: new THREE.Color().setHSL(hue, 1, 0.7),
         transparent: true,
         opacity: 0.8,
-        emissive: new THREE.Color().setHSL(hue, 0.8, 0.15)
+        emissive: new THREE.Color().setHSL(hue, 0.8, 0.1)
       });
-      
       const particle = new AIParticle(geometry, material);
       particle.position.set(
-        (Math.random() - 0.5) * 25,
-        (Math.random() - 0.5) * 12,
-        (Math.random() - 0.5) * 15
-      );
-      
-      particle.velocity = new THREE.Vector3(
-        (Math.random() - 0.5) * 0.015,
-        (Math.random() - 0.5) * 0.015,
-        (Math.random() - 0.5) * 0.015
-      );
-      
-      particle.targetPosition = new THREE.Vector3(
         (Math.random() - 0.5) * 20,
         (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 15
+      );
+      particle.velocity = new THREE.Vector3(
+        (Math.random() - 0.5) * 0.01,
+        (Math.random() - 0.5) * 0.01,
+        (Math.random() - 0.5) * 0.01
+      );
+      particle.targetPosition = new THREE.Vector3(
+        (Math.random() - 0.5) * 18,
+        (Math.random() - 0.5) * 8,
         (Math.random() - 0.5) * 12
       );
-      
       particle.aiState = ['learning', 'processing', 'analyzing'][Math.floor(Math.random() * 3)] as 'learning' | 'processing' | 'analyzing';
-      
       aiParticles.push(particle);
       scene.add(particle);
     }
-
     // Data Streams
     const createDataStream = (color: number, complexity: number) => {
       const points: THREE.Vector3[] = [];
-      const segments = 100;
-      
+      const segments = 80;
       for (let i = 0; i < segments; i++) {
         const t = i / segments;
-        const x = Math.sin(t * Math.PI * complexity) * 6 + Math.cos(t * Math.PI * 1.5) * 1.5;
-        const y = Math.cos(t * Math.PI * complexity * 0.6) * 3 + Math.sin(t * Math.PI * 2.5) * 0.8;
+        const x = Math.sin(t * Math.PI * complexity) * 6 + Math.cos(t * Math.PI * 2) * 1.5;
+        const y = Math.cos(t * Math.PI * complexity * 0.7) * 3 + Math.sin(t * Math.PI * 3) * 0.8;
         const z = t * 15 - 7.5 + Math.sin(t * Math.PI * 4) * 1.5;
         points.push(new THREE.Vector3(x, y, z));
       }
-      
       const geometry = new THREE.BufferGeometry().setFromPoints(points);
       const material = new THREE.LineBasicMaterial({ 
         color,
         transparent: true,
-        opacity: 0.5
+        opacity: 0.4
       });
-      
       return new THREE.Line(geometry, material);
     };
-
-    const stream1 = createDataStream(0x00ffff, 3);
-    const stream2 = createDataStream(0x8b5cf6, 5);
-    const stream3 = createDataStream(0x10b981, 4);
-    
-    scene.add(stream1);
-    scene.add(stream2);
-    scene.add(stream3);
-
+    const sqlStream = createDataStream(0x3b82f6, 3);
+    const pythonStream = createDataStream(0x10b981, 4);
+    const aiStream = createDataStream(0x8b5cf6, 5);
+    scene.add(sqlStream);
+    scene.add(pythonStream);
+    scene.add(aiStream);
+    // --- New Animations ---
+    // Floating Data Packets
+    const dataPackets: THREE.Mesh[] = [];
+    for (let i = 0; i < 10; i++) {
+      const geometry = new THREE.BoxGeometry(0.08, 0.08, 0.08);
+      const material = new THREE.MeshPhongMaterial({ color: 0x00fff7, emissive: 0x00fff7, opacity: 0.7, transparent: true });
+      const packet = new THREE.Mesh(geometry, material);
+      packet.position.set(
+        (Math.random() - 0.5) * 16,
+        (Math.random() - 0.5) * 8,
+        (Math.random() - 0.5) * 10
+      );
+      dataPackets.push(packet);
+      scene.add(packet);
+    }
+    // Animated Grid (subtle wave)
+    const gridGeometry = new THREE.PlaneGeometry(20, 20, 40, 40);
+    const gridMaterial = new THREE.MeshBasicMaterial({ color: 0x00f5ff, wireframe: true, opacity: 0.08, transparent: true });
+    const gridMesh = new THREE.Mesh(gridGeometry, gridMaterial);
+    gridMesh.position.y = -3;
+    gridMesh.rotation.x = -Math.PI / 2;
+    scene.add(gridMesh);
     // Lighting
     const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
     scene.add(ambientLight);
-
     const directionalLight = new THREE.DirectionalLight(0x00ffff, 0.8);
-    directionalLight.position.set(8, 8, 4);
+    directionalLight.position.set(8, 8, 5);
     scene.add(directionalLight);
-
-    const pointLight1 = new THREE.PointLight(0xff0080, 0.6, 40);
-    pointLight1.position.set(-8, 4, 8);
+    const pointLight1 = new THREE.PointLight(0xff0080, 0.6, 30);
+    pointLight1.position.set(-8, 3, 8);
     scene.add(pointLight1);
-
-    const pointLight2 = new THREE.PointLight(0x0080ff, 0.6, 40);
-    pointLight2.position.set(8, -4, -8);
+    const pointLight2 = new THREE.PointLight(0x0080ff, 0.6, 30);
+    pointLight2.position.set(8, -3, -8);
     scene.add(pointLight2);
-
-    camera.position.set(0, 1, 10);
+    camera.position.set(0, 1, 8);
     camera.lookAt(0, 0, 0);
-
     let time = 0;
+    // let lastTime = 0;
+    // Animation Loop
+    const animate = () => {
+      if (!isVisible) return;
 
-    const animate = (): void => {
-      frameId.current = requestAnimationFrame(animate);
-      time += 0.008;
+      time += quality === 'high' ? 0.008 : quality === 'medium' ? 0.006 : 0.004;
 
-      // Neural Network Animation
+      // Neural Network Pulsing with quality-based updates
       neuralNodes.forEach((node: NeuralNode, index: number) => {
-        node.activation = (Math.sin(time * 1.5 + index) + 1) / 2;
-        const scale = 0.7 + node.activation * 0.5;
+        const activationSpeed = quality === 'high' ? 2 : quality === 'medium' ? 1.5 : 1;
+        node.activation = (Math.sin(time * activationSpeed + index) + 1) / 2;
+        const scale = 0.8 + node.activation * (quality === 'high' ? 0.6 : quality === 'medium' ? 0.4 : 0.3);
         node.scale.setScalar(scale);
-        
         const material = node.material as THREE.MeshPhongMaterial;
-        material.emissive.setHSL(0.6 + node.layer * 0.1, 0.5, node.activation * 0.25);
+        material.emissive.setHSL(0.5 + node.layer * 0.1, 0.5, node.activation * 0.3);
       });
 
-      // AI Particle Behavior
+      // AI Particles with quality-based updates
       aiParticles.forEach((particle: AIParticle, index: number) => {
+        const rotationSpeed = quality === 'high' ? 0.015 : quality === 'medium' ? 0.01 : 0.005;
         switch (particle.aiState) {
           case 'learning':
-            particle.rotation.x += 0.015;
-            particle.rotation.y += 0.008;
+            particle.rotation.x += rotationSpeed;
+            particle.rotation.y += rotationSpeed * 0.5;
             break;
           case 'processing':
-            particle.rotation.z += 0.02;
-            const pulseScale = 1 + Math.sin(time * 3 + index) * 0.25;
+            particle.rotation.z += rotationSpeed * 1.3;
+            const pulseScale = 1 + Math.sin(time * 3 + index) * (quality === 'high' ? 0.2 : quality === 'medium' ? 0.15 : 0.1);
             particle.scale.setScalar(pulseScale);
             break;
           case 'analyzing':
-            particle.rotation.x += 0.008;
-            particle.rotation.y += 0.015;
-            particle.rotation.z += 0.008;
+            particle.rotation.x += rotationSpeed * 0.5;
+            particle.rotation.y += rotationSpeed;
+            particle.rotation.z += rotationSpeed * 0.5;
             break;
         }
 
         const direction = particle.targetPosition.clone().sub(particle.position);
-        if (direction.length() < 0.4) {
+        if (direction.length() < 0.3) {
           particle.targetPosition.set(
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 10,
+            (Math.random() - 0.5) * 18,
+            (Math.random() - 0.5) * 8,
             (Math.random() - 0.5) * 12
           );
         }
-        
-        direction.normalize().multiplyScalar(0.008);
-        particle.velocity.lerp(direction, 0.04);
+        direction.normalize().multiplyScalar(quality === 'high' ? 0.008 : quality === 'medium' ? 0.006 : 0.004);
+        particle.velocity.lerp(direction, quality === 'high' ? 0.03 : quality === 'medium' ? 0.02 : 0.01);
         particle.position.add(particle.velocity);
-        
-        if (Math.random() < 0.0008) {
-          particle.aiState = ['learning', 'processing', 'analyzing'][Math.floor(Math.random() * 3)] as 'learning' | 'processing' | 'analyzing';
-        }
       });
 
-      // Animate Streams
-      stream1.rotation.y += 0.003;
-      stream2.rotation.x += 0.002;
-      stream3.rotation.z += 0.004;
-
-      camera.position.x = Math.sin(time * 0.15) * 1.5;
-      camera.position.y = 1 + Math.cos(time * 0.12) * 0.8;
+      // Animate Data Streams
+      sqlStream.rotation.y += 0.003;
+      pythonStream.rotation.y -= 0.004;
+      aiStream.rotation.x += 0.002;
+      // Animate Holographic Matrices
+      matrix1.rotation.y += 0.002;
+      matrix1.children.forEach((child, index) => {
+        if (child instanceof THREE.Mesh) {
+          const material = child.material as THREE.MeshBasicMaterial;
+          material.opacity = 0.1 + Math.sin(time * 2 + index * 0.1) * 0.2;
+        }
+      });
+      matrix2.rotation.y -= 0.003;
+      matrix2.children.forEach((child, index) => {
+        if (child instanceof THREE.Mesh) {
+          const material = child.material as THREE.MeshBasicMaterial;
+          material.opacity = 0.1 + Math.cos(time * 1.5 + index * 0.15) * 0.2;
+        }
+      });
+      // Dynamic connections between AI particles
+      const connectionLines: THREE.Line[] = [];
+      for (let i = 0; i < aiParticles.length; i++) {
+        for (let j = i + 1; j < Math.min(i + 3, aiParticles.length); j++) {
+          const distance = aiParticles[i].position.distanceTo(aiParticles[j].position);
+          if (distance < 4) {
+            const geometry = new THREE.BufferGeometry().setFromPoints([
+              aiParticles[i].position,
+              aiParticles[j].position
+            ]);
+            const material = new THREE.LineBasicMaterial({ 
+              color: 0x00ffff,
+              transparent: true,
+              opacity: (4 - distance) / 4 * 0.5
+            });
+            const line = new THREE.Line(geometry, material);
+            connectionLines.push(line);
+            scene.add(line);
+          }
+        }
+      }
+      setTimeout(() => {
+        connectionLines.forEach(line => scene.remove(line));
+      }, 50);
+      // Animate Data Packets
+      dataPackets.forEach((packet, i) => {
+        packet.position.x += Math.sin(time + i) * 0.002;
+        packet.position.y += Math.cos(time + i) * 0.002;
+        packet.rotation.x += 0.01;
+        packet.rotation.y += 0.01;
+      });
+      // Animate Grid Wave
+      const gridPos = gridGeometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < gridPos.length; i += 3) {
+        gridPos[i + 2] = Math.sin(time + gridPos[i] * 0.5 + gridPos[i + 1] * 0.5) * 0.15;
+      }
+      gridGeometry.attributes.position.needsUpdate = true;
+      // Camera movement with quality-based updates
+      const cameraSpeed = quality === 'high' ? 0.1 : quality === 'medium' ? 0.08 : 0.05;
+      camera.position.x = Math.sin(time * cameraSpeed) * 1.5;
+      camera.position.y = 1 + Math.cos(time * cameraSpeed * 0.8) * 0.8;
       camera.lookAt(0, 0, 0);
-
       renderer.render(scene, camera);
     };
 
-    animate();
+    registerAnimation('services-main', animate);
     setIsLoaded(true);
 
-    const handleResize = (): void => {
-      if (rendererRef.current && mountRef.current) {
+    // Handle resize
+    const handleResize = () => {
+      if (renderer && mountRef.current) {
         const width = mountRef.current.clientWidth;
-        const height = 600;
-        rendererRef.current.setSize(width, height);
+        const height = mountRef.current.clientHeight;
+        renderer.setSize(width, height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(mountRef.current);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
-      if (frameId.current !== null) {
-        cancelAnimationFrame(frameId.current);
-      }
-      if (mountRef.current && renderer.domElement && mountRef.current.contains(renderer.domElement)) {
+      resizeObserver.disconnect();
+      unregisterAnimation('services-main');
+      disposeRenderer('services-main');
+      disposeScene('services-main');
+      if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
-      renderer.dispose();
     };
-  }, []);
+  }, [registerAnimation, unregisterAnimation, isVisible, quality]);
 
   return (
-    <div className="absolute inset-0">
-      <div ref={mountRef} className="w-full h-full" />
+    <div ref={mountRef} className="absolute inset-0 w-full h-full">
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
-          <div className="text-cyan-400 text-lg animate-pulse font-mono">Initializing AI Services...</div>
+          <div className="text-cyan-400 text-lg animate-pulse">Initializing Services...</div>
         </div>
       )}
     </div>
@@ -310,31 +387,24 @@ const ServicesMain: React.FC = () => {
   const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, description, isMain = false }) => (
     <>
       {isMain ? (
-        <div className="relative mb-12">
-          <h1 className="text-5xl md:text-6xl font-bold text-center mb-6 group font-mono tracking-wider">
-            <span className="text-cyan-100 group-hover:text-bright-cyan transition-colors duration-500 drop-shadow-[0_0_8px_#00ffff40]">
-              WHY CHOOSE{" "}
-            </span>
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent group-hover:from-purple-400 group-hover:via-cyan-400 group-hover:to-blue-400 transition-all duration-500">
-              DATASENSE
-            </span>
+        <div className="relative mb-12 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent font-mono tracking-wider">
+            WHY CHOOSE DATASENSE
           </h1>
           <div className="w-full h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent mb-4"></div>
+          <div className="text-cyan-300/80 text-lg md:text-xl font-mono mb-6">Advanced Data Intelligence Platform</div>
         </div>
       ) : (
-        <h2 className="text-4xl font-bold text-center text-cyan-100 mb-4 font-mono">
+        <h2 className="text-4xl font-bold text-center text-cyan-100 mb-4">
           {title}
         </h2>
       )}
       
-      <div className="text-center mb-4">
-        <p className={`text-2xl text-cyan-300/90 mb-4 mx-auto font-mono ${isMain ? 'md:text-3xl' : ''}`}>
-          {subtitle}
-        </p>
-        <div className="w-32 h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent mx-auto mb-8"></div>
-      </div>
+      <p className={`text-xl md:text-2xl text-center text-cyan-300 mb-4 mx-auto ${isMain ? 'md:text-3xl' : ''}`}>
+        {subtitle}
+      </p>
   
-      <p className={`text-lg text-center text-cyan-100/80 mb-16 mx-auto max-w-4xl leading-relaxed ${isMain ? 'md:text-xl' : ''}`}>
+      <p className={`text-base md:text-lg text-center text-cyan-100/90 mb-16 mx-auto max-w-4xl leading-relaxed ${isMain ? 'md:text-xl' : ''}`}>
         {description}
       </p>
     </>
@@ -348,17 +418,27 @@ const ServicesMain: React.FC = () => {
     'Expert Services': '#expert-services'
   } as const;
 
+  // Card color schemes matching Footer design
+  const cardSchemes = [
+    { gradient: 'from-cyan-500/20 to-blue-500/20', border: 'border-cyan-400/30 hover:border-cyan-400/60', accent: 'text-cyan-400', dot: 'bg-cyan-400' },
+    { gradient: 'from-purple-500/20 to-pink-500/20', border: 'border-purple-400/30 hover:border-purple-400/60', accent: 'text-purple-400', dot: 'bg-purple-400' },
+    { gradient: 'from-green-500/20 to-teal-500/20', border: 'border-green-400/30 hover:border-green-400/60', accent: 'text-green-400', dot: 'bg-green-400' },
+    { gradient: 'from-blue-500/20 to-cyan-500/20', border: 'border-blue-400/30 hover:border-blue-400/60', accent: 'text-blue-400', dot: 'bg-blue-400' },
+    { gradient: 'from-orange-500/20 to-red-500/20', border: 'border-orange-400/30 hover:border-orange-400/60', accent: 'text-orange-400', dot: 'bg-orange-400' }
+  ];
+
   const ServiceCard: React.FC<ServiceCardProps & { index: number }> = ({ 
     title, 
     description, 
     iconType, 
-    buttonText = "INITIALIZE",
+    buttonText = "LEARN MORE",
     gifSrc,
     index
   }) => {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+    const scheme = cardSchemes[index] || cardSchemes[0];
 
     const handleNavigation = () => {
       const targetSection = serviceLinks[title as keyof typeof serviceLinks];
@@ -373,101 +453,59 @@ const ServicesMain: React.FC = () => {
 
     return (
       <div 
-        className={`opacity-0 translate-y-12 animate-[fadeIn_0.8s_ease-out_forwards] 
-                    [animation-delay:${index * 0.15}s] relative w-full max-w-sm mx-auto group`}
+        className={`opacity-0 translate-y-12 animate-[fadeIn_0.6s_ease-out_forwards] 
+                    [animation-delay:${index * 0.1}s] relative w-full max-w-sm mx-auto group`}
       >
-        {/* Holographic Glow Effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-700 opacity-0 group-hover:opacity-100"></div>
+        {/* Glow Effect */}
+        <div className={`absolute inset-0 bg-gradient-to-r ${scheme.gradient} rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500 -z-10`}></div>
         
         {/* Book Container */}
         <div 
-          className="book-container relative h-[420px] w-[320px] mx-auto 
+          className="book-container relative h-[400px] w-[320px] mx-auto 
                      transform-gpu preserve-3d flex items-center justify-center"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          {/* Status Indicator */}
-          <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-400 rounded-full animate-pulse z-20 border-2 border-slate-900"></div>
-          
           {/* Book Cover */}
           <div 
-            className={`absolute inset-0 bg-gradient-to-br from-slate-800/90 via-slate-700/90 to-cyan-900/90 
-                       rounded-xl cursor-pointer border-2 border-cyan-400/40 hover:border-cyan-400/80
+            className={`absolute inset-0 backdrop-blur-md bg-slate-800/40 
+                       rounded-xl cursor-pointer border-2 ${scheme.border}
                        flex flex-col items-center justify-center gap-6 p-8
-                       origin-left book-cover backdrop-blur-md ${isHovered ? 'book-open' : ''}
-                       shadow-[0_8px_32px_rgba(0,255,255,0.1)] hover:shadow-[0_12px_48px_rgba(0,255,255,0.2)]
-                       transition-all duration-700`}
+                       origin-left book-cover ${isHovered ? 'book-open' : ''}
+                       transition-all duration-500`}
           >
-            {/* Scanlines Effect */}
-            <div className="absolute inset-0 opacity-20 pointer-events-none">
-              <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent top-1/4 animate-pulse"></div>
-              <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent top-2/4 animate-pulse animation-delay-1000"></div>
-              <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent top-3/4 animate-pulse animation-delay-2000"></div>
-            </div>
-
-            {/* Front Content */}
-            <div className="book-content-front relative z-10">
+            {/* Status Dot */}
+            <div className={`absolute top-3 right-3 w-3 h-3 ${scheme.dot} rounded-full animate-pulse`}></div>
+            
+            {/* GIF/Icon Container */}
+            <div className="book-content-front">
+              <h3 className={`text-xl font-bold ${scheme.accent} text-center 
+                           text-shadow-[0_0_4px_currentColor] tracking-wide mb-6 font-mono flex items-center justify-center`}>
+                <span className={`w-2 h-2 ${scheme.dot} rounded-full mr-3 animate-ping`}></span>
+                {title.toUpperCase()}
+              </h3>
+              
               {gifSrc ? (
-                <div className="relative mb-4">
-                  <div className="absolute inset-0 bg-cyan-400/20 rounded-lg blur animate-pulse"></div>
+                <div className="relative">
                   <img 
                     src={gifSrc} 
                     alt={title} 
-                    className="relative w-48 h-48 object-contain rounded-lg border border-cyan-400/30" 
+                    className="w-48 h-48 object-contain rounded-lg border border-cyan-400/20" 
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent rounded-lg"></div>
                 </div>
               ) : (
-                <div className="text-cyan-400 scale-150 mb-6">
+                <div className={`${scheme.accent} scale-150 mb-4`}>
                   <AnimatedIcon type={iconType} />
                 </div>
               )}
-
-              <h3 className="text-xl font-bold text-cyan-400 text-center 
-                           text-shadow-[0_0_8px_#00ffff] tracking-wide font-mono">
-                {title}
-              </h3>
-              
-              {/* Neural Network Indicator */}
-              <div className="flex justify-center space-x-2 mt-4">
-                {[...Array(3)].map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={`w-2 h-2 rounded-full animate-pulse 
-                               ${i === 0 ? 'bg-cyan-400' : i === 1 ? 'bg-purple-400' : 'bg-blue-400'}`}
-                    style={{ animationDelay: `${i * 0.3}s` }}
-                  ></div>
-                ))}
-              </div>
             </div>
           </div>
 
           {/* Book Content (Inside Pages) */}
           <div className="absolute inset-0 p-8 pl-16 flex flex-col items-center 
-                        justify-between text-center book-content-back
-                        bg-gradient-to-br from-slate-900/95 to-cyan-950/95 rounded-xl
-                        backdrop-blur-md border-l-2 border-cyan-400/30">
-            
-            {/* Matrix Background Effect */}
-            <div className="absolute inset-0 opacity-10 overflow-hidden rounded-xl">
-              {[...Array(8)].map((_, i) => (
-                <div 
-                  key={i}
-                  className="absolute text-cyan-400 font-mono text-xs animate-pulse"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`
-                  }}
-                >
-                  {Math.random() > 0.5 ? '1' : '0'}
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-12 relative z-10">
-              <div className="text-cyan-400/60 font-mono text-xs mb-2 tracking-wider">
-                AI.MODULE.{String(index + 1).padStart(2, '0')}
-              </div>
+                        justify-between text-center book-content-back backdrop-blur-md bg-slate-800/60 rounded-xl">
+            <div className="mt-12">
               <p className="text-cyan-300/90 text-sm leading-relaxed font-mono">
                 {description}
               </p>
@@ -475,14 +513,12 @@ const ServicesMain: React.FC = () => {
             
             <button
               onClick={handleNavigation}
-              className="relative px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 
-                       text-slate-900 rounded-lg font-bold hover:from-cyan-400 hover:to-blue-400 
-                       hover:scale-105 active:scale-95 font-mono tracking-wide
-                       shadow-[0_0_20px_rgba(0,255,255,0.3)] hover:shadow-[0_0_30px_rgba(0,255,255,0.5)]
-                       transition-all duration-300 border border-cyan-400/50"
+              className={`px-6 py-3 bg-gradient-to-r ${scheme.gradient} ${scheme.accent} rounded-lg 
+                       font-semibold active:scale-95 font-mono
+                       shadow-[0_0_15px_currentColor] transition-all duration-300
+                       border border-current/30 hover:border-current/60`}
             >
-              <span className="relative z-10">{buttonText}</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-blue-400/20 rounded-lg blur animate-pulse"></div>
+              {buttonText}
             </button>
           </div>
         </div>
@@ -491,29 +527,24 @@ const ServicesMain: React.FC = () => {
   };
 
   return (
-    <section 
-      id="services" 
-      className="relative min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950 overflow-hidden"
-    >
+    <section id="services" className="bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950 text-cyan-100 relative overflow-hidden min-h-screen">
       {/* Advanced AI Background */}
       <div className="absolute inset-0 w-full h-full">
-        <AIServicesVisualization />
+        <ServicesAIBackground />
       </div>
 
       {/* Holographic Overlay Effects */}
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-slate-900/40"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-transparent to-transparent"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/10 via-transparent to-purple-900/10"></div>
       
       {/* Scanline Effects */}
       <div className="absolute inset-0 opacity-20">
-        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse top-1/6"></div>
-        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent animate-pulse top-2/6 animation-delay-1000"></div>
-        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent animate-pulse top-3/6 animation-delay-2000"></div>
-        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-green-400 to-transparent animate-pulse top-4/6 animation-delay-3000"></div>
-        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-pink-400 to-transparent animate-pulse top-5/6 animation-delay-4000"></div>
+        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse top-1/4"></div>
+        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-purple-400 to-transparent animate-pulse top-2/4" style={{animationDelay: '1s'}}></div>
+        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent animate-pulse top-3/4" style={{animationDelay: '2s'}}></div>
       </div>
 
-      <div className="relative z-10 container mx-auto py-20 px-6">
+      <div className="container mx-auto py-20 px-6 relative z-10">
         <SectionHeader
           title="WHY CHOOSE DATASENSE"
           subtitle="The Smartest Path to Kickstart or Elevate Your Data Career"
@@ -521,43 +552,32 @@ const ServicesMain: React.FC = () => {
           isMain={true}
         />
         
-        {/* AI Status Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center space-x-4 text-cyan-400/80 font-mono text-sm bg-slate-800/30 backdrop-blur-sm px-6 py-3 rounded-full border border-cyan-400/30">
-            <span>Neural Network Status: ACTIVE</span>
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-            <span>AI Learning Modules: ONLINE</span>
-            <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></span>
-            <span>Data Processing: OPTIMIZED</span>
-          </div>
-        </div>
-        
         <div className="grid grid-cols-1 gap-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 lg:px-8">
             <ServiceCard
               index={0}
               title="Learn Data Skills"
-              description="Build job-ready skills with award-winning courses and personalized, goal-oriented learning plans powered by advanced AI algorithms"
+              description="Build job-ready skills with award-winning courses and personalized, goal-oriented learning plans"
               iconType="learn"
               gifSrc="/assets/gifs/1.gif" 
             />
             <ServiceCard
               index={1}
               title="Practice Real Time"
-              description="Practice on our Interactive Coderpad, Go through everyday challenges, Create YOUR Own Quiz, Mock Quiz with real-time feedback"
+              description="Practice on our Interactive Coderpad, Go through everyday challenges, Create YOUR Own Quiz, Mock Quiz"
               iconType="practice"
               gifSrc="/assets/gifs/17.gif"
             />
             <ServiceCard
               index={2}
               title="Play & Compete"
-              description="Play and compete with your friends and colleges using our own Datasense Gaming Arena with AI-powered matchmaking"
+              description="Play and compete with your friends and colleges using our own Datasense Gaming Arena"
               iconType="compete"
               gifSrc="/assets/gifs/18.gif"
             />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-4xl mx-auto lg:px-8">
             <ServiceCard
               index={3}
               title="AI Integrated Services"
@@ -575,10 +595,7 @@ const ServicesMain: React.FC = () => {
           </div>
         </div>
       </div>
-      
-      <div className="relative z-10">
-        <CeoMessage />
-      </div>
+      <CeoMessage />
     </section>
   );
 };

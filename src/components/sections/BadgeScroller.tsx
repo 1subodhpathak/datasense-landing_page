@@ -68,22 +68,14 @@ const courses = [
 
 const AIParticleBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
+  const { registerAnimation, unregisterAnimation, isVisible, quality } = useThree();
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    // const renderer = getRenderer('badge-scroller', { 
-    //   canvas: mountRef.current,
-    //   alpha: true,
-    //   antialias: true,
-    //   powerPreference: "high-performance",
-    //   precision: "mediump"
-    // });
-    // const scene = getScene('badge-scroller');
-
-    // Create particles
-    const particles = [...Array(15)].map(() => {
+    // Create particles with quality-based count
+    const particleCount = quality === 'high' ? 15 : quality === 'medium' ? 10 : 5;
+    const particles = [...Array(particleCount)].map(() => {
       const particle = document.createElement('div');
       particle.className = "absolute w-1 h-1 bg-cyan-400 rounded-full animate-pulse";
       particle.style.left = `${Math.random() * 100}%`;
@@ -94,7 +86,7 @@ const AIParticleBackground: React.FC = () => {
       return particle;
     });
 
-    // Create neural network lines
+    // Create neural network lines with quality-based count
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("class", "absolute inset-0 w-full h-full opacity-20");
     
@@ -119,14 +111,15 @@ const AIParticleBackground: React.FC = () => {
     defs.appendChild(gradient);
     svg.appendChild(defs);
 
-    [...Array(8)].forEach((_, i) => {
+    const lineCount = quality === 'high' ? 8 : quality === 'medium' ? 6 : 4;
+    [...Array(lineCount)].forEach((_, i) => {
       const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      line.setAttribute("x1", `${i * 12.5}%`);
+      line.setAttribute("x1", `${i * (100 / lineCount)}%`);
       line.setAttribute("y1", "0%");
-      line.setAttribute("x2", `${(i + 1) * 12.5}%`);
+      line.setAttribute("x2", `${(i + 1) * (100 / lineCount)}%`);
       line.setAttribute("y2", "100%");
       line.setAttribute("stroke", "url(#neuralGradient)");
-      line.setAttribute("stroke-width", "1");
+      line.setAttribute("stroke-width", quality === 'high' ? "1" : "0.5");
       line.setAttribute("class", "animate-pulse");
       line.style.animationDelay = `${i * 0.2}s`;
       svg.appendChild(line);
@@ -134,10 +127,14 @@ const AIParticleBackground: React.FC = () => {
 
     mountRef.current?.appendChild(svg);
 
-    // Register animation
+    // Register animation with quality-based updates
     const animate = () => {
       if (!isVisible) return;
-      // Animation logic is handled by CSS animations
+      // Animation logic is handled by CSS animations with quality-based timing
+      const speed = quality === 'high' ? 1 : quality === 'medium' ? 0.8 : 0.6;
+      particles.forEach(particle => {
+        particle.style.animationDuration = `${(2 + Math.random() * 2) * speed}s`;
+      });
     };
 
     registerAnimation('badge-scroller', animate);
@@ -149,7 +146,7 @@ const AIParticleBackground: React.FC = () => {
       disposeRenderer('badge-scroller');
       disposeScene('badge-scroller');
     };
-  }, [registerAnimation, unregisterAnimation, isVisible]);
+  }, [registerAnimation, unregisterAnimation, isVisible, quality]);
 
   return (
     <div ref={mountRef} className="absolute inset-0 overflow-hidden">
@@ -159,10 +156,12 @@ const AIParticleBackground: React.FC = () => {
 };
 
 const CourseCard: React.FC<{ course: typeof courses[0]; index: number }> = ({ course }) => {
+  const { quality } = useThree();
+  
   return (
     <div className="shrink-0 w-96 relative group">
-      {/* Holographic Glow Effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-700 opacity-60 group-hover:opacity-100"></div>
+      {/* Holographic Glow Effect with quality-based blur */}
+      <div className={`absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-2xl ${quality === 'high' ? 'blur-xl group-hover:blur-2xl' : 'blur-lg group-hover:blur-xl'} transition-all duration-700 opacity-60 group-hover:opacity-100`}></div>
       
       {/* Main Card */}
       <div className="relative backdrop-blur-md bg-slate-900/80 border border-cyan-400/30 rounded-2xl overflow-hidden hover:border-cyan-400/60 transition-all duration-500 hover:transform hover:scale-105 min-h-[450px] flex flex-col">
@@ -270,9 +269,9 @@ const CourseCard: React.FC<{ course: typeof courses[0]; index: number }> = ({ co
           </div>
         </div>
         
-        {/* Scanning Line Effect */}
+        {/* Scanning Line Effect with quality-based animation */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-          <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent animate-scan-line"></div>
+          <div className={`absolute w-full h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent ${quality === 'high' ? 'animate-scan-line' : 'animate-scan-line-slow'}`}></div>
         </div>
       </div>
     </div>

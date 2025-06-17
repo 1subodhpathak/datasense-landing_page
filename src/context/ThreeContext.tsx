@@ -5,6 +5,8 @@ interface ThreeContextType {
   registerAnimation: (id: string, animate: () => void) => void;
   unregisterAnimation: (id: string) => void;
   isVisible: boolean;
+  setQuality: (quality: 'high' | 'medium' | 'low') => void;
+  quality: 'high' | 'medium' | 'low';
 }
 
 const ThreeContext = createContext<ThreeContextType | null>(null);
@@ -14,6 +16,10 @@ export const ThreeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isVisible, setIsVisible] = useState(true);
   const frameIdRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number>(0);
+  const [quality, setQuality] = useState<'high' | 'medium' | 'low'>('high');
+  const fpsRef = useRef<number>(60);
+  const frameCountRef = useRef<number>(0);
+  const lastFPSUpdateRef = useRef<number>(0);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -26,6 +32,25 @@ export const ThreeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (!isVisible) {
         frameIdRef.current = requestAnimationFrame(animate);
         return;
+      }
+
+      // FPS calculation
+      frameCountRef.current++;
+      if (time - lastFPSUpdateRef.current >= 1000) {
+        fpsRef.current = frameCountRef.current;
+        frameCountRef.current = 0;
+        lastFPSUpdateRef.current = time;
+
+        // Auto quality reduction based on FPS
+        if (fpsRef.current < 30 && quality === 'high') {
+          setQuality('medium');
+        } else if (fpsRef.current < 20 && quality === 'medium') {
+          setQuality('low');
+        } else if (fpsRef.current > 55 && quality === 'low') {
+          setQuality('medium');
+        } else if (fpsRef.current > 55 && quality === 'medium') {
+          setQuality('high');
+        }
       }
 
       // Throttle to ~60fps
@@ -48,7 +73,7 @@ export const ThreeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         cancelAnimationFrame(frameIdRef.current);
       }
     };
-  }, [isVisible]);
+  }, [isVisible, quality]);
 
   const registerAnimation = (id: string, animate: () => void) => {
     animationsRef.current.set(id, animate);
@@ -59,7 +84,7 @@ export const ThreeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <ThreeContext.Provider value={{ registerAnimation, unregisterAnimation, isVisible }}>
+    <ThreeContext.Provider value={{ registerAnimation, unregisterAnimation, isVisible, setQuality, quality }}>
       {children}
     </ThreeContext.Provider>
   );

@@ -34,16 +34,17 @@ class NeuralNode extends THREE.Mesh {
 // Services AI Background Component
 const ServicesAIBackground: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
+  const { registerAnimation, unregisterAnimation, isVisible, quality } = useThree();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
     const renderer = getRenderer('services-main', {
-      antialias: true,
+      antialias: quality === 'high',
       alpha: true,
-      powerPreference: "high-performance"
+      powerPreference: "high-performance",
+      precision: quality === 'high' ? "highp" : "mediump"
     });
     const scene = getScene('services-main');
 
@@ -62,21 +63,25 @@ const ServicesAIBackground: React.FC = () => {
     renderer.setClearColor(0x000000, 0);
     mountRef.current.appendChild(renderer.domElement);
 
-    // --- Footer-style Animations ---
-    // Neural Nodes
+    // Quality-based particle counts
+    const particleCount = quality === 'high' ? 80 : quality === 'medium' ? 50 : 30;
+    const layers = quality === 'high' ? 5 : quality === 'medium' ? 4 : 3;
+
+    // Create neural nodes with quality-based complexity
     const neuralNodes: NeuralNode[] = [];
-    const layers = 3;
+    const nodeGeometry = new THREE.SphereGeometry(0.1, quality === 'high' ? 16 : quality === 'medium' ? 12 : 8);
+    const nodeMaterial = new THREE.MeshPhongMaterial({
+      color: 0x06b6d4,
+      emissive: 0x0891b2,
+      emissiveIntensity: 0.5,
+      transparent: true,
+      opacity: 0.8
+    });
+
     for (let layer = 0; layer < layers; layer++) {
       const nodesInLayer = Math.floor(6 - layer * 1.2);
       for (let node = 0; node < nodesInLayer; node++) {
-        const geometry = new THREE.SphereGeometry(0.08, 8, 8);
-        const material = new THREE.MeshPhongMaterial({ 
-          color: new THREE.Color().setHSL(0.5 + layer * 0.1, 1, 0.6),
-          transparent: true,
-          opacity: 0.8,
-          emissive: new THREE.Color().setHSL(0.5 + layer * 0.1, 0.5, 0.1)
-        });
-        const neuralNode = new NeuralNode(geometry, material);
+        const neuralNode = new NeuralNode(nodeGeometry, nodeMaterial);
         neuralNode.position.set(
           (layer - layers/2) * 4,
           (node - nodesInLayer/2) * 1.5,
@@ -119,7 +124,6 @@ const ServicesAIBackground: React.FC = () => {
     scene.add(matrix2);
     // AI Particles
     const aiParticles: AIParticle[] = [];
-    const particleCount = 40;
     for (let i = 0; i < particleCount; i++) {
       const geometry = new THREE.IcosahedronGeometry(0.03, 1);
       const hue = (i / particleCount) * 0.3 + 0.4;
@@ -216,33 +220,38 @@ const ServicesAIBackground: React.FC = () => {
     const animate = () => {
       if (!isVisible) return;
 
-      time += 0.008;
-      // Neural Network Pulsing
+      time += quality === 'high' ? 0.008 : quality === 'medium' ? 0.006 : 0.004;
+
+      // Neural Network Pulsing with quality-based updates
       neuralNodes.forEach((node: NeuralNode, index: number) => {
-        node.activation = (Math.sin(time * 2 + index) + 1) / 2;
-        const scale = 0.8 + node.activation * 0.6;
+        const activationSpeed = quality === 'high' ? 2 : quality === 'medium' ? 1.5 : 1;
+        node.activation = (Math.sin(time * activationSpeed + index) + 1) / 2;
+        const scale = 0.8 + node.activation * (quality === 'high' ? 0.6 : quality === 'medium' ? 0.4 : 0.3);
         node.scale.setScalar(scale);
         const material = node.material as THREE.MeshPhongMaterial;
         material.emissive.setHSL(0.5 + node.layer * 0.1, 0.5, node.activation * 0.3);
       });
-      // Animate AI Particles
+
+      // AI Particles with quality-based updates
       aiParticles.forEach((particle: AIParticle, index: number) => {
+        const rotationSpeed = quality === 'high' ? 0.015 : quality === 'medium' ? 0.01 : 0.005;
         switch (particle.aiState) {
           case 'learning':
-            particle.rotation.x += 0.015;
-            particle.rotation.y += 0.008;
+            particle.rotation.x += rotationSpeed;
+            particle.rotation.y += rotationSpeed * 0.5;
             break;
           case 'processing':
-            particle.rotation.z += 0.02;
-            const pulseScale = 1 + Math.sin(time * 3 + index) * 0.2;
+            particle.rotation.z += rotationSpeed * 1.3;
+            const pulseScale = 1 + Math.sin(time * 3 + index) * (quality === 'high' ? 0.2 : quality === 'medium' ? 0.15 : 0.1);
             particle.scale.setScalar(pulseScale);
             break;
           case 'analyzing':
-            particle.rotation.x += 0.008;
-            particle.rotation.y += 0.015;
-            particle.rotation.z += 0.008;
+            particle.rotation.x += rotationSpeed * 0.5;
+            particle.rotation.y += rotationSpeed;
+            particle.rotation.z += rotationSpeed * 0.5;
             break;
         }
+
         const direction = particle.targetPosition.clone().sub(particle.position);
         if (direction.length() < 0.3) {
           particle.targetPosition.set(
@@ -251,13 +260,11 @@ const ServicesAIBackground: React.FC = () => {
             (Math.random() - 0.5) * 12
           );
         }
-        direction.normalize().multiplyScalar(0.008);
-        particle.velocity.lerp(direction, 0.03);
+        direction.normalize().multiplyScalar(quality === 'high' ? 0.008 : quality === 'medium' ? 0.006 : 0.004);
+        particle.velocity.lerp(direction, quality === 'high' ? 0.03 : quality === 'medium' ? 0.02 : 0.01);
         particle.position.add(particle.velocity);
-        if (Math.random() < 0.0008) {
-          particle.aiState = ['learning', 'processing', 'analyzing'][Math.floor(Math.random() * 3)] as 'learning' | 'processing' | 'analyzing';
-        }
       });
+
       // Animate Data Streams
       sqlStream.rotation.y += 0.003;
       pythonStream.rotation.y -= 0.004;
@@ -314,9 +321,10 @@ const ServicesAIBackground: React.FC = () => {
         gridPos[i + 2] = Math.sin(time + gridPos[i] * 0.5 + gridPos[i + 1] * 0.5) * 0.15;
       }
       gridGeometry.attributes.position.needsUpdate = true;
-      // Camera movement
-      camera.position.x = Math.sin(time * 0.1) * 1.5;
-      camera.position.y = 1 + Math.cos(time * 0.08) * 0.8;
+      // Camera movement with quality-based updates
+      const cameraSpeed = quality === 'high' ? 0.1 : quality === 'medium' ? 0.08 : 0.05;
+      camera.position.x = Math.sin(time * cameraSpeed) * 1.5;
+      camera.position.y = 1 + Math.cos(time * cameraSpeed * 0.8) * 0.8;
       camera.lookAt(0, 0, 0);
       renderer.render(scene, camera);
     };
@@ -347,7 +355,7 @@ const ServicesAIBackground: React.FC = () => {
         mountRef.current.removeChild(renderer.domElement);
       }
     };
-  }, [registerAnimation, unregisterAnimation, isVisible]);
+  }, [registerAnimation, unregisterAnimation, isVisible, quality]);
 
   return (
     <div ref={mountRef} className="absolute inset-0 w-full h-full">
@@ -421,13 +429,12 @@ const ServicesMain: React.FC = () => {
 
   const ServiceCard: React.FC<ServiceCardProps & { index: number }> = ({ 
     title, 
-    description, 
+    // description, 
     iconType, 
     buttonText = "LEARN MORE",
     gifSrc,
     index
   }) => {
-    const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const scheme = cardSchemes[index] || cardSchemes[0];
@@ -451,68 +458,48 @@ const ServicesMain: React.FC = () => {
         {/* Glow Effect */}
         <div className={`absolute inset-0 bg-gradient-to-r ${scheme.gradient} rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500 -z-10`}></div>
         
-        {/* Book Container */}
-        <div 
-          className="book-container relative h-[400px] w-[320px] mx-auto 
-                     transform-gpu preserve-3d flex items-center justify-center"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          {/* Book Cover */}
-          <div 
-            className={`absolute inset-0 backdrop-blur-md bg-slate-800/40 
-                       rounded-xl cursor-pointer border-2 ${scheme.border}
-                       flex flex-col items-center justify-center gap-6 p-8
-                       origin-left book-cover ${isHovered ? 'book-open' : ''}
-                       transition-all duration-500`}
+        {/* Card Container */}
+        <div className="relative backdrop-blur-md bg-slate-800/40 rounded-xl border-2 ${scheme.border} p-6 flex flex-col items-center gap-6 transition-all duration-500">
+          {/* Status Dot */}
+          <div className={`absolute top-3 right-3 w-3 h-3 ${scheme.dot} rounded-full animate-pulse`}></div>
+          
+          {/* Title */}
+          <h3 className={`text-xl font-bold ${scheme.accent} text-center 
+                       text-shadow-[0_0_4px_currentColor] tracking-wide font-mono flex items-center justify-center`}>
+            <span className={`w-2 h-2 ${scheme.dot} rounded-full mr-3 animate-ping`}></span>
+            {title.toUpperCase()}
+          </h3>
+          
+          {/* GIF/Icon Container */}
+          {gifSrc ? (
+            <div className="relative">
+              <img 
+                src={gifSrc} 
+                alt={title} 
+                className="w-48 h-48 object-contain rounded-lg border border-cyan-400/20" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent rounded-lg"></div>
+            </div>
+          ) : (
+            <div className={`${scheme.accent} scale-150`}>
+              <AnimatedIcon type={iconType} />
+            </div>
+          )}
+          
+          {/* Button */}
+          <button
+            onClick={handleNavigation}
+            className={`px-6 py-3 bg-gradient-to-r ${scheme.gradient} ${scheme.accent} rounded-lg 
+                     font-semibold font-mono
+                     shadow-[0_0_15px_currentColor] 
+                     transform transition-all duration-300 ease-out
+                     hover:scale-105 hover:shadow-[0_0_25px_currentColor]
+                     hover:-translate-y-1
+                     active:scale-95
+                     border border-current/30 hover:border-current/60`}
           >
-            {/* Status Dot */}
-            <div className={`absolute top-3 right-3 w-3 h-3 ${scheme.dot} rounded-full animate-pulse`}></div>
-            
-            {/* GIF/Icon Container */}
-            <div className="book-content-front">
-              <h3 className={`text-xl font-bold ${scheme.accent} text-center 
-                           text-shadow-[0_0_4px_currentColor] tracking-wide mb-6 font-mono flex items-center justify-center`}>
-                <span className={`w-2 h-2 ${scheme.dot} rounded-full mr-3 animate-ping`}></span>
-                {title.toUpperCase()}
-              </h3>
-              
-              {gifSrc ? (
-                <div className="relative">
-                  <img 
-                    src={gifSrc} 
-                    alt={title} 
-                    className="w-48 h-48 object-contain rounded-lg border border-cyan-400/20" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent rounded-lg"></div>
-                </div>
-              ) : (
-                <div className={`${scheme.accent} scale-150 mb-4`}>
-                  <AnimatedIcon type={iconType} />
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Book Content (Inside Pages) */}
-          <div className="absolute inset-0 p-8 pl-16 flex flex-col items-center 
-                        justify-between text-center book-content-back backdrop-blur-md bg-slate-800/60 rounded-xl">
-            <div className="mt-12">
-              <p className="text-cyan-300/90 text-sm leading-relaxed font-mono">
-                {description}
-              </p>
-            </div>
-            
-            <button
-              onClick={handleNavigation}
-              className={`px-6 py-3 bg-gradient-to-r ${scheme.gradient} ${scheme.accent} rounded-lg 
-                       font-semibold active:scale-95 font-mono
-                       shadow-[0_0_15px_currentColor] transition-all duration-300
-                       border border-current/30 hover:border-current/60`}
-            >
-              {buttonText}
-            </button>
-          </div>
+            {buttonText}
+          </button>
         </div>
       </div>
     );
