@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import { useThree } from '../../context/ThreeContext';
 
 interface AnimatedBackgroundProps {
   type: 'dots' | 'cubes' | 'waves';
@@ -14,18 +15,19 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
   const frameIdRef = useRef<number | null>(null);
   const [isVisible, setIsVisible] = useState(true);
   const [, setIsPageVisible] = useState(true);
+  const { quality } = useThree();
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Setup
+    // Setup with quality-based settings
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ 
       alpha: true, 
-      antialias: true,
+      antialias: quality === 'high',
       powerPreference: "high-performance",
-      precision: "mediump",
+      precision: quality === 'high' ? 'highp' : 'mediump',
       stencil: false,
       depth: false,
       failIfMajorPerformanceCaveat: true
@@ -39,7 +41,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
     renderer.setClearColor(0x000000, 0);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Add performance monitoring
+    // Add performance monitoring with quality-based thresholds
     let frameCount = 0;
     let lastFPSUpdate = 0;
     let fps = 0;
@@ -51,8 +53,9 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
         frameCount = 0;
         lastFPSUpdate = time;
         
-        // If FPS drops below 30, reduce quality
-        if (fps < 30) {
+        // Quality-based FPS thresholds
+        const minFPS = quality === 'high' ? 30 : quality === 'medium' ? 25 : 20;
+        if (fps < minFPS) {
           renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
         } else {
           renderer.setPixelRatio(window.devicePixelRatio);
@@ -60,11 +63,15 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
       }
     };
 
-    // Create particles based on type
+    // Create particles based on type and quality
     const createParticles = () => {
       if (type === 'dots') {
         const geometry = new THREE.BufferGeometry();
-        const particles = window.innerWidth < 768 ? 200 : 500; // Responsive particle count
+        const particles = quality === 'high' ? 
+          (window.innerWidth < 768 ? 200 : 500) : 
+          quality === 'medium' ? 
+            (window.innerWidth < 768 ? 150 : 300) : 
+            (window.innerWidth < 768 ? 100 : 200);
         const positions = new Float32Array(particles * 3);
 
         for (let i = 0; i < particles * 3; i += 3) {
@@ -75,10 +82,10 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
 
         geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         const material = new THREE.PointsMaterial({
-          size: 0.02,
+          size: quality === 'high' ? 0.02 : 0.015,
           color: 0x06b6d4,
           transparent: true,
-          opacity: 0.5,
+          opacity: quality === 'high' ? 0.5 : 0.4,
           sizeAttenuation: true,
           depthWrite: false
         });
@@ -90,13 +97,17 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
         const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
         const material = new THREE.MeshPhongMaterial({
           color: 0x06b6d4,
-          opacity: 0.5,
+          opacity: quality === 'high' ? 0.5 : 0.4,
           transparent: true,
           depthWrite: false
         });
 
         const group = new THREE.Group();
-        const cubeCount = window.innerWidth < 768 ? 25 : 50; // Responsive cube count
+        const cubeCount = quality === 'high' ? 
+          (window.innerWidth < 768 ? 25 : 50) : 
+          quality === 'medium' ? 
+            (window.innerWidth < 768 ? 20 : 35) : 
+            (window.innerWidth < 768 ? 15 : 25);
         for (let i = 0; i < cubeCount; i++) {
           const cube = new THREE.Mesh(geometry, material);
           cube.position.set(
@@ -109,14 +120,18 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
         return group;
       }
 
-      // Waves
-      const segments = window.innerWidth < 768 ? 25 : 50; // Responsive segments
+      // Waves with quality-based segments
+      const segments = quality === 'high' ? 
+        (window.innerWidth < 768 ? 25 : 50) : 
+        quality === 'medium' ? 
+          (window.innerWidth < 768 ? 20 : 35) : 
+          (window.innerWidth < 768 ? 15 : 25);
       const geometry = new THREE.PlaneGeometry(10, 10, segments, segments);
       const material = new THREE.MeshPhongMaterial({
         color: 0x06b6d4,
         wireframe: true,
         transparent: true,
-        opacity: 0.3,
+        opacity: quality === 'high' ? 0.3 : 0.25,
         depthWrite: false
       });
 
@@ -127,18 +142,18 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
     scene.add(particles);
     particlesRef.current = particles;
 
-    // Add lights
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // Add lights with quality-based settings
+    const ambientLight = new THREE.AmbientLight(0xffffff, quality === 'high' ? 0.5 : 0.4);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 0.5);
+    const pointLight = new THREE.PointLight(0xffffff, quality === 'high' ? 0.5 : 0.4);
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
 
     camera.position.z = 5;
 
     let lastTime = 0;
-    // Animation
+    // Animation with quality-based updates
     const animate = (time: number) => {
       if (!isVisible) {
         frameIdRef.current = requestAnimationFrame(animate);
@@ -147,22 +162,24 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
 
       updateFPS(time);
 
-      // Throttle animation to ~60fps
-      if (time - lastTime < 16) {
+      // Quality-based animation throttling
+      const minFrameTime = quality === 'high' ? 16 : quality === 'medium' ? 20 : 25;
+      if (time - lastTime < minFrameTime) {
         frameIdRef.current = requestAnimationFrame(animate);
         return;
       }
       lastTime = time;
 
       if (particlesRef.current) {
+        const speed = quality === 'high' ? 1 : quality === 'medium' ? 0.8 : 0.6;
         if (type === 'dots' || type === 'cubes') {
-          particlesRef.current.rotation.x += 0.001;
-          particlesRef.current.rotation.y += 0.001;
+          particlesRef.current.rotation.x += 0.001 * speed;
+          particlesRef.current.rotation.y += 0.001 * speed;
         } else if (type === 'waves') {
           if (particlesRef.current instanceof THREE.Mesh) {
             const positions = (particlesRef.current.geometry as THREE.BufferGeometry)
               .attributes.position.array as Float32Array;
-            const time = Date.now() * 0.0005;
+            const time = Date.now() * 0.0005 * speed;
 
             for (let i = 0; i < positions.length; i += 3) {
               positions[i + 2] = Math.sin(time + positions[i] * 0.5) * 0.5;
@@ -260,7 +277,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
       rendererRef.current = null;
       particlesRef.current = null;
     };
-  }, [type]);
+  }, [type, quality]);
 
   return (
     <div
@@ -268,7 +285,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ type }) => {
       className="absolute inset-0 overflow-hidden -z-0"
       style={{ 
         pointerEvents: 'none',
-        opacity: 0.2,
+        opacity: quality === 'high' ? 0.2 : 0.15,
         mixBlendMode: 'screen'
       }}
     />

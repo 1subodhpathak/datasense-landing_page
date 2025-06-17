@@ -7,15 +7,25 @@ import { useThree, getRenderer, getScene, disposeRenderer, disposeScene } from "
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rightSideRef = useRef<HTMLCanvasElement>(null);
-  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
+  const { registerAnimation, unregisterAnimation, isVisible, quality } = useThree();
   const [, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!canvasRef.current || !rightSideRef.current) return;
 
     // Get shared renderer and scene
-    const renderer = getRenderer('hero-main', { canvas: canvasRef.current });
-    const rightRenderer = getRenderer('hero-right', { canvas: rightSideRef.current });
+    const renderer = getRenderer('hero-main', { 
+      canvas: canvasRef.current,
+      antialias: quality === 'high',
+      powerPreference: "high-performance",
+      precision: quality === 'high' ? "highp" : "mediump"
+    });
+    const rightRenderer = getRenderer('hero-right', { 
+      canvas: rightSideRef.current,
+      antialias: quality === 'high',
+      powerPreference: "high-performance",
+      precision: quality === 'high' ? "highp" : "mediump"
+    });
     const scene = getScene('hero-main');
     const rightScene = getScene('hero-right');
 
@@ -31,9 +41,9 @@ const Hero = () => {
     rightRenderer.setSize(containerWidth, containerHeight);
     rightRenderer.setClearColor(0x000000, 0);
 
-    // Create particles
+    // Create particles with quality-based count
     const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = 1500;
+    const particleCount = quality === 'high' ? 1500 : quality === 'medium' ? 1000 : 500;
 
     const posArray = new Float32Array(particleCount * 3);
     const colorArray = new Float32Array(particleCount * 3);
@@ -81,28 +91,31 @@ const Hero = () => {
     rightScene.add(cubeGroup);
     rightCamera.position.z = 6;
 
-    // Register animations
+    // Register animations with quality-based updates
     const animate = () => {
       if (!isVisible) return;
 
-      // Main scene animation
-      particlesMesh.rotation.y += 0.001;
-      particlesMesh.rotation.x += 0.0005;
+      // Main scene animation with quality-based updates
+      const rotationSpeed = quality === 'high' ? 0.001 : quality === 'medium' ? 0.0008 : 0.0005;
+      particlesMesh.rotation.y += rotationSpeed;
+      particlesMesh.rotation.x += rotationSpeed * 0.5;
 
       const positions = particlesGeometry.attributes.position.array;
       const waveTime = Date.now() * 0.0001;
+      const waveIntensity = quality === 'high' ? 0.01 : quality === 'medium' ? 0.008 : 0.005;
 
       for (let i = 0; i < particleCount * 3; i += 3) {
         const x = positions[i];
-        positions[i + 2] += Math.sin(waveTime + x * 0.5) * 0.01;
+        positions[i + 2] += Math.sin(waveTime + x * 0.5) * waveIntensity;
       }
 
       particlesGeometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
 
-      // Right scene animation
-      cubeGroup.rotation.y += 0.01;
-      cubeGroup.rotation.x += 0.005;
+      // Right scene animation with quality-based updates
+      const cubeRotationSpeed = quality === 'high' ? 0.01 : quality === 'medium' ? 0.008 : 0.005;
+      cubeGroup.rotation.y += cubeRotationSpeed;
+      cubeGroup.rotation.x += cubeRotationSpeed * 0.5;
       cubeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.2;
       rightRenderer.render(rightScene, rightCamera);
     };
@@ -133,7 +146,7 @@ const Hero = () => {
       disposeScene('hero-main');
       disposeScene('hero-right');
     };
-  }, [registerAnimation, unregisterAnimation, isVisible]);
+  }, [registerAnimation, unregisterAnimation, isVisible, quality]);
 
   return (
     <div className="relative h-[100vh] w-full overflow-hidden bg-slate-900">

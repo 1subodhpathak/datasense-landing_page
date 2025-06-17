@@ -40,16 +40,17 @@ class NeuralNode extends THREE.Mesh {
 // Advanced AI-Powered 3D Background
 const AIDataVisualization: React.FC = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const { registerAnimation, unregisterAnimation, isVisible } = useThree();
+  const { registerAnimation, unregisterAnimation, isVisible, quality } = useThree();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
     const renderer = getRenderer('footer', {
-      antialias: true,
+      antialias: quality === 'high',
       alpha: true,
-      powerPreference: "high-performance"
+      powerPreference: "high-performance",
+      precision: quality === 'high' ? 'highp' : 'mediump'
     });
     const scene = getScene('footer');
 
@@ -59,21 +60,27 @@ const AIDataVisualization: React.FC = () => {
 
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = quality === 'high';
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     mountRef.current.appendChild(renderer.domElement);
 
     // AI Data Particles with Intelligence
     const aiParticles: AIParticle[] = [];
     const neuralNodes: NeuralNode[] = [];
-    const particleCount = 80;
-    const layers = 5;
+    
+    // Quality-based particle count
+    const particleCount = quality === 'high' ? 80 : quality === 'medium' ? 50 : 30;
+    const layers = quality === 'high' ? 5 : quality === 'medium' ? 4 : 3;
 
-    // Create Neural Network Visualization
+    // Create Neural Network Visualization with quality-based detail
     for (let layer = 0; layer < layers; layer++) {
       const nodesInLayer = Math.floor(8 - layer * 1.2);
       for (let node = 0; node < nodesInLayer; node++) {
-        const geometry = new THREE.SphereGeometry(0.08, 16, 16);
+        const geometry = new THREE.SphereGeometry(
+          0.08,
+          quality === 'high' ? 16 : quality === 'medium' ? 12 : 8,
+          quality === 'high' ? 16 : quality === 'medium' ? 12 : 8
+        );
         const material = new THREE.MeshPhongMaterial({ 
           color: new THREE.Color().setHSL(0.5 + layer * 0.1, 1, 0.6),
           transparent: true,
@@ -91,7 +98,7 @@ const AIDataVisualization: React.FC = () => {
         neuralNode.activation = Math.random();
         neuralNode.layer = layer;
         neuralNode.nodeIndex = node;
-        neuralNode.castShadow = true;
+        neuralNode.castShadow = quality === 'high';
         
         neuralNodes.push(neuralNode);
         scene.add(neuralNode);
@@ -100,14 +107,17 @@ const AIDataVisualization: React.FC = () => {
 
     // Advanced AI Particles with Data Processing Behavior
     for (let i = 0; i < particleCount; i++) {
-      const geometry = new THREE.IcosahedronGeometry(0.05, 1);
-      const hue = (i / particleCount) * 0.3 + 0.4; // Cyan to blue spectrum
+      const geometry = new THREE.IcosahedronGeometry(
+        0.05,
+        quality === 'high' ? 1 : 0
+      );
+      const hue = (i / particleCount) * 0.3 + 0.4;
       const material = new THREE.MeshPhongMaterial({ 
         color: new THREE.Color().setHSL(hue, 1, 0.7),
         transparent: true,
         opacity: 0.9,
         emissive: new THREE.Color().setHSL(hue, 0.8, 0.2),
-        shininess: 100
+        shininess: quality === 'high' ? 100 : 50
       });
       
       const particle = new AIParticle(geometry, material);
@@ -132,16 +142,16 @@ const AIDataVisualization: React.FC = () => {
       particle.aiState = ['learning', 'processing', 'analyzing'][Math.floor(Math.random() * 3)] as 'learning' | 'processing' | 'analyzing';
       particle.dataValue = Math.random();
       particle.connections = [];
-      particle.castShadow = true;
+      particle.castShadow = quality === 'high';
       
       aiParticles.push(particle);
       scene.add(particle);
     }
 
-    // Data Flow Streams (representing SQL queries and Python scripts)
+    // Data Flow Streams with quality-based complexity
     const createDataStream = (color: number, complexity: number) => {
+      const segments = quality === 'high' ? 150 : quality === 'medium' ? 100 : 50;
       const points: THREE.Vector3[] = [];
-      const segments = 150;
       
       for (let i = 0; i < segments; i++) {
         const t = i / segments;
@@ -156,7 +166,7 @@ const AIDataVisualization: React.FC = () => {
         color,
         transparent: true,
         opacity: 0.6,
-        linewidth: 2
+        linewidth: quality === 'high' ? 2 : 1
       });
       
       return new THREE.Line(geometry, material);
@@ -207,15 +217,17 @@ const AIDataVisualization: React.FC = () => {
     matrix2.rotation.y = -Math.PI / 4;
     scene.add(matrix2);
 
-    // Advanced Lighting System
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+    // Quality-based lighting
+    const ambientLight = new THREE.AmbientLight(0x404040, quality === 'high' ? 0.4 : 0.3);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0x00ffff, 1);
+    const directionalLight = new THREE.DirectionalLight(0x00ffff, quality === 'high' ? 1 : 0.8);
     directionalLight.position.set(10, 10, 5);
-    directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 2048;
-    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.castShadow = quality === 'high';
+    if (quality === 'high') {
+      directionalLight.shadow.mapSize.width = 2048;
+      directionalLight.shadow.mapSize.height = 2048;
+    }
     scene.add(directionalLight);
 
     const pointLight1 = new THREE.PointLight(0xff0080, 0.8, 50);
@@ -232,12 +244,13 @@ const AIDataVisualization: React.FC = () => {
 
     let time = 0;
 
-    // Register animation
+    // Register animation with quality-based updates
     const animate = () => {
       if (!isVisible) return;
 
-      time += 0.008;
-      // Neural Network Pulsing
+      time += quality === 'high' ? 0.008 : quality === 'medium' ? 0.006 : 0.004;
+
+      // Neural Network Pulsing with quality-based updates
       neuralNodes.forEach((node: NeuralNode, index: number) => {
         node.activation = (Math.sin(time * 2 + index) + 1) / 2;
         const scale = 0.8 + node.activation * 0.6;
@@ -246,23 +259,24 @@ const AIDataVisualization: React.FC = () => {
         material.emissive.setHSL(0.5 + node.layer * 0.1, 0.5, node.activation * 0.3);
       });
 
-      // AI Particle Intelligence
+      // AI Particle Intelligence with quality-based updates
       aiParticles.forEach((particle: AIParticle, index: number) => {
-        // AI State-based behavior
+        const speed = quality === 'high' ? 1 : quality === 'medium' ? 0.8 : 0.6;
+        
         switch (particle.aiState) {
           case 'learning':
-            particle.rotation.x += 0.02;
-            particle.rotation.y += 0.01;
+            particle.rotation.x += 0.02 * speed;
+            particle.rotation.y += 0.01 * speed;
             break;
           case 'processing':
-            particle.rotation.z += 0.03;
+            particle.rotation.z += 0.03 * speed;
             const pulseScale = 1 + Math.sin(time * 4 + index) * 0.3;
             particle.scale.setScalar(pulseScale);
             break;
           case 'analyzing':
-            particle.rotation.x += 0.01;
-            particle.rotation.y += 0.02;
-            particle.rotation.z += 0.01;
+            particle.rotation.x += 0.01 * speed;
+            particle.rotation.y += 0.02 * speed;
+            particle.rotation.z += 0.01 * speed;
             break;
         }
 
@@ -276,12 +290,12 @@ const AIDataVisualization: React.FC = () => {
           );
         }
         
-        direction.normalize().multiplyScalar(0.01);
-        particle.velocity.lerp(direction, 0.05);
+        direction.normalize().multiplyScalar(0.01 * speed);
+        particle.velocity.lerp(direction, 0.05 * speed);
         particle.position.add(particle.velocity);
         
         // Change AI state occasionally
-        if (Math.random() < 0.001) {
+        if (Math.random() < 0.001 * speed) {
           particle.aiState = ['learning', 'processing', 'analyzing'][Math.floor(Math.random() * 3)] as 'learning' | 'processing' | 'analyzing';
         }
       });
@@ -374,7 +388,7 @@ const AIDataVisualization: React.FC = () => {
         mountRef.current.removeChild(renderer.domElement);
       }
     };
-  }, [registerAnimation, unregisterAnimation, isVisible]);
+  }, [registerAnimation, unregisterAnimation, isVisible, quality]);
 
   return (
     <div className="absolute inset-0">
