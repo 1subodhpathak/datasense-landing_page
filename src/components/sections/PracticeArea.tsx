@@ -17,8 +17,8 @@ interface PracticeLinks {
 
 const practiceLinks: PracticeLinks = {
   coderpad: '/quiz', // Replace with actual link when ready
-  custom: 'https://www.youtube.com/', // Example external link
-  live: '/coming-soon',
+  custom: 'https://assessment.datasenseai.com/', // Example external link
+  live: 'https://practice.datasenseai.com/live-events',
   mock: '/coming-soon'
 };
 
