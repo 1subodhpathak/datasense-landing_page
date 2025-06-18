@@ -13,7 +13,7 @@ interface ServiceLinks {
 }
 
 const serviceLinks: ServiceLinks = {
-  ats: 'https://www.youtube.com/', // Replace with actual link when ready
+  ats: '/coming-soon', // Replace with actual link when ready
   builder: '/coming-soon', // Replace with actual link when ready
   comparison: '/coming-soon' // Replace with actual link when ready
 };

@@ -23,7 +23,7 @@ interface CourseLinks {
 
 const courseLinks: CourseLinks = {
   courses: '/courses', // Replace with actual link when ready
-  dashboard: 'https://www.youtube.com/', // Example external link
+  dashboard: '/coming-soon', // Example external link
   roadmap: '/coming-soon',
   badges: '/coming-soon'
 };
