@@ -27,7 +27,7 @@ const Hero = () => {
       precision: quality === 'high' ? "highp" : "mediump"
     });
     const scene = getScene('hero-main');
-    const rightScene = getScene('hero-right');
+    // const rightScene = getScene('hero-right');
 
     // Setup camera
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -80,16 +80,16 @@ const Hero = () => {
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
 
-    // Right side cube setup
-    const cubeGroup = new THREE.Group();
-    const cubeGeometry = new THREE.BoxGeometry(3, 3, 3);
-    const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry);
-    const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x06b6d4, linewidth: 2 });
-    const wireframeCube = new THREE.LineSegments(edgesGeometry, edgesMaterial);
-    cubeGroup.add(wireframeCube);
+    // // Right side cube setup
+    // const cubeGroup = new THREE.Group();
+    // const cubeGeometry = new THREE.BoxGeometry(3, 3, 3);
+    // const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry);
+    // const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x06b6d4, linewidth: 2 });
+    // const wireframeCube = new THREE.LineSegments(edgesGeometry, edgesMaterial);
+    // cubeGroup.add(wireframeCube);
 
-    rightScene.add(cubeGroup);
-    rightCamera.position.z = 6;
+    // rightScene.add(cubeGroup);
+    // rightCamera.position.z = 6;
 
     // Register animations with quality-based updates
     const animate = () => {
@@ -112,12 +112,12 @@ const Hero = () => {
       particlesGeometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
 
-      // Right scene animation with quality-based updates
-      const cubeRotationSpeed = quality === 'high' ? 0.01 : quality === 'medium' ? 0.008 : 0.005;
-      cubeGroup.rotation.y += cubeRotationSpeed;
-      cubeGroup.rotation.x += cubeRotationSpeed * 0.5;
-      cubeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.2;
-      rightRenderer.render(rightScene, rightCamera);
+      // // Right scene animation with quality-based updates
+      // const cubeRotationSpeed = quality === 'high' ? 0.01 : quality === 'medium' ? 0.008 : 0.005;
+      // cubeGroup.rotation.y += cubeRotationSpeed;
+      // cubeGroup.rotation.x += cubeRotationSpeed * 0.5;
+      // cubeGroup.position.y = Math.sin(Date.now() * 0.001) * 0.2;
+      // rightRenderer.render(rightScene, rightCamera);
     };
 
     registerAnimation('hero', animate);
