@@ -459,7 +459,7 @@ const ServicesMain: React.FC = () => {
         <div className={`absolute inset-0 bg-gradient-to-r ${scheme.gradient} rounded-xl blur-xl group-hover:blur-2xl transition-all duration-500 -z-10`}></div>
         
         {/* Card Container */}
-        <div className="relative backdrop-blur-md bg-slate-800/40 rounded-xl border-2 ${scheme.border} p-6 flex flex-col items-center gap-6 transition-all duration-500">
+        <div className="relative backdrop-blur-md bg-slate-800/40 rounded-xl  p-6 flex flex-col items-center gap-6 transition-all duration-500">
           {/* Status Dot */}
           <div className={`absolute top-3 right-3 w-3 h-3 ${scheme.dot} rounded-full animate-pulse`}></div>
           
@@ -476,9 +476,9 @@ const ServicesMain: React.FC = () => {
               <img 
                 src={gifSrc} 
                 alt={title} 
-                className="w-48 h-48 object-contain rounded-lg border border-cyan-400/20" 
+                className="w-48 h-48  " 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent rounded-lg"></div>
+              <div className="absolute inset-0"></div>
             </div>
           ) : (
             <div className={`${scheme.accent} scale-150`}>

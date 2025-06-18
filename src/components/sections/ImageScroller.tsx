@@ -23,7 +23,7 @@ const ImageScroller = () => {
   ];
 
   // Calculate the total width: 20 images × (160px width + 32px gap)
-  const totalWidth = images.length * (160 + 32); // 160px = w-40, 32px = gap-8
+  const totalWidth = images.length * (194 + 32); // 160px = w-40, 32px = gap-8
 
   return (
     <div className="relative w-full overflow-hidden bg-white py-16">
@@ -44,9 +44,10 @@ const ImageScroller = () => {
         <div 
           className="flex gap-8 py-4 whitespace-nowrap"
           style={{
-            animation: `scroll-seamless ${totalWidth / 60}s linear infinite`, // Adjust speed: totalWidth/speed
-            width: `${totalWidth * 2}px` // Double width for seamless loop
-          }}
+            width: `${totalWidth * 2}px`,
+            animation: `scroll-seamless 40s linear infinite`,
+            ['--scroll-distance' as any]: `-${totalWidth}px`
+          } as any}
         >
           {/* First set of images */}
           {images.map((image, index) => (

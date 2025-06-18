@@ -228,13 +228,13 @@
     transform: translateX(0);
   }
   100% {
-    transform: translateX(var(--scroll-distance, -3840px));
+    transform: translateX(var(--scroll-distance));
   }
 }
 
 @keyframes scroll-infinite {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+  100% { transform: translateX(-50%); }
 }
 
 @keyframes scan-line {
@@ -242,10 +242,10 @@
   50% { opacity: 1; }
   100% { top: 100%; opacity: 0; }
 }
-
+/* 
 .animate-scroll-infinite {
   animation: scroll-infinite 30s linear infinite;
-}
+} */
 
 .animate-scan-line {
   animation: scan-line 3s ease-in-out infinite;
@@ -254,4 +254,21 @@
 body.unity-game-active nav,
 body.unity-game-active footer {
   display: none !important;
+}
+
+@keyframes robotic-arrow {
+  0%, 100% { transform: scale(1) rotate(0deg) translateX(0); }
+  10% { transform: scale(1.1, 0.9) rotate(-10deg) translateX(-2px); }
+  20% { transform: scale(0.95, 1.05) rotate(12deg) translateX(2px); }
+  30% { transform: scale(1.05, 0.95) rotate(-8deg) translateX(-1px); }
+  40% { transform: scale(1, 1.1) rotate(8deg) translateX(1px); }
+  50% { transform: scale(1.1, 0.9) rotate(-6deg) translateX(-2px); }
+  60% { transform: scale(0.95, 1.05) rotate(6deg) translateX(2px); }
+  70% { transform: scale(1.05, 0.95) rotate(-4deg) translateX(-1px); }
+  80% { transform: scale(1, 1.1) rotate(4deg) translateX(1px); }
+  90% { transform: scale(1.1, 0.9) rotate(-2deg) translateX(-2px); }
+}
+.robotic-arrow {
+  animation: robotic-arrow 1.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  will-change: transform;
 }
