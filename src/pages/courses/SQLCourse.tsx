@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BsDatabase, BsCheckCircle, BsAward, BsBook, BsStarFill } from "react-icons/bs";
+import { BsDatabase, BsCheckCircle, BsAward, BsBook, BsStarFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { AiOutlineClockCircle, AiOutlineBulb, AiOutlineProject } from "react-icons/ai";
 import { FaUserGraduate, FaChevronDown, FaChevronUp, FaQuoteLeft } from "react-icons/fa";
 import { MdOutlineComputer, MdWorkspaces } from "react-icons/md";
 import { useScrollTop } from "../../hooks/useScrollTop";
+import VideoPlayer from "../../components/video/VideoPlayer";
+import VideoList from "../../components/video/VideoList";
+import { sqlVideos, getVideosByModule, getNextVideo, getPreviousVideo, type Video } from "../../data/sqlVideos";
 
 const syllabusData = [
   {
@@ -96,6 +99,8 @@ const SQLCourse = () => {
   useScrollTop();
   const [activeTab, setActiveTab] = useState("syllabus");
   const [expandedModules, setExpandedModules] = useState([0]);
+  const [selectedVideo, setSelectedVideo] = useState<Video | null>(sqlVideos[0]);
+  const [selectedModule, setSelectedModule] = useState("Manipulation");
 
   const toggleModule = (index: number) => {
     setExpandedModules(prev => 
@@ -104,6 +109,30 @@ const SQLCourse = () => {
         : [...prev, index]
     );
   };
+
+  const handleVideoSelect = (video: Video) => {
+    setSelectedVideo(video);
+  };
+
+  const handleVideoComplete = () => {
+    if (selectedVideo) {
+      // Mark video as completed (in a real app, this would save to backend)
+      console.log(`Video ${selectedVideo.title} completed!`);
+      
+      // Auto-play next video if available
+      const nextVideo = getNextVideo(selectedVideo.id);
+      if (nextVideo && !nextVideo.isLocked) {
+        setSelectedVideo(nextVideo);
+      }
+    }
+  };
+
+  const handleVideoProgress = (progress: number) => {
+    // Save progress to backend in real app
+    console.log(`Video progress: ${progress}%`);
+  };
+
+  const filteredVideos = getVideosByModule(selectedModule);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cyan-950 via-slate-800 to-slate-900">
@@ -161,7 +190,7 @@ const SQLCourse = () => {
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Tabs */}
           <div className="flex justify-center mb-10 border-b border-cyan-800/30">
-            {["about", "syllabus", "faqs"].map((tab) => (
+            {["about", "syllabus", "videos", "faqs"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -287,6 +316,97 @@ const SQLCourse = () => {
                     )}
                   </motion.div>
                 ))}
+              </motion.div>
+            )}
+
+            {activeTab === "videos" && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-6"
+              >
+                {/* Module Selector */}
+                <div className="bg-slate-800/30 backdrop-blur-sm p-4 rounded-xl border border-cyan-900/20">
+                  <h3 className="text-lg font-semibold text-cyan-100 mb-4">Select Module</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {["Manipulation", "Queries", "Database Management"].map((module) => (
+                      <button
+                        key={module}
+                        onClick={() => setSelectedModule(module)}
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                          selectedModule === module
+                            ? "bg-cyan-500 text-slate-900"
+                            : "bg-slate-700/50 text-cyan-300 hover:bg-slate-600/50"
+                        }`}
+                      >
+                        {module}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Video Player */}
+                {selectedVideo && (
+                  <VideoPlayer
+                    videoUrl={selectedVideo.videoUrl}
+                    posterUrl={selectedVideo.thumbnail}
+                    title={selectedVideo.title}
+                    description={selectedVideo.description}
+                    duration={selectedVideo.duration}
+                    onProgress={handleVideoProgress}
+                    onComplete={handleVideoComplete}
+                    className="mb-6"
+                  />
+                )}
+
+                {/* Video Navigation */}
+                {selectedVideo && (
+                  <div className="flex justify-between items-center mb-6">
+                    <button
+                      onClick={() => {
+                        const prevVideo = getPreviousVideo(selectedVideo.id);
+                        if (prevVideo && !prevVideo.isLocked) {
+                          setSelectedVideo(prevVideo);
+                        }
+                      }}
+                      disabled={!getPreviousVideo(selectedVideo.id) || getPreviousVideo(selectedVideo.id)?.isLocked}
+                      className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 text-cyan-300 rounded-lg hover:bg-slate-700/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      <BsChevronLeft />
+                      Previous
+                    </button>
+                    
+                    <span className="text-cyan-300 text-sm">
+                      {selectedVideo.order} of {sqlVideos.length}
+                    </span>
+                    
+                    <button
+                      onClick={() => {
+                        const nextVideo = getNextVideo(selectedVideo.id);
+                        if (nextVideo && !nextVideo.isLocked) {
+                          setSelectedVideo(nextVideo);
+                        }
+                      }}
+                      disabled={!getNextVideo(selectedVideo.id) || getNextVideo(selectedVideo.id)?.isLocked}
+                      className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 text-cyan-300 rounded-lg hover:bg-slate-700/50 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                      Next
+                      <BsChevronRight />
+                    </button>
+                  </div>
+                )}
+
+                {/* Video List */}
+                <div className="bg-slate-800/30 backdrop-blur-sm p-4 rounded-xl border border-cyan-900/20">
+                  <h3 className="text-lg font-semibold text-cyan-100 mb-4">
+                    {selectedModule} Videos
+                  </h3>
+                  <VideoList
+                    videos={filteredVideos}
+                    onVideoSelect={handleVideoSelect}
+                    selectedVideoId={selectedVideo?.id}
+                  />
+                </div>
               </motion.div>
             )}
 
